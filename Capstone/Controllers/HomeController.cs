@@ -5,26 +5,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Capstone.Models;
+using Capstone.DAL.Interfaces;
 
 namespace Capstone.Controllers
 {
     public class HomeController : Controller
     {
 
-        //private IReviewDAL reviewDAL;
+        private IPodcastSqlDal podcastSqlDal;
+      
 
-        //public HomeController(IReviewDAL reviewDAL)
-        //{
-        //    this.reviewDAL = reviewDAL;
-        //}
+        public HomeController(IPodcastSqlDal podcastSqlDal)
+        {
+            this.podcastSqlDal = podcastSqlDal;
+
+        }
 
 
 
 
-
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult ListOfPodcasts()
+        {
+            List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
+            return View(podcasts);
         }
 
 

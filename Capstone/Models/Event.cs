@@ -5,8 +5,20 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class UserEvent
+    public class Event
     {
+        public int EventId { get; set; }
+        public DateTime Beginning { get; set; }
+        public DateTime Ending { get; set; }
+        public int PodcastId { get; set; }
+        public int VenueId { get; set; }
+        public string Logo { get; set; }
+        public string Copy { get; set; }
+        public string PodcastURL { get; set; }
+        public string TicketLevel { get; set; }
+        public string UpsaleCopy { get; set; }
+        public bool IsFinalIzed { get; set; }
+
     }
 }
 //using System.ComponentModel.DataAnnotations;

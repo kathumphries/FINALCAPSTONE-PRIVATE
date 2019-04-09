@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Capstone.Models.Podcast>
+
+@{
+    ViewData["Title"] = "ListOfPodcasts";
+}
+
+<h2>List Of Podcasts</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PodcastId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hosting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.URL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GenreId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OriginalRelease)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RunTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseFrequency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AverageLength)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumOfEpisodes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumOfDownloads)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MeasurementPlatform)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Demographics)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Affiliations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.broadcastCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.broadcastState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InOhio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSponsored)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PodcastId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hosting)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.URL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GenreId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OriginalRelease)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseFrequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageLength)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumOfEpisodes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumOfDownloads)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeasurementPlatform)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Demographics)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Affiliations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.broadcastCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.broadcastState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InOhio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSponsored)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

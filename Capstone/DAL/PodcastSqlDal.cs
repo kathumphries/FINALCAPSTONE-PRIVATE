@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
@@ -10,92 +12,66 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
+        private const string SQL_GetParks = "SELECT * FROM Podcast;";
+      
         public PodcastSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
+
+        }
+
+        public List<Podcast> GetAllPodcasts()
+        {
+            List<Podcast> podcasts = new List<Podcast>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_GetParks, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Podcast podcast = new Podcast();
+
+                        podcast.PodcastId = Convert.ToInt32(reader["podcastID"]);
+                        podcast.UserId = Convert.ToInt32(reader["userID"]);
+                        podcast.Hosting = Convert.ToString(reader["hosting"]);
+                        podcast.URL = Convert.ToString(reader["url"]);
+                        podcast.Title = Convert.ToString(reader["title"]);
+                        podcast.Description = Convert.ToString(reader["description"]);
+                        podcast.GenreId = Convert.ToInt32(reader["genreID"]);
+                        //podcast.SoundByte = Convert.ToString(reader["soundByte"]);
+                        podcast.OriginalRelease = Convert.ToDateTime(reader["originalRelease"]);
+                        podcast.RunTime = Convert.ToDouble(reader["runTime"]);
+                        podcast.ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]);
+                        podcast.AverageLength = Convert.ToDouble(reader["averageLength"]);
+                        podcast.NumOfEpisodes = Convert.ToInt32(reader["numOfEpisodes"]);
+                        podcast.NumOfDownloads = Convert.ToInt32(reader["numOfDownloads"]);
+                        podcast.MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]);
+                        podcast.Demographics = Convert.ToString(reader["demographics"]);
+                        podcast.Affiliations = Convert.ToString(reader["affiliations"]);
+                        podcast.broadcastCity = Convert.ToString(reader["broadcastCity"]);
+                        podcast.broadcastState = Convert.ToString(reader["broadcastState"]);
+                        podcast.InOhio = Convert.ToBoolean(reader["inOhio"]);
+                        podcast.IsSponsored = Convert.ToBoolean(reader["isSponsored"]);
+
+                        podcasts.Add(podcast);
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                podcasts = new List<Podcast>();
+                throw ex;
+            }
+
+            return podcasts;
         }
     }
 }
-
-
-
-//public Park GetParkDetail(string parkCode)
-//{
-//    Park park = new Park();
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-
-//        SqlCommand command = new SqlCommand(SQL_GetParkDetail, connection);
-//        command.Parameters.AddWithValue("@parkCode", parkCode);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
-//        {
-
-//            park = MaptToRowPark(reader);
-
-//        }
-//    }
-
-//    return park;
-//}
-
-//public List<Park> GetParks()
-//{
-//    List<Park> parkList = new List<Park>();
-
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-
-//        SqlCommand command = new SqlCommand(SQL_GetParks, connection);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
-//        {
-
-//            parkList.Add(MaptToRowPark(reader));
-
-//        }
-//    }
-//    return parkList;
-//}
-
-//private Park MaptToRowPark(SqlDataReader reader)
-//{
-//    return new Park()
-//    {
-//        ParkCode = Convert.ToString(reader["parkCode"]),
-//        Name = Convert.ToString(reader["parkName"]), // parkName
-//        State = Convert.ToString(reader["state"]), //state
-//        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
-//        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet
-//        MilesOfTrail = Convert.ToInt32(reader["milesOfTrail"]), //milesOfTrail
-//        NumberOfCampsites = Convert.ToInt32(reader["numberOfCampsites"]), //numberOfCampsites
-//        Climate = Convert.ToString(reader["climate"]), //climate
-//        ParkDescription = Convert.ToString(reader["parkDescription"]), //parkDescription
-//        YearFounded = Convert.ToInt32(reader["yearFounded"]), //yearFounded
-//        AnnualVisitorCount = Convert.ToInt32(reader["annualVisitorCount"]), //annualVisitorCount
-//        Quote = Convert.ToString(reader["inspirationalQuote"]), //inspirationalQuote
-//        QuoteSource = Convert.ToString(reader["inspirationalQuoteSource"]), //inspirationalQuoteSource
-//        EntryFee = Convert.ToInt32(reader["entryFee"]), //entryFee
-//        NumberOfAnimalSpecies = Convert.ToInt32(reader["numberOfAnimalSpecies"]), //numbeOfAnimalSpecies
-
-//    };
-
-
-
-//public void SaveSurvey(DailySurvey survey)
-//{
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-//        SqlCommand cmd = new SqlCommand(SQL_SaveNewSurvey, connection);
-//        cmd.Parameters.AddWithValue("@parkCode", survey.ParkCode);
-//        cmd.Parameters.AddWithValue("@emailAddress", survey.EmailAddress);
-//        cmd.Parameters.AddWithValue("@state", survey.State);
-//        cmd.Parameters.AddWithValue("@activityLevel", survey.ActivityLevel);
-
-//        cmd.ExecuteNonQuery();
-//    }
-
-//}

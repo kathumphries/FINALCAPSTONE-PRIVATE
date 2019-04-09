@@ -7,6 +7,12 @@ namespace Capstone.Models
 {
     public class Tags
     {
+        public int TagId { get; set; }
+        public int GenreId { get; set; }
+        public string TicketLevel { get; set; }
+        public int VenueId { get; set; }
+        public bool IsVisible { get; set; }
+        public string TagDescription { get; set; }
     }
 }
 
