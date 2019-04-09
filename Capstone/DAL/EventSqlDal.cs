@@ -32,17 +32,16 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-                    
+
 
 
                 }
 
 
-
             }
             return eventList;
         }
-        
+
     }
 }
 

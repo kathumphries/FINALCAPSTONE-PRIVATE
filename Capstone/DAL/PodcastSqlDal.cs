@@ -15,6 +15,7 @@ namespace Capstone.DAL
         private const string SQL_GetAllPodcasts = "SELECT * FROM Podcast ORDER BY title;";
         private const string SQL_GetPodcast = "SELECT * FROM Podcast WHERE podcastID = @podcastID;";
 
+
         public PodcastSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -33,8 +34,8 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-
-                    podcastList.Add(MaptToRowPodcast(reader));
+                   podcastList.Add(MaptToRowPodcast(reader));
+                                        
                 }
             }
             return podcastList;
