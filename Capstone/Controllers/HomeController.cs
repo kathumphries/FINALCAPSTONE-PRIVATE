@@ -13,11 +13,13 @@ namespace Capstone.Controllers
     {
 
         private IPodcastSqlDal podcastSqlDal;
+        private IEventSqlDal eventSqlDal;
       
 
-        public HomeController(IPodcastSqlDal podcastSqlDal)
+        public HomeController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
+            this.eventSqlDal = eventSqlDal;
 
         }
 
@@ -33,6 +35,26 @@ namespace Capstone.Controllers
         {
             List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
             return View(podcasts);
+        }
+
+        public IActionResult ListOfEvents()
+        {
+            List<Event> events = eventSqlDal.GetAllEvents();
+            return View(events);
+        }
+
+        public IActionResult EditEvent(Event eventItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(eventItem);
+            }
+            else
+            {
+                bool result = eventSqlDal.AddEventDetail(eventItem);
+                //TODO : account for false
+                return RedirectToAction(nameof(ListOfEvents));
+            }
         }
 
 
