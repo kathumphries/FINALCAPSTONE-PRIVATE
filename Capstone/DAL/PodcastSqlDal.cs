@@ -12,7 +12,7 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
-        private const string SQL_GetParks = "SELECT * FROM Podcast;";
+        private const string SQL_GetPodcasts = "SELECT * FROM Podcast;";
       
         public PodcastSqlDal(string connectionString)
         {
@@ -30,7 +30,7 @@ namespace Capstone.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(SQL_GetParks, connection);
+                    SqlCommand command = new SqlCommand(SQL_GetPodcasts, connection);
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
@@ -10,9 +12,55 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
+        private const string SQL_GetEvents = "SELECT * FROM Event;";
+
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+
+        public List<Event> GetAllEvents()
+        {
+            List<Event> events = new List<Event>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_GetEvents, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Event eventItem = new Event();
+
+                        eventItem.EventId = Convert.ToInt32(reader["eventID"]);
+                        eventItem.Beginning = Convert.ToDateTime(reader["beginning"]);
+                        eventItem.Ending = Convert.ToDateTime(reader["ending"]);
+                        eventItem.PodcastId = Convert.ToInt32(reader["podcastID"]);
+                        eventItem.VenueId = Convert.ToInt32(reader["venueID"]);
+                        eventItem.Logo = Convert.ToString(reader["logo"]);
+                        eventItem.Copy = Convert.ToString(reader["copy"]);
+                        eventItem.PodcastURL = Convert.ToString(reader["podcastURL"]);
+                        eventItem.TicketLevel = Convert.ToString(reader["ticketLevel"]);
+                        eventItem.UpsaleCopy = Convert.ToString(reader["upsaleCopy"]);
+                        eventItem.IsFinalIzed = Convert.ToBoolean(reader["isFinalized"]);
+
+                        events.Add(eventItem);
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                events = new List<Event>();
+                throw ex;
+            }
+
+            return events;
         }
     }
 }
