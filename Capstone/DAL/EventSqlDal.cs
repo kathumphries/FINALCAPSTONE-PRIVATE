@@ -1,21 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
     public class EventSqlDal : IEventSqlDal
     {
         private string connectionString;
+        private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
+        private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
 
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
         }
+
+        public List<Event> GetAllEvents()
+        {
+            List<Event> eventList = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetAllEvents, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    
+
+
+                }
+
+
+
+            }
+            return eventList;
+        }
+        
     }
 }
+
+           
+
+    
+
+
+
+   
+
 
 
 

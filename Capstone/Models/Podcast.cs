@@ -9,8 +9,8 @@ namespace Capstone.Models
 {
     public class Podcast
     {
-        public int PodcastId { get; set; }
-        public int UserId { get; set; }
+        public int PodcastID { get; set; }
+        public int UserID { get; set; }
         public string Hosting { get; set; }
         public string URL { get; set; }
 
@@ -18,7 +18,7 @@ namespace Capstone.Models
         public string Title { get; set; }
 
         public string Description { get; set; }
-        public int GenreId { get; set; }
+        public int GenreID { get; set; }
         // public bit SoundByte { get; set; }
         public DateTime OriginalRelease { get; set; }
         public double RunTime { get; set; }

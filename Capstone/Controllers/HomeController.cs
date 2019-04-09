@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Capstone.Models;
 using Capstone.DAL.Interfaces;
 
@@ -11,29 +12,40 @@ namespace Capstone.Controllers
 {
     public class HomeController : Controller
     {
-
-        private IPodcastSqlDal podcastSqlDal;
-      
-
+        private readonly IPodcastSqlDal podcastSqlDal;
+        
         public HomeController(IPodcastSqlDal podcastSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
-
         }
 
-
-        [HttpGet]
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    List<Event> result = eventSqlDal.GetAllEvents();
+        //    return View(result);
+        //}
+               
+        public IActionResult Podcasts()
         {
-            return View();
+            List<Podcast> result = podcastSqlDal.GetAllPodcasts();
+            return View(result);
         }
 
-        [HttpGet]
-        public IActionResult ListOfPodcasts()
+        public IActionResult PodcastDetail(string id)
         {
-            List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
-            return View(podcasts);
+            Podcast result = new Podcast();
+            return View(result);
         }
+        
+      
+
+
+        //[HttpGet]
+        //public IActionResult ListOfPodcasts()
+        //{
+        //    List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
+        //    return View(podcasts);
+        //}
 
 
         //// GET: Home
@@ -62,11 +74,6 @@ namespace Capstone.Controllers
         //{
         //    reviewDAL.SaveReview(review);
         //    return RedirectToAction("Index", "Home");
-
-
-
-
-
 
 
 
