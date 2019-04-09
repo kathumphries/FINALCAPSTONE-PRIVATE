@@ -12,7 +12,7 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
-        private const string SQL_GetEvents = "SELECT * FROM Event;";
+        private const string SQL_GetAllEvents = "SELECT * FROM Event;";
 
         public EventSqlDal(string connectionString)
         {
@@ -29,7 +29,7 @@ namespace Capstone.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(SQL_GetEvents, connection);
+                    SqlCommand command = new SqlCommand(SQL_GetAllEvents, connection);
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
