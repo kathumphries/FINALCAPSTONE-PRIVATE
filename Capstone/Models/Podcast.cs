@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,10 @@ namespace Capstone.Models
         public int UserId { get; set; }
         public string Hosting { get; set; }
         public string URL { get; set; }
+
+        [Required]
         public string Title { get; set; }
+
         public string Description { get; set; }
         public int GenreId { get; set; }
         // public bit SoundByte { get; set; }
@@ -25,9 +29,17 @@ namespace Capstone.Models
         public string MeasurementPlatform { get; set; }
         public string Demographics { get; set; }
         public string Affiliations { get; set; }
+
+        [Required]
         public string broadcastCity { get; set; }
+
+        [Required]
         public string broadcastState { get; set; }
+
+        [Required]
         public bool InOhio { get; set; }
+
+        [Required]
         public bool IsSponsored { get; set; }
     }
 }

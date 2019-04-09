@@ -22,8 +22,6 @@ namespace Capstone.Controllers
         }
 
 
-
-
         [HttpGet]
         public IActionResult Index()
         {
