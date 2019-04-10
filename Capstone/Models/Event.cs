@@ -18,6 +18,7 @@ namespace Capstone.Models
         public string TicketLevel { get; set; }
         public string UpsaleCopy { get; set; }
         public bool IsFinalized { get; set; }
+        public string Name { get; set; }
 
     }
 }

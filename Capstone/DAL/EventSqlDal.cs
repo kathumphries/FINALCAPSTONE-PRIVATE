@@ -15,7 +15,7 @@ namespace Capstone.DAL
 
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
         private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
-        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized);";
+        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @name);";
 
 
 
@@ -41,6 +41,7 @@ namespace Capstone.DAL
                 cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
                 cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
+                cmd.Parameters.AddWithValue("@name", eventItem.Name);
 
                 count = cmd.ExecuteNonQuery();
             }
@@ -114,7 +115,8 @@ namespace Capstone.DAL
                 PodcastURL = Convert.ToString(reader["podcastURL"]),
                 TicketLevel = Convert.ToString(reader["ticketLevel"]),
                 UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
-                IsFinalized = Convert.ToBoolean(reader["isFinalized"])
+                IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
+                Name = Convert.ToString(reader["name"])
             };
 
 
