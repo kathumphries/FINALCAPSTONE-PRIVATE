@@ -14,7 +14,7 @@ namespace Capstone.DAL
 
 
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
-        private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
+        private const string SQL_GetEvent = "SELECT * FROM Event JOIN podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
         private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @name);";
 
 
@@ -106,8 +106,8 @@ namespace Capstone.DAL
             return new Event()
             {
                 EventId = Convert.ToInt32(reader["eventID"]),
-                PodcastId = Convert.ToInt32(reader["podcastID"]),
-                VenueId = Convert.ToInt32(reader["venueID"]),
+                Podcast = Convert.ToString(reader["title"]),
+                Venue = Convert.ToString(reader["displayName"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
                 Logo = Convert.ToString(reader["logo"]),
