@@ -12,13 +12,49 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
+
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
         private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
+        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized);";
+
+
 
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
         }
+
+        public bool AddEventDetail(Event eventItem)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand(SQL_AddEventDetail, connection);
+
+                cmd.Parameters.AddWithValue("@beginning", eventItem.Beginning);
+                cmd.Parameters.AddWithValue("@ending", eventItem.Ending);
+                cmd.Parameters.AddWithValue("@logo", eventItem.Logo);
+                cmd.Parameters.AddWithValue("@copy", eventItem.Copy);
+                cmd.Parameters.AddWithValue("@podcastURL", eventItem.PodcastURL);
+                cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
+                cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
+                cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
+
+                count = cmd.ExecuteNonQuery();
+            }
+
+            if (count == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public List<Event> GetAllEvents()
         {
@@ -33,16 +69,38 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-                   eventList.Add(MapToRowPodcast(reader));
+                    eventList.Add(MapToRowEvent(reader));
                 }
             }
             return eventList;
         }
 
+        public Event GetEvent(int eventID)
+        {
+            Event eventItem = new Event();
 
-       
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
-        private Event MapToRowPodcast(SqlDataReader reader)
+                SqlCommand command = new SqlCommand(SQL_GetEvent, connection);
+                command.Parameters.AddWithValue("@eventID", eventID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem = MapToRowEvent(reader);
+                }
+            }
+
+            return eventItem;
+        }
+
+
+
+
+
+        private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
             {
@@ -61,8 +119,6 @@ namespace Capstone.DAL
 
 
         }
-
-
     }
 }
 

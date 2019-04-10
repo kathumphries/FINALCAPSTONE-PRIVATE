@@ -14,6 +14,7 @@ namespace Capstone.Controllers
     {
         private readonly IPodcastSqlDal podcastDal;
         private readonly IEventSqlDal eventSqlDal;
+        private readonly IGenreSqlDal genreSqlDal;
 
         public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
         {
@@ -29,6 +30,21 @@ namespace Capstone.Controllers
             List<Event> events = eventSqlDal.GetAllEvents();
             return View(events);
         }
+
+        public IActionResult EditEvent(Event eventItem)
++        {
++            if (!ModelState.IsValid)
++            {
++                return View(eventItem);
++            }
++            else
++            {
++                bool result = eventSqlDal.AddEventDetail(eventItem);
++                //TODO : account for false
++                return RedirectToAction(nameof(ListOfEvents));
++            }
++        }
+
 
        
     }

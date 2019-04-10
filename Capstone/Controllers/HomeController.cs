@@ -12,13 +12,23 @@ namespace Capstone.Controllers
 {
     public class HomeController : Controller
     {
+<<<<<<< HEAD
         private readonly IPodcastSqlDal podcastSqlDal;
         private readonly IEventSqlDal eventSqlDal;      
+=======
 
-        public HomeController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
+        private IPodcastSqlDal podcastSqlDal;
+      
+>>>>>>> parent of d90c4e5... database EventSqlDal add and list
+
+        public HomeController(IPodcastSqlDal podcastSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
+<<<<<<< HEAD
             this.eventSqlDal = eventSqlDal;
+=======
+
+>>>>>>> parent of d90c4e5... database EventSqlDal add and list
         }
                          
         public IActionResult Podcasts()
@@ -35,6 +45,7 @@ namespace Capstone.Controllers
         
       
 
+<<<<<<< HEAD
 
         //[HttpGet]
         //public IActionResult ListOfPodcasts()
@@ -63,6 +74,8 @@ namespace Capstone.Controllers
         //    }
         //}
 
+=======
+>>>>>>> parent of d90c4e5... database EventSqlDal add and list
 
         //// GET: Home
         //public IActionResult Index()
