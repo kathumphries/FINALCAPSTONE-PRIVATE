@@ -34,7 +34,7 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-                   podcastList.Add(MaptToRowPodcast(reader));
+                   podcastList.Add(MapToRowPodcast(reader));
                                         
                 }
             }
@@ -56,14 +56,14 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-                    podcast = MaptToRowPodcast(reader);
+                    podcast = MapToRowPodcast(reader);
                 }
 
             }
             return podcast;
         }
 
-        private Podcast MaptToRowPodcast(SqlDataReader reader)
+        private Podcast MapToRowPodcast(SqlDataReader reader)
         {
             return new Podcast()
             {

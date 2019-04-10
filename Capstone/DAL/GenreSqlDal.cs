@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
@@ -11,6 +12,8 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
+        private const string SQL_GetAllGenres = "SELECT * FROM Genre WHERE isVisible = 1 ORDER BY genreID ASC;";
+
         public GenreSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -20,10 +23,44 @@ namespace Capstone.DAL
         {
             List<Genre> genreList = new List<Genre>();
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetAllGenres, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    genreList.Add(MapToRowGenreName(reader));
+
+                }
+            }
+
             return genreList;
+        }
+
+        private Genre MapToRowGenreName(SqlDataReader reader)
+        {
+
+            return new Genre()
+            {
+                GenreID = Convert.ToInt32(reader["genreID"]),
+                GenreName = Convert.ToString(reader["genreName"]),
+                IsVisible = Convert.ToBoolean(reader["isVisible"])                
+            };
+
+
         }
     }
 }
+
+
+
+
+
+
+
 
 
 

@@ -17,7 +17,7 @@ namespace Capstone.Controllers
         private readonly IEventSqlDal eventSqlDal;          
 
 
-        public HomeController(IPodcastSqlDal podcastSqlDal)
+        public HomeController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
