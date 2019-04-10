@@ -46,7 +46,7 @@ namespace Capstone.DAL
             return new Genre()
             {
                 GenreID = Convert.ToInt32(reader["genreID"]),
-                GenreName = Convert.ToString(reader["genreName"]),
+                GenreName = Convert.ToString(reader["name"]),
                 IsVisible = Convert.ToBoolean(reader["isVisible"])                
             };
 

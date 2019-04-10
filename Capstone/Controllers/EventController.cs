@@ -28,12 +28,12 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-        public IActionResult EventDetail()
+        public IActionResult EventDetail(int eventID = 1)
         {
             EventViewModel model = new EventViewModel();
 
-            //List<Event> events = eventSqlDal.GetEvent();
-            return View();
+             model.EventItem = eventSqlDal.GetEvent(eventID);
+             return View(model);
         }
 
         [HttpGet]
@@ -91,7 +91,7 @@ namespace Capstone.Controllers
                bool result = eventSqlDal.SaveEvent(model.EventItem);
                
                
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
         }
     }
