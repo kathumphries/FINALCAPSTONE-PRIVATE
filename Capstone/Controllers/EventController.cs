@@ -37,7 +37,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditEvent()
+        public IActionResult SaveEvent()
         {
             Event eventItem = new Event();
             EventViewModel model = new EventViewModel
@@ -58,7 +58,7 @@ namespace Capstone.Controllers
 
             foreach (Genre item in genreList)
             {
-                selectListGenre.Add(new SelectListItem(item.GenreName, item.GenreId.ToString()));
+                selectListGenre.Add(new SelectListItem(item.GenreName, item.GenreID.ToString()));
             }
             
             return selectListGenre;

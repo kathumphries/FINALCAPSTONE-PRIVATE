@@ -14,23 +14,33 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EventItem.Name" class="control-label"></label>
-                <input asp-for="EventItem.Name" class="form-control" /> 
+                <input asp-for="EventItem.Name" class="form-control" />
                 <span asp-validation-for="EventItem.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                <label asp-for="VenueList" class="control-label"></label>
+                <select asp-for="VenueList" asp-items="Model.VenueList" class="form-control"></select>
+                <span asp-validation-for="VenueList" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <select asp-for="State" asp-items="Survey.states" class="form-control"></select>
-                <span asp-validation-for="State" class="text-danger"></span>
+                <label asp-for="EventItem.Beginning" class="control-label"></label>
+                <input asp-for="EventItem.Beginning" class="form-control" />
+                <span asp-validation-for="EventItem.Beginning" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ActivityLevel" class="control-label"></label>
-                <select asp-for="ActivityLevel" asp-items="Survey.activity" class="form-control"></select>
-                <span asp-validation-for="ActivityLevel" class="text-danger"></span>
+                <label asp-for="EventItem.Ending" class="control-label"></label>
+                <input asp-for="EventItem.Ending" class="form-control" />
+                <span asp-validation-for="EventItem.Ending" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventItem.Logo" class="control-label"></label>
+                <input asp-for="EventItem.Logo" class="form-control" />
+                <span asp-validation-for="EventItem.Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreList" class="control-label"></label>
+                <select asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></select>
+                <span asp-validation-for="GenreList" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-default" />
@@ -40,8 +50,5 @@
             </div>
         </form>
     </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+</div>
 
