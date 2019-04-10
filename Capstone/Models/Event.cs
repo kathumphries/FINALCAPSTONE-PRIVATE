@@ -17,7 +17,7 @@ namespace Capstone.Models
         public string PodcastURL { get; set; }
         public string TicketLevel { get; set; }
         public string UpsaleCopy { get; set; }
-        public bool IsFinalIzed { get; set; }
+        public bool IsFinalized { get; set; }
 
     }
 }

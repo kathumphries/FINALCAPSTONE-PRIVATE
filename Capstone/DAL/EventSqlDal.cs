@@ -11,14 +11,9 @@ namespace Capstone.DAL
     public class EventSqlDal : IEventSqlDal
     {
         private string connectionString;
-<<<<<<< HEAD
+
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
         private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
-=======
-
-        private const string SQL_GetAllEvents = "SELECT * FROM Event;";
-        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized);";
->>>>>>> d90c4e5506fc8cda535159be2c6ee9848ea132cf
 
         public EventSqlDal(string connectionString)
         {
@@ -38,59 +33,46 @@ namespace Capstone.DAL
 
                 while (reader.Read())
                 {
-
-
-
+                   eventList.Add(MapToRowPodcast(reader));
                 }
-
-
             }
             return eventList;
         }
 
-<<<<<<< HEAD
-=======
-        public bool AddEventDetail(Event eventItem)
+
+       
+
+        private Event MapToRowPodcast(SqlDataReader reader)
         {
-            int count = 0;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            return new Event()
             {
-                connection.Open();
+                EventId = Convert.ToInt32(reader["eventID"]),
+                PodcastId = Convert.ToInt32(reader["podcastID"]),
+                VenueId = Convert.ToInt32(reader["venueID"]),
+                Beginning = Convert.ToDateTime(reader["beginning"]),
+                Ending = Convert.ToDateTime(reader["ending"]),
+                Logo = Convert.ToString(reader["logo"]),
+                Copy = Convert.ToString(reader["copy"]),
+                PodcastURL = Convert.ToString(reader["podcastURL"]),
+                TicketLevel = Convert.ToString(reader["ticketLevel"]),
+                UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
+                IsFinalized = Convert.ToBoolean(reader["isFinalized"])
+            };
 
-                SqlCommand cmd = new SqlCommand(SQL_AddEventDetail, connection);
 
-                cmd.Parameters.AddWithValue("@beginning", eventItem.Beginning);
-                cmd.Parameters.AddWithValue("@ending", eventItem.Ending);
-                cmd.Parameters.AddWithValue("@logo", eventItem.Logo);
-                cmd.Parameters.AddWithValue("@copy", eventItem.Copy);
-                cmd.Parameters.AddWithValue("@podcastURL", eventItem.PodcastURL);
-                cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
-                cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
-                cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalIzed);
-
-                count = cmd.ExecuteNonQuery();
-            }
-
-            if (count == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
->>>>>>> d90c4e5506fc8cda535159be2c6ee9848ea132cf
+
+
     }
 }
 
-           
-
-    
 
 
 
-   
+
+
+
+
 
 
 

@@ -12,32 +12,15 @@ namespace Capstone.Controllers
 {
     public class HomeController : Controller
     {
-<<<<<<< HEAD
         private readonly IPodcastSqlDal podcastSqlDal;
-        
-        public HomeController(IPodcastSqlDal podcastSqlDal)
-        {
-            this.podcastSqlDal = podcastSqlDal;
-=======
-
-        private IPodcastSqlDal podcastSqlDal;
-        private IEventSqlDal eventSqlDal;
-      
+        private readonly IEventSqlDal eventSqlDal;      
 
         public HomeController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
-
->>>>>>> d90c4e5506fc8cda535159be2c6ee9848ea132cf
         }
-
-        //public IActionResult Index()
-        //{
-        //    List<Event> result = eventSqlDal.GetAllEvents();
-        //    return View(result);
-        //}
-               
+                         
         public IActionResult Podcasts()
         {
             List<Podcast> result = podcastSqlDal.GetAllPodcasts();
@@ -60,25 +43,25 @@ namespace Capstone.Controllers
         //    return View(podcasts);
         //}
 
-        public IActionResult ListOfEvents()
-        {
-            List<Event> events = eventSqlDal.GetAllEvents();
-            return View(events);
-        }
+        //public IActionResult ListOfEvents()
+        //{
+        //    List<Event> events = eventSqlDal.GetAllEvents();
+        //    return View(events);
+        //}
 
-        public IActionResult EditEvent(Event eventItem)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(eventItem);
-            }
-            else
-            {
-                bool result = eventSqlDal.AddEventDetail(eventItem);
-                //TODO : account for false
-                return RedirectToAction(nameof(ListOfEvents));
-            }
-        }
+        //public IActionResult EditEvent(Event eventItem)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(eventItem);
+        //    }
+        //    else
+        //    {
+        //        bool result = eventSqlDal.AddEventDetail(eventItem);
+        //        //TODO : account for false
+        //        return RedirectToAction(nameof(ListOfEvents));
+        //    }
+        //}
 
 
         //// GET: Home
