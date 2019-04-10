@@ -15,16 +15,18 @@ namespace Capstone.Controllers
         private  IPodcastSqlDal podcastDal;
         private  IEventSqlDal eventSqlDal;
         private  IGenreSqlDal genreSqlDal;
+        private IVenueSqlDal venueSqlDal;
 
-        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal)
+        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal)
         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
+            this.venueSqlDal = venueSqlDal;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult EventDetail()
         {
             EventViewModel model = new EventViewModel();
 
@@ -38,11 +40,9 @@ namespace Capstone.Controllers
             Event eventItem = new Event();
             EventViewModel model = new EventViewModel
             {
-              EventItem = eventItem,
-              //PodcastID = podcastID,
+              EventItem = eventItem,           
               VenueList = GetVenueList(),
               GenreList = GetGenreList()
-
             };
 
             return View(model);
@@ -51,28 +51,28 @@ namespace Capstone.Controllers
         public List<Genre> GetGenreList()
         {
             List<Genre> genreList = genreSqlDal.GetAllGenres();
-            throw new NotImplementedException();
+            return genreList;
         }
 
         public List<Venue> GetVenueList()
         {
-
-            throw new NotImplementedException();
+            List<Venue> venueList = venueSqlDal.GetAllVenues();
+            return venueList;
         }
 
-        [HttpPost]
-        public IActionResult EditEvent(EventViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else
-            {
-                //bool result = eventSqlDal.AddEventDetail();
-                //TODO : account for false
-                // return RedirectToAction(nameof());
-            }
-        }
+        //[HttpPost]
+        //public IActionResult EditEvent(EventViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        //bool result = eventSqlDal.AddEventDetail();
+        //        //TODO : account for false
+        //        // return RedirectToAction(nameof());
+        //    }
+        //}
     }
 }

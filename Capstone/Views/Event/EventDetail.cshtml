@@ -1,0 +1,84 @@
+﻿@model Capstone.Models.Event
+
+@{
+    ViewData["Title"] = "EventDetail";
+}
+
+<h2>EventDetail</h2>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EventId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Beginning)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Beginning)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ending)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ending)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PodcastId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PodcastId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VenueId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VenueId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Logo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Copy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Copy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PodcastURL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PodcastURL)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketLevel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TicketLevel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpsaleCopy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpsaleCopy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFinalized)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFinalized)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

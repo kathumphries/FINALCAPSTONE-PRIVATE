@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
@@ -15,6 +16,11 @@ namespace Capstone.DAL
         public VenueSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+
+        public List<Venue> GetAllVenues()
+        {
+            throw new NotImplementedException();
         }
 
         //public Park GetParkDetail(string parkCode)
