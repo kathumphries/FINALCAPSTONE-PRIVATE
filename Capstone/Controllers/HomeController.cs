@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Capstone.Models;
 using Capstone.DAL.Interfaces;
 
@@ -11,51 +12,56 @@ namespace Capstone.Controllers
 {
     public class HomeController : Controller
     {
-
-        private IPodcastSqlDal podcastSqlDal;
-        private IEventSqlDal eventSqlDal;
-      
+        private readonly IPodcastSqlDal podcastSqlDal;
+        private readonly IEventSqlDal eventSqlDal;      
 
         public HomeController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
         {
             this.podcastSqlDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
-
         }
-
-
-        [HttpGet]
-        public IActionResult Index()
+                         
+        public IActionResult Podcasts()
         {
-            return View();
+            List<Podcast> result = podcastSqlDal.GetAllPodcasts();
+            return View(result);
         }
 
-        [HttpGet]
-        public IActionResult ListOfPodcasts()
+        public IActionResult PodcastDetail(string id)
         {
-            List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
-            return View(podcasts);
+            Podcast result = new Podcast();
+            return View(result);
         }
+        
+      
 
-        public IActionResult ListOfEvents()
-        {
-            List<Event> events = eventSqlDal.GetAllEvents();
-            return View(events);
-        }
 
-        public IActionResult EditEvent(Event eventItem)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(eventItem);
-            }
-            else
-            {
-                bool result = eventSqlDal.AddEventDetail(eventItem);
-                //TODO : account for false
-                return RedirectToAction(nameof(ListOfEvents));
-            }
-        }
+        //[HttpGet]
+        //public IActionResult ListOfPodcasts()
+        //{
+        //    List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
+        //    return View(podcasts);
+        //}
+
+        //public IActionResult ListOfEvents()
+        //{
+        //    List<Event> events = eventSqlDal.GetAllEvents();
+        //    return View(events);
+        //}
+
+        //public IActionResult EditEvent(Event eventItem)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(eventItem);
+        //    }
+        //    else
+        //    {
+        //        bool result = eventSqlDal.AddEventDetail(eventItem);
+        //        //TODO : account for false
+        //        return RedirectToAction(nameof(ListOfEvents));
+        //    }
+        //}
 
 
         //// GET: Home
@@ -84,11 +90,6 @@ namespace Capstone.Controllers
         //{
         //    reviewDAL.SaveReview(review);
         //    return RedirectToAction("Index", "Home");
-
-
-
-
-
 
 
 

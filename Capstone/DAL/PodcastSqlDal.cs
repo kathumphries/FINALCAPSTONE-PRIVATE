@@ -10,68 +10,90 @@ namespace Capstone.DAL
 {
     public class PodcastSqlDal : IPodcastSqlDal
     {
-        private string connectionString;
+        private readonly string connectionString;
 
-        private const string SQL_GetPodcasts = "SELECT * FROM Podcast;";
-      
+        private const string SQL_GetAllPodcasts = "SELECT * FROM Podcast ORDER BY title;";
+        private const string SQL_GetPodcast = "SELECT * FROM Podcast WHERE podcastID = @podcastID;";
+
+
         public PodcastSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
-
         }
 
         public List<Podcast> GetAllPodcasts()
         {
-            List<Podcast> podcasts = new List<Podcast>();
+            List<Podcast> podcastList = new List<Podcast>();
 
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetAllPodcasts, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand(SQL_GetPodcasts, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Podcast podcast = new Podcast();
-
-                        podcast.PodcastId = Convert.ToInt32(reader["podcastID"]);
-                        podcast.UserId = Convert.ToInt32(reader["userID"]);
-                        podcast.Hosting = Convert.ToString(reader["hosting"]);
-                        podcast.URL = Convert.ToString(reader["url"]);
-                        podcast.Title = Convert.ToString(reader["title"]);
-                        podcast.Description = Convert.ToString(reader["description"]);
-                        podcast.GenreId = Convert.ToInt32(reader["genreID"]);
-                        //podcast.SoundByte = Convert.ToString(reader["soundByte"]);
-                        podcast.OriginalRelease = Convert.ToDateTime(reader["originalRelease"]);
-                        podcast.RunTime = Convert.ToDouble(reader["runTime"]);
-                        podcast.ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]);
-                        podcast.AverageLength = Convert.ToDouble(reader["averageLength"]);
-                        podcast.NumOfEpisodes = Convert.ToInt32(reader["numOfEpisodes"]);
-                        podcast.NumOfDownloads = Convert.ToInt32(reader["numOfDownloads"]);
-                        podcast.MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]);
-                        podcast.Demographics = Convert.ToString(reader["demographics"]);
-                        podcast.Affiliations = Convert.ToString(reader["affiliations"]);
-                        podcast.broadcastCity = Convert.ToString(reader["broadcastCity"]);
-                        podcast.broadcastState = Convert.ToString(reader["broadcastState"]);
-                        podcast.InOhio = Convert.ToBoolean(reader["inOhio"]);
-                        podcast.IsSponsored = Convert.ToBoolean(reader["isSponsored"]);
-
-                        podcasts.Add(podcast);
-
-
-                    }
+                   podcastList.Add(MaptToRowPodcast(reader));
+                                        
                 }
             }
-            catch (Exception ex)
-            {
-                podcasts = new List<Podcast>();
-                throw ex;
-            }
+            return podcastList;
+        }
 
-            return podcasts;
+        public Podcast GetPodcast(string podcastID)
+        {
+            Podcast podcast = new Podcast();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetPodcast, connection);
+                //cmd.Parameters.AddWithValue("@podcastID", podcastID);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    podcast = MaptToRowPodcast(reader);
+                }
+
+            }
+            return podcast;
+        }
+
+        private Podcast MaptToRowPodcast(SqlDataReader reader)
+        {
+            return new Podcast()
+            {
+                PodcastID = Convert.ToInt32(reader["podcastID"]),
+                UserID = Convert.ToInt32(reader["userID"]),
+                Hosting = Convert.ToString(reader["hosting"]),
+                URL = Convert.ToString(reader["url"]),
+                Title = Convert.ToString(reader["title"]),
+                Description = Convert.ToString(reader["description"]),
+                GenreID = Convert.ToInt32(reader["genreID"]),
+                //SoundByte = Convert.ToString(reader["soundByte"]),
+                OriginalRelease = Convert.ToDateTime(reader["originalRelease"]),
+                RunTime = Convert.ToDouble(reader["runTime"]),
+                ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]),
+                AverageLength = Convert.ToDouble(reader["averageLength"]),
+                NumOfEpisodes = Convert.ToInt32(reader["numOfEpisodes"]),
+                NumOfDownloads = Convert.ToInt32(reader["numOfDownloads"]),
+                MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
+                Demographics = Convert.ToString(reader["demographics"]),
+                Affiliations = Convert.ToString(reader["affiliations"]),
+                broadcastCity = Convert.ToString(reader["broadcastCity"]),
+                broadcastState = Convert.ToString(reader["broadcastState"]),
+                InOhio = Convert.ToBoolean(reader["inOhio"]),
+                IsSponsored = Convert.ToBoolean(reader["isSponsored"])
+
+            };
+
+
         }
     }
 }
+
+

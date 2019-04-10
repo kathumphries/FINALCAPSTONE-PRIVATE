@@ -12,8 +12,8 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
-        private const string SQL_GetAllEvents = "SELECT * FROM Event;";
-        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized);";
+        private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
+        private const string SQL_GetEvent = "SELECT * FROM Event WHERE eventID = @eventID;";
 
         public EventSqlDal(string connectionString)
         {
@@ -22,80 +22,58 @@ namespace Capstone.DAL
 
         public List<Event> GetAllEvents()
         {
-            List<Event> events = new List<Event>();
+            List<Event> eventList = new List<Event>();
 
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand(SQL_GetAllEvents, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Event eventItem = new Event();
-
-                        eventItem.EventId = Convert.ToInt32(reader["eventID"]);
-                        eventItem.Beginning = Convert.ToDateTime(reader["beginning"]);
-                        eventItem.Ending = Convert.ToDateTime(reader["ending"]);
-                        eventItem.PodcastId = Convert.ToInt32(reader["podcastID"]);
-                        eventItem.VenueId = Convert.ToInt32(reader["venueID"]);
-                        eventItem.Logo = Convert.ToString(reader["logo"]);
-                        eventItem.Copy = Convert.ToString(reader["copy"]);
-                        eventItem.PodcastURL = Convert.ToString(reader["podcastURL"]);
-                        eventItem.TicketLevel = Convert.ToString(reader["ticketLevel"]);
-                        eventItem.UpsaleCopy = Convert.ToString(reader["upsaleCopy"]);
-                        eventItem.IsFinalIzed = Convert.ToBoolean(reader["isFinalized"]);
-
-                        events.Add(eventItem);
-
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                events = new List<Event>();
-                throw ex;
-            }
-
-            return events;
-        }
-
-        public bool AddEventDetail(Event eventItem)
-        {
-            int count = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                SqlCommand cmd = new SqlCommand(SQL_AddEventDetail, connection);
+                SqlCommand command = new SqlCommand(SQL_GetAllEvents, connection);
+                SqlDataReader reader = command.ExecuteReader();
 
-                cmd.Parameters.AddWithValue("@beginning", eventItem.Beginning);
-                cmd.Parameters.AddWithValue("@ending", eventItem.Ending);
-                cmd.Parameters.AddWithValue("@logo", eventItem.Logo);
-                cmd.Parameters.AddWithValue("@copy", eventItem.Copy);
-                cmd.Parameters.AddWithValue("@podcastURL", eventItem.PodcastURL);
-                cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
-                cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
-                cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalIzed);
-
-                count = cmd.ExecuteNonQuery();
+                while (reader.Read())
+                {
+                   eventList.Add(MapToRowPodcast(reader));
+                }
             }
-
-            if (count == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return eventList;
         }
+
+
+       
+
+        private Event MapToRowPodcast(SqlDataReader reader)
+        {
+            return new Event()
+            {
+                EventId = Convert.ToInt32(reader["eventID"]),
+                PodcastId = Convert.ToInt32(reader["podcastID"]),
+                VenueId = Convert.ToInt32(reader["venueID"]),
+                Beginning = Convert.ToDateTime(reader["beginning"]),
+                Ending = Convert.ToDateTime(reader["ending"]),
+                Logo = Convert.ToString(reader["logo"]),
+                Copy = Convert.ToString(reader["copy"]),
+                PodcastURL = Convert.ToString(reader["podcastURL"]),
+                TicketLevel = Convert.ToString(reader["ticketLevel"]),
+                UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
+                IsFinalized = Convert.ToBoolean(reader["isFinalized"])
+            };
+
+
+        }
+
+
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 
