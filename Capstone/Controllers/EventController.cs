@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Capstone.Models;
 using Capstone.DAL.Interfaces;
+using Capstone.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Capstone.Controllers
 {
@@ -30,8 +32,8 @@ namespace Capstone.Controllers
         {
             EventViewModel model = new EventViewModel();
 
-            List<Event> events = eventSqlDal.GetAllEvents();
-            return View(events);
+            //List<Event> events = eventSqlDal.GetEvent();
+            return View();
         }
 
         [HttpGet]
@@ -48,16 +50,32 @@ namespace Capstone.Controllers
             return View(model);
         }
 
-        public List<Genre> GetGenreList()
+        public List<SelectListItem> GetGenreList()
         {
             List<Genre> genreList = genreSqlDal.GetAllGenres();
-            return genreList;
+
+            List<SelectListItem> selectListGenre = new List<SelectListItem>();
+
+            foreach (Genre item in genreList)
+            {
+                selectListGenre.Add(new SelectListItem(item.GenreName, item.GenreId.ToString()));
+            }
+            
+            return selectListGenre;
         }
 
-        public List<Venue> GetVenueList()
+        public List<SelectListItem> GetVenueList()
         {
             List<Venue> venueList = venueSqlDal.GetAllVenues();
-            return venueList;
+
+            List<SelectListItem> selectListVenue = new List<SelectListItem>();
+
+            foreach (Venue item in venueList)
+            {
+                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueId.ToString()));
+            }
+
+            return selectListVenue;
         }
 
         //[HttpPost]

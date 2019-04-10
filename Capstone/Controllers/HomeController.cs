@@ -22,18 +22,25 @@ namespace Capstone.Controllers
             this.podcastSqlDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
         }
-                         
-        public IActionResult ListOfPodcasts()
+
+
+        public IActionResult Index()
         {
-            List<Podcast> result = podcastSqlDal.GetAllPodcasts();
-            return View(result);
+            return View();
         }
 
-        public IActionResult PodcastDetail(string id)
-        {
-            Podcast result = new Podcast();
-            return View(result);
-        }
+                         
+        //public IActionResult ListOfPodcasts()
+        //{
+        //    List<Podcast> result = podcastSqlDal.GetAllPodcasts();
+        //    return View(result);
+        //}
+
+        //public IActionResult PodcastDetail(string id)
+        //{
+        //    Podcast result = new Podcast();
+        //    return View(result);
+        //}
         
      
 

@@ -1,4 +1,4 @@
-﻿@model Capstone.Models.Event
+﻿@model Capstone.Models.ViewModel.EventViewModel
 
 @{
     ViewData["Title"] = "EventDetail";
@@ -11,70 +11,70 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.EventId)
+            @Html.DisplayNameFor(model => model.EventItem.EventId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EventId)
+            @Html.DisplayFor(model => model.EventItem.EventId)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Beginning)
+            @Html.DisplayNameFor(model => model.EventItem.Beginning)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Beginning)
+            @Html.DisplayFor(model => model.EventItem.Beginning)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Ending)
+            @Html.DisplayNameFor(model => model.EventItem.Ending)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Ending)
+            @Html.DisplayFor(model => model.EventItem.Ending)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PodcastId)
+            @Html.DisplayNameFor(model => model.EventItem.PodcastId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PodcastId)
+            @Html.DisplayFor(model => model.EventItem.PodcastId)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.VenueId)
+            @Html.DisplayNameFor(model => model.EventItem.VenueId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.VenueId)
+            @Html.DisplayFor(model => model.EventItem.VenueId)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Logo)
+            @Html.DisplayNameFor(model => model.EventItem.Logo)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Logo)
+            @Html.DisplayFor(model => model.EventItem.Logo)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Copy)
+            @Html.DisplayNameFor(model => model.EventItem.Copy)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Copy)
+            @Html.DisplayFor(model => model.EventItem.Copy)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PodcastURL)
+            @Html.DisplayNameFor(model => model.EventItem.PodcastURL)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PodcastURL)
+            @Html.DisplayFor(model => model.EventItem.PodcastURL)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.TicketLevel)
+            @Html.DisplayNameFor(model => model.EventItem.TicketLevel)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TicketLevel)
+            @Html.DisplayFor(model => model.EventItem.TicketLevel)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UpsaleCopy)
+            @Html.DisplayNameFor(model => model.EventItem.UpsaleCopy)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UpsaleCopy)
+            @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.IsFinalized)
+            @Html.DisplayNameFor(model => model.EventItem.IsFinalized)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsFinalized)
+            @Html.DisplayFor(model => model.EventItem.IsFinalized)
         </dd>
     </dl>
 </div>
