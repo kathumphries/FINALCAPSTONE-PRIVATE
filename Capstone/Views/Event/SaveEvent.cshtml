@@ -54,7 +54,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="EventItem.IsFinalized" class="control-label"></label>
-                < asp-for="EventItem.IsFinalized" class="form-control" />
+                <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
                 <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
             </div>
             <div class="form-group">

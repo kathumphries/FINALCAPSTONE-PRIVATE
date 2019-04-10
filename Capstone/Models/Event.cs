@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Capstone.Models
         public string PodcastURL { get; set; }
         public string TicketLevel { get; set; }
         public string UpsaleCopy { get; set; }
+        [Display(Name = "Publish?")]
         public bool IsFinalized { get; set; }
         public string Name { get; set; }
 
