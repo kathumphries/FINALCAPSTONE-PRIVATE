@@ -24,7 +24,7 @@ namespace Capstone.DAL
             this.connectionString = connectionString;
         }
 
-        public bool AddEventDetail(Event eventItem)
+        public bool SaveEvent(Event eventItem)
         {
             int count = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
