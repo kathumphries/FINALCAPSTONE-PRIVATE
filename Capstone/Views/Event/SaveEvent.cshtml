@@ -1,0 +1,58 @@
+﻿@model Capstone.Models.ViewModel.EventViewModel
+
+@{
+    ViewData["Title"] = "SaveEvent";
+}
+
+<h2>SaveEvent</h2>
+
+<h4>Testing Here</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SaveEvent">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div>
+                    <label></label>
+                </div>
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form asp-action="SaveEvent">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ParkCode" class="control-label"></label>
+                <select asp-for="ParkCode" asp-items="@parkNames" class="form-control"></select>
+                <span asp-validation-for="ParkCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <select asp-for="State" asp-items="Survey.states" class="form-control"></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityLevel" class="control-label"></label>
+                <select asp-for="ActivityLevel" asp-items="Survey.activity" class="form-control"></select>
+                <span asp-validation-for="ActivityLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+            <div class="form-group-home">
+                <a id="home-link" asp-controller="Home" asp-action="Index">Back to Home page</a>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+

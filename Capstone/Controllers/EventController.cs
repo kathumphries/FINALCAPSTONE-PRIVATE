@@ -78,19 +78,21 @@ namespace Capstone.Controllers
             return selectListVenue;
         }
 
-        //[HttpPost]
-        //public IActionResult EditEvent(EventViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    else
-        //    {
-        //        //bool result = eventSqlDal.AddEventDetail();
-        //        //TODO : account for false
-        //        // return RedirectToAction(nameof());
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveEvent(EventViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+               bool result = eventSqlDal.SaveEvent(model.EventItem);
+               
+               
+                return RedirectToAction("Home", "Index");
+            }
+        }
     }
 }

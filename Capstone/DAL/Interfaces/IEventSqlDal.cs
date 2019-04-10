@@ -10,7 +10,7 @@ namespace Capstone.DAL.Interfaces
     {
 
         List<Event> GetAllEvents();
-        bool AddEventDetail(Event eventItem);
+        bool SaveEvent(Event eventItem);
 
     }
 }
