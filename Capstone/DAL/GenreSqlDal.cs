@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
@@ -13,6 +14,13 @@ namespace Capstone.DAL
         public GenreSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+
+        public List<Genre> GetAllGenres()
+        {
+            List<Genre> genreList = new List<Genre>();
+
+            return genreList;
         }
     }
 }

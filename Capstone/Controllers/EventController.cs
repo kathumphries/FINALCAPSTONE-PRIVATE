@@ -12,9 +12,9 @@ namespace Capstone.Controllers
 {
     public class EventController : Controller
     {
-        private readonly IPodcastSqlDal podcastDal;
-        private readonly IEventSqlDal eventSqlDal;
-        private readonly IGenreSqlDal genreSqlDal;
+        private  IPodcastSqlDal podcastDal;
+        private  IEventSqlDal eventSqlDal;
+        private  IGenreSqlDal genreSqlDal;
 
         public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal)
         {
@@ -32,18 +32,47 @@ namespace Capstone.Controllers
             return View(events);
         }
 
-        public IActionResult EditEvent(Event eventItem)
+        [HttpGet]
+        public IActionResult EditEvent()
+        {
+            Event eventItem = new Event();
+            EventViewModel model = new EventViewModel
+            {
+              EventItem = eventItem,
+              //PodcastID = podcastID,
+              VenueList = GetVenueList(),
+              GenreList = GetGenreList()
+
+            };
+
+            return View(model);
+        }
+
+        public List<Genre> GetGenreList()
+        {
+            List<Genre> genreList = genreSqlDal.GetAllGenres();
+            throw new NotImplementedException();
+        }
+
+        public List<Venue> GetVenueList()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public IActionResult EditEvent(EventViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(eventItem);
+                return View(model);
             }
             else
             {
-                bool result = eventSqlDal.AddEventDetail(eventItem);
+                //bool result = eventSqlDal.AddEventDetail();
                 //TODO : account for false
-                return RedirectToAction(nameof(ListOfEvents));
+                // return RedirectToAction(nameof());
             }
-        }      
+        }
     }
 }
