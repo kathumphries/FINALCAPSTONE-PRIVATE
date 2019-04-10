@@ -16,10 +16,11 @@ namespace Capstone.Controllers
         private readonly IEventSqlDal eventSqlDal;
         private readonly IGenreSqlDal genreSqlDal;
 
-        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal)
+        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal)
         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
+            this.genreSqlDal = genreSqlDal;
         }
 
         [HttpGet]
@@ -32,20 +33,17 @@ namespace Capstone.Controllers
         }
 
         public IActionResult EditEvent(Event eventItem)
-+        {
-+            if (!ModelState.IsValid)
-+            {
-+                return View(eventItem);
-+            }
-+            else
-+            {
-+                bool result = eventSqlDal.AddEventDetail(eventItem);
-+                //TODO : account for false
-+                return RedirectToAction(nameof(ListOfEvents));
-+            }
-+        }
-
-
-       
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(eventItem);
+            }
+            else
+            {
+                bool result = eventSqlDal.AddEventDetail(eventItem);
+                //TODO : account for false
+                return RedirectToAction(nameof(ListOfEvents));
+            }
+        }      
     }
 }

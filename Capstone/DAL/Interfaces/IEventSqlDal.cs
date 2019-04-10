@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.DAL.Interfaces
 {
-    interface IEventSqlDal
+    public interface IEventSqlDal
     {
 
         List<Event> GetAllEvents();
