@@ -8,9 +8,9 @@ namespace Capstone.DAL.Interfaces
 {
     public interface IEventSqlDal
     {
-
         List<Event> GetAllEvents();
         bool SaveEvent(Event eventItem);
+        Event GetEvent(int eventID);
 
     }
 }
