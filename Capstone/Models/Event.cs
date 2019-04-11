@@ -8,7 +8,7 @@ namespace Capstone.Models
 {
     public class Event
     {
-        public int EventId { get; set; }
+        public int EventID { get; set; }
         public DateTime Beginning { get; set; }
         public DateTime Ending { get; set; }
         // public string PodcastName { get; set; }
@@ -17,7 +17,7 @@ namespace Capstone.Models
 
         public Podcast Podcast { get; set; }
 
-        public string Venue { get; set; }
+        public string VenueID { get; set; }
 
         [Display(Name = "Cover Photo URL (https://bobo.com)")]
         public string CoverPhoto { get; set; }

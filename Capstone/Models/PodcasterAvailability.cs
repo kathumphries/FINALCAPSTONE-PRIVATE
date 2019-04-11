@@ -7,8 +7,8 @@ namespace Capstone.Models
 {
     public class PodcasterAvailability
     {
-        public int UserId { get; set; }
-        public int EventId { get; set; }
+        public int UserID { get; set; }
+        public int EventID { get; set; }
         public DateTime Beginning { get; set; }
         public DateTime Ending { get; set; }
         public string Description { get; set; }

@@ -137,7 +137,7 @@ namespace Capstone.Controllers
 
             foreach (Venue item in venueList)
             {
-                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueId.ToString()));
+                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueID.ToString()));
             }
 
             return selectListVenue;

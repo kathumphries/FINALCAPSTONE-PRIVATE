@@ -7,8 +7,20 @@ namespace Capstone.Models
 {
     public class TicketLevel
     {
-        public int TicketId { get; set; }
-        public string LevelOfTicket { get; set; }
+        public int TicketID { get; set; }
+
+        private string ticketLevel;
+
+        public string GetTicketLevel()
+        {
+            return ticketLevel;
+        }
+
+        public void SetTicketLevel(string value)
+        {
+            ticketLevel = value;
+        }
+
         public bool IsVisible { get; set; }
 
     }
