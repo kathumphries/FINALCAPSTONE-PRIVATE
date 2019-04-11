@@ -12,7 +12,7 @@ namespace Capstone.Test
     {
         TransactionScope transaction;
 
-        private readonly string connectionString = @"Data Source=.\\sqlexpress; Initial Catalog=PodfestMidwestDB;Integrated Security = true";
+        private readonly string connectionString = @"Data Source=.\\sqlexpress; Initial Catalog=PodfestMidwestDB;Integrated Security = true;";
         private int podcastEventCount = 0;
         private int podcastID;
         private int userID;

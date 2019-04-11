@@ -9,7 +9,7 @@
 <h4>Testing Here</h4>
 <hr />
 
-@Html.HiddenFor(model => model.EventItem.EventId)
+@Html.HiddenFor(model => model.EventItem.EventID)
 
 <div class="row">
     <div class="col-md-4">
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label asp-for="VenueList" class="control-label"></label>
-                @Html.DropDownListFor(model => model.EventItem.Venue, Model.VenueList, new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.EventItem.VenueID, Model.VenueList, new { @class = "form-control" })
                 <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
             </div>
 

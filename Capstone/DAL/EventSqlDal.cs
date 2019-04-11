@@ -278,7 +278,7 @@ namespace Capstone.DAL
                 CoverPhoto = Convert.ToString(reader["coverPhoto"]),
                 DescriptionCopy = Convert.ToString(reader["descriptionCopy"]),
                 //PodcastURL = Convert.ToString(reader["podcastURL"]),
-                TicketLevel = Convert.ToString(reader["ticketLevel"]),
+                TicketLevel = Convert.ToString(reader["ticketID"]),
                 UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
                 Name = Convert.ToString(reader["eventName"]),
