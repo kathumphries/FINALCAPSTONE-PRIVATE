@@ -19,7 +19,7 @@ namespace Capstone.DAL
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
-       
+        private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
 
 
         public EventSqlDal(string connectionString)
@@ -147,6 +147,29 @@ namespace Capstone.DAL
                 connection.Open();
 
                 SqlCommand command = new SqlCommand(SQL_GetEventsByTimeOfDay, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        }
+
+        public List<Event> GetEventsByLocation(int locatonID)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByLocation, connection);
+
+                command.Parameters.AddWithValue("@locationID", locatonID);
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
