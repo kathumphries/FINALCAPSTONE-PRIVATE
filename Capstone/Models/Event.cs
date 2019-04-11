@@ -11,8 +11,8 @@ namespace Capstone.Models
         public int EventId { get; set; }
         public DateTime Beginning { get; set; }
         public DateTime Ending { get; set; }
-        public int PodcastId { get; set; }
-        public int VenueId { get; set; }
+        public string Podcast { get; set; }
+        public string Venue { get; set; }
         public string Logo { get; set; }
         public string Copy { get; set; }
         public string PodcastURL { get; set; }
