@@ -9,5 +9,6 @@ namespace Capstone.DAL.Interfaces
     public interface IPodcastSqlDal
     {
         List<Podcast> GetAllPodcasts();
+        Podcast GetPodcast(string podcastID);
     }
 }

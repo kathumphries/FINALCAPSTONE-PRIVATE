@@ -14,11 +14,12 @@ namespace Capstone.Controllers
 {
     public class EventController : Controller
     {
-        private IPodcastSqlDal podcastDal;
-        private IEventSqlDal eventSqlDal;
-        private IGenreSqlDal genreSqlDal;
-        private IVenueSqlDal venueSqlDal;
-        private ITicketSqlDal ticketSqlDal;
+
+        private readonly IPodcastSqlDal podcastDal;
+        private readonly IEventSqlDal eventSqlDal;
+        private readonly IGenreSqlDal genreSqlDal;
+        private readonly IVenueSqlDal venueSqlDal;
+        private readonly ITicketSqlDal ticketSqlDal;
 
         public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
         {
@@ -30,13 +31,59 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-        public IActionResult EventDetail(int eventID = 1)
+        public IActionResult EventDetail(int id = 1)  //do not change variable name id due to routing
         {
-            EventViewModel model = new EventViewModel();
+            EventViewModel model = new EventViewModel
+            {
+                EventItem = eventSqlDal.GetEvent(id)
 
-             model.EventItem = eventSqlDal.GetEvent(eventID);
-             return View(model);
+            };
+            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+            
+            
+            
+            return View(model);
         }
+
+
+        [HttpGet]
+        public IActionResult EditEvent(int id)
+        {
+            EventViewModel model = new EventViewModel
+            {
+                EventItem = eventSqlDal.GetEvent(id)
+
+            };
+            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+
+
+
+            return View(model);
+
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult EditEvent(int id, EventViewModel model)
+        //{
+        //    try
+        //    {
+        //        EventViewModel model = new EventViewModel
+        //        {
+        //            EventItem = eventSqlDal.GetEvent(id)
+
+        //        };
+        //        model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+
+        //        model.EventItem.UpdateDetails(model);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
+
 
         [HttpGet]
         public IActionResult SaveEvent()
@@ -44,15 +91,36 @@ namespace Capstone.Controllers
             Event eventItem = new Event();
             EventViewModel model = new EventViewModel
             {
+
                 EventItem = eventItem,
                 VenueList = GetVenueList(),
                 GenreList = GetGenreList(),
-                TicketList = GetTicketList()
+                TicketList = GetTicketList(),
+                PodcastList = GetPodcastList() 
+
             };
 
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveEvent(EventViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+               bool result = eventSqlDal.SaveEvent(model.EventItem);
+               
+               
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        
         public List<SelectListItem> GetGenreList()
         {
             List<Genre> genreList = genreSqlDal.GetAllGenres();
@@ -81,6 +149,7 @@ namespace Capstone.Controllers
             return selectListVenue;
         }
 
+
         public List<SelectListItem> GetTicketList()
         {
             List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
@@ -95,21 +164,33 @@ namespace Capstone.Controllers
             return selectListTickets;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SaveEvent(EventViewModel model)
+        public List<SelectListItem> GetPodcastList()
         {
-            if (!ModelState.IsValid)
+            List<Podcast> podcastList = podcastDal.GetAllPodcasts();
+
+            List<SelectListItem> selectListPodcast = new List<SelectListItem>();
+            
+            foreach (Podcast podcast in podcastList)
             {
-                return View(model);
+                selectListPodcast.Add(new SelectListItem(podcast.Title, podcast.PodcastID.ToString()));
             }
-            else
-            {
-               bool result = eventSqlDal.SaveEvent(model.EventItem);
-               
-               
-                return RedirectToAction("Index", "Home");
-            }
+
+            return selectListPodcast;
         }
+
+        //public List<SelectListItem> GetTicketLevelList()
+        //{
+        //    List<TicketLevel> ticketLevelList = ticketLevelSqlDal.GetAllLevels();
+
+        //    List<SelectListItem> selectListTicketLevel = new List<SelectListItem>();
+
+        //    foreach (TicketLevel level in ticketLevelList)
+        //    {
+        //        selectListTicketLevel.Add(new SelectListItem(level.LevelOfTicket, level.TicketId.ToString()));
+        //    }
+
+        //    return selectListTicketLevel;
+        //}
+
     }
 }

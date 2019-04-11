@@ -31,13 +31,25 @@ namespace Capstone.Models
         public string Affiliations { get; set; }
 
         [Required]
-        public string broadcastCity { get; set; }
+        public string BroadcastCity { get; set; }
 
         [Required]
-        public string broadcastState { get; set; }
+        public string BroadcastState { get; set; }
 
-        [Required]
-        public bool InOhio { get; set; }
+       
+        public bool InOhio {
+            get
+            {
+                if (BroadcastState == "OH")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         [Required]
         public bool IsSponsored { get; set; }

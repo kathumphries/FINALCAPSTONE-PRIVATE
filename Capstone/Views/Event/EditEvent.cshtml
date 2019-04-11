@@ -8,9 +8,12 @@
 
 <h4>Testing Here</h4>
 <hr />
+
+@Html.HiddenFor(model => model.EventItem.EventId)
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SaveEvent">
+        <form asp-action="EditEvent">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EventItem.Name" class="control-label"></label>
@@ -43,10 +46,10 @@
 
 
             @*<div class="form-group">
-            <label asp-for="VenueList" class="control-label"></label>
-            <select asp-for="VenueList" asp-items="Model.VenueList" class="form-control"></select>
-            <span asp-validation-for="VenueList" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="VenueList" class="control-label"></label>
+                    <select asp-for="VenueList" asp-items="Model.VenueList" class="form-control"></select>
+                    <span asp-validation-for="VenueList" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="EventItem.CoverPhoto" class="control-label"></label>
@@ -61,16 +64,9 @@
 
             <div class="form-group">
                 <label asp-for="EventItem.TicketLevel" class="control-label"></label>
-                @Html.DropDownListFor(model => model.EventItem.TicketLevel, Model.TicketList, new { @class = "form-control" })
-                <span asp-validation-for="EventItem.TicketLevel" class="text-danger"></span>
-            </div>
-
-            @*<div class="form-group">
-                <label asp-for="EventItem.TicketLevel" class="control-label"></label>
                 <input asp-for="EventItem.TicketLevel" class="form-control" />
                 <span asp-validation-for="EventItem.TicketLevel" class="text-danger"></span>
-            </div>*@
-
+            </div>
             <div class="form-group">
                 <label asp-for="EventItem.UpsaleCopy" class="control-label"></label>
                 <input asp-for="EventItem.UpsaleCopy" class="form-control" />
@@ -78,32 +74,20 @@
             </div>
 
             @*<div class="form-group">
-            <label asp-for="PodcastList" class="control-label"></label>
-            <drop-down-list asp-for="PodcastList" asp-items="Model.PodcastList" class="form-control"></drop-down-list>
-            <span asp-validation-for="PodcastList" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="PodcastList" class="control-label"></label>
+                    <drop-down-list asp-for="PodcastList" asp-items="Model.PodcastList" class="form-control"></drop-down-list>
+                    <span asp-validation-for="PodcastList" class="text-danger"></span>
+                </div>*@
 
 
 
             @*<div class="form-group">
-            <label asp-for="GenreList" class="control-label"></label>
-            <drop-down-list asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></drop-down-list>
-            <span asp-validation-for="GenreList" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="GenreList" class="control-label"></label>
+                    <drop-down-list asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></drop-down-list>
+                    <span asp-validation-for="GenreList" class="text-danger"></span>
+                </div>*@
 
-            @*<div class="form-group">
-
-                <label asp-for="TicketList" class="control-label"></label>
-                <select asp-for="TicketList" asp-items="Model.TicketList" class="form-control"></select>
-                <span asp-validation-for="TicketList" class="text-danger"></span>
-            </div>
             <div class="form-group">
-                <label asp-for="GenreList" class="control-label"></label>
-                <select asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></select>
-                <span asp-validation-for="GenreList" class="text-danger"></span>
-            </div>
-            <div class="form-group">*@
-
                 <label asp-for="EventItem.IsFinalized" class="control-label"></label>
                 <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
                 <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
