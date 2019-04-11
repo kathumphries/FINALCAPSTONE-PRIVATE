@@ -13,14 +13,15 @@ namespace Capstone.DAL
         private readonly string connectionString;
 
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
-        private const string SQL_GetEvent = "SELECT * FROM Event JOIN podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
+        private const string SQL_GetEvent = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
         private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy, podcastURL, ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
-        private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
-
+        private const string SQL_GetEventsByLocation = "SELECT * FROM Event JOIN Venue ON Event.venueID = Venue.venueID WHERE venueID = @locationID ORDER BY beginning ASC;";
+        private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE genre.genreID = @genreID ORDER BY beginning ASC;";
+        private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
 
         public EventSqlDal(string connectionString)
         {
@@ -169,6 +170,52 @@ namespace Capstone.DAL
                 SqlCommand command = new SqlCommand(SQL_GetEventsByLocation, connection);
 
                 command.Parameters.AddWithValue("@locationID", locatonID);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        }
+
+        public List<Event> GetEventsByGenre(int genreID)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByGenre, connection);
+
+                command.Parameters.AddWithValue("@genreID", genreID);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        } 
+
+        public List<Event> GetEventsByTicket(int ticketID)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByTicket, connection);
+
+                command.Parameters.AddWithValue("@ticketID", ticketID);
 
                 SqlDataReader reader = command.ExecuteReader();
 
