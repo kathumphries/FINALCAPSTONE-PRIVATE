@@ -12,12 +12,9 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
-
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
         private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @name);";
-
-
 
         public EventSqlDal(string connectionString)
         {
@@ -55,7 +52,6 @@ namespace Capstone.DAL
                 return false;
             }
         }
-
 
         public List<Event> GetAllEvents()
         {
@@ -97,10 +93,6 @@ namespace Capstone.DAL
             return eventItem;
         }
 
-
-
-
-
         private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
@@ -118,7 +110,6 @@ namespace Capstone.DAL
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
                 Name = Convert.ToString(reader["name"])
             };
-
 
         }
     }

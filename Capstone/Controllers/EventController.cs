@@ -14,17 +14,19 @@ namespace Capstone.Controllers
 {
     public class EventController : Controller
     {
-        private  IPodcastSqlDal podcastDal;
-        private  IEventSqlDal eventSqlDal;
-        private  IGenreSqlDal genreSqlDal;
+        private IPodcastSqlDal podcastDal;
+        private IEventSqlDal eventSqlDal;
+        private IGenreSqlDal genreSqlDal;
         private IVenueSqlDal venueSqlDal;
+        private ITicketSqlDal ticketSqlDal;
 
-        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal)
+        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
+            this.ticketSqlDal = ticketSqlDal;
         }
 
         [HttpGet]
@@ -42,9 +44,10 @@ namespace Capstone.Controllers
             Event eventItem = new Event();
             EventViewModel model = new EventViewModel
             {
-              EventItem = eventItem,           
-              VenueList = GetVenueList(),
-              GenreList = GetGenreList()
+                EventItem = eventItem,
+                VenueList = GetVenueList(),
+                GenreList = GetGenreList(),
+                TicketList = GetTicketList()
             };
 
             return View(model);
@@ -76,6 +79,20 @@ namespace Capstone.Controllers
             }
 
             return selectListVenue;
+        }
+
+        public List<SelectListItem> GetTicketList()
+        {
+            List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
+
+            List<SelectListItem> selectListTickets = new List<SelectListItem>();
+
+            foreach (Ticket item in ticketList)
+            {
+                selectListTickets.Add(new SelectListItem(item.TicketType, item.TicketID.ToString()));
+            }
+
+            return selectListTickets;
         }
 
         [HttpPost]

@@ -11,5 +11,6 @@ namespace Capstone.Models.ViewModel
         public Event EventItem { get; set; }
         public List<SelectListItem> GenreList { get; set; }
         public List<SelectListItem> VenueList { get; set; }
+        public List<SelectListItem> TicketList { get; set; }
     }
 }

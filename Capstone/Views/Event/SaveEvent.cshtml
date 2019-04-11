@@ -53,19 +53,19 @@
                 <span asp-validation-for="EventItem.UpsaleCopy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventItem.IsFinalized" class="control-label"></label>
-                <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
-                <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventItem.TicketLevel" class="control-label"></label>
-                <input asp-for="EventItem.TicketLevel" class="form-control" />
-                <span asp-validation-for="EventItem.TicketLevel" class="text-danger"></span>
+                <label asp-for="TicketList" class="control-label"></label>
+                <select asp-for="TicketList" asp-items="Model.TicketList" class="form-control"></select>
+                <span asp-validation-for="TicketList" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GenreList" class="control-label"></label>
                 <select asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></select>
                 <span asp-validation-for="GenreList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventItem.IsFinalized" class="control-label"></label>
+                <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
+                <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-default" />
