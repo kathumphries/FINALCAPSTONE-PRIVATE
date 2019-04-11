@@ -10,41 +10,49 @@
     <h4>Event</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.EventId)
-        </dt>
+        </dt>*@
         <dd>
-            @Html.DisplayFor(model => model.EventItem.EventId)
+            @Html.DisplayFor(model => model.EventItem.Name)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.Beginning)
-        </dt>
+        </dt>*@
         <dd>
             @Html.DisplayFor(model => model.EventItem.Beginning)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.Ending)
-        </dt>
+        </dt>*@
         <dd>
             @Html.DisplayFor(model => model.EventItem.Ending)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.PodcastId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.EventItem.PodcastId)
-        </dd>
-        <dt>
+        </dd>*@
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.VenueId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.EventItem.VenueId)
-        </dd>
-        <dt>
+        </dd>*@
+        @*<dt>
             @Html.DisplayNameFor(model => model.EventItem.Logo)
-        </dt>
+          </dt>*@
         <dd>
-            @Html.DisplayFor(model => model.EventItem.Logo)
+            
+           @* @Html.DisplayNameFor(model => model.EventItem.Logo)*@
+            @if (Model.EventItem.Logo != null)
+            {
+                
+                <img src = @Html.DisplayFor(model => model.EventItem.Logo)>
+                  
+            }
+            
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.EventItem.Copy)
