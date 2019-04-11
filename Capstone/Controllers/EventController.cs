@@ -62,27 +62,25 @@ namespace Capstone.Controllers
 
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult EditEvent(int id, EventViewModel model)
-        //{
-        //    try
-        //    {
-        //        EventViewModel model = new EventViewModel
-        //        {
-        //            EventItem = eventSqlDal.GetEvent(id)
 
-        //        };
-        //        model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
 
-        //        model.EventItem.UpdateDetails(model);
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditEvent(int id, EventViewModel model)
+        {
+            try
+            {
+
+                    model.EventItem = eventSqlDal.GetEvent(id);
+                    eventSqlDal.UpdateEventDetails(model.EventItem);
+                   
+                    return RedirectToAction("EventDetail", new { id = model.EventItem.EventId });
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
 
         [HttpGet]
@@ -178,19 +176,7 @@ namespace Capstone.Controllers
             return selectListPodcast;
         }
 
-        //public List<SelectListItem> GetTicketLevelList()
-        //{
-        //    List<TicketLevel> ticketLevelList = ticketLevelSqlDal.GetAllLevels();
-
-        //    List<SelectListItem> selectListTicketLevel = new List<SelectListItem>();
-
-        //    foreach (TicketLevel level in ticketLevelList)
-        //    {
-        //        selectListTicketLevel.Add(new SelectListItem(level.LevelOfTicket, level.TicketId.ToString()));
-        //    }
-
-        //    return selectListTicketLevel;
-        //}
+        
 
     }
 }

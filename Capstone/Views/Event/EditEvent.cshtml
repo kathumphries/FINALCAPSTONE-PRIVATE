@@ -43,14 +43,6 @@
                 <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
             </div>
 
-
-
-            @*<div class="form-group">
-                    <label asp-for="VenueList" class="control-label"></label>
-                    <select asp-for="VenueList" asp-items="Model.VenueList" class="form-control"></select>
-                    <span asp-validation-for="VenueList" class="text-danger"></span>
-                </div>*@
-
             <div class="form-group">
                 <label asp-for="EventItem.CoverPhoto" class="control-label"></label>
                 <input asp-for="EventItem.CoverPhoto" class="form-control" />
@@ -73,20 +65,7 @@
                 <span asp-validation-for="EventItem.UpsaleCopy" class="text-danger"></span>
             </div>
 
-            @*<div class="form-group">
-                    <label asp-for="PodcastList" class="control-label"></label>
-                    <drop-down-list asp-for="PodcastList" asp-items="Model.PodcastList" class="form-control"></drop-down-list>
-                    <span asp-validation-for="PodcastList" class="text-danger"></span>
-                </div>*@
-
-
-
-            @*<div class="form-group">
-                    <label asp-for="GenreList" class="control-label"></label>
-                    <drop-down-list asp-for="GenreList" asp-items="Model.GenreList" class="form-control"></drop-down-list>
-                    <span asp-validation-for="GenreList" class="text-danger"></span>
-                </div>*@
-
+            
             <div class="form-group">
                 <label asp-for="EventItem.IsFinalized" class="control-label"></label>
                 <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>

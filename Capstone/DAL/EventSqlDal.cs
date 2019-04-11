@@ -16,8 +16,8 @@ namespace Capstone.DAL
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
         private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, logo, copy, podcastURL, ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @name);";
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, logo, copy,  ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy,  @ticketLevel, @upsaleCopy, @isFinalized, @name);";
-
-        
+        private const string SQL_UpdateEventDetails = "UPDATE event  SET beginning = @beginning, ending=@ending, logo=@logo, copy=@copy,  ticketLevel=@ticketLevel, upsaleCopy=@upsaleCopy, isFinalized=@isFinalized, name=@name  WHERE eventID = @eventID;";
+      
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -96,7 +96,43 @@ namespace Capstone.DAL
         }
 
 
-        private Event MapToRowEvent(SqlDataReader reader)
+
+        public bool UpdateEventDetails(Event eventItem)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_UpdateEventDetails, connection);
+                  
+                command.Parameters.AddWithValue("@eventID", eventItem.EventId);
+                command.Parameters.AddWithValue("@beginning", eventItem.Beginning);
+                command.Parameters.AddWithValue("@ending", eventItem.Ending);
+                command.Parameters.AddWithValue("@logo", eventItem.CoverPhoto);
+                command.Parameters.AddWithValue("@copy", eventItem.DescriptionCopy);
+                command.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
+                command.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
+                command.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
+                command.Parameters.AddWithValue("@name", eventItem.Name);
+                command.Parameters.AddWithValue("@podcastID", eventItem.PodcastID);
+
+                SqlDataReader reader = command.ExecuteReader();
+                count = command.ExecuteNonQuery();
+            }
+
+            if (count == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+            
+
+            private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
             {
