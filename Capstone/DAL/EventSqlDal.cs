@@ -19,9 +19,11 @@ namespace Capstone.DAL
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
-        private const string SQL_GetEventsByLocation = "SELECT * FROM Event JOIN Venue ON Event.venueID = Venue.venueID WHERE venueID = @locationID ORDER BY beginning ASC;";
+
         private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE genre.genreID = @genreID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
+        private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
+        private const string SQL_UpdateEventDetails = "UPDATE event  SET beginning = @beginning, ending=@ending, logo=@logo, copy=@copy,  ticketLevel=@ticketLevel, upsaleCopy=@upsaleCopy, isFinalized=@isFinalized, name=@name  WHERE eventID = @eventID;";
 
         public EventSqlDal(string connectionString)
         {
@@ -229,12 +231,48 @@ namespace Capstone.DAL
         }
 
 
-        private Event MapToRowEvent(SqlDataReader reader)
+
+        public bool UpdateEventDetails(Event eventItem)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_UpdateEventDetails, connection);
+                  
+                command.Parameters.AddWithValue("@eventID", eventItem.EventID);
+                command.Parameters.AddWithValue("@beginning", eventItem.Beginning);
+                command.Parameters.AddWithValue("@ending", eventItem.Ending);
+                command.Parameters.AddWithValue("@logo", eventItem.CoverPhoto);
+                command.Parameters.AddWithValue("@copy", eventItem.DescriptionCopy);
+                command.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
+                command.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
+                command.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
+                command.Parameters.AddWithValue("@name", eventItem.Name);
+                command.Parameters.AddWithValue("@podcastID", eventItem.PodcastID);
+
+                SqlDataReader reader = command.ExecuteReader();
+                count = command.ExecuteNonQuery();
+            }
+
+            if (count == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+            
+
+            private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
             {
-                EventId = Convert.ToInt32(reader["eventID"]),
-                Venue = Convert.ToString(reader["displayName"]),
+                EventID = Convert.ToInt32(reader["eventID"]),
+                VenueID = Convert.ToString(reader["displayName"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
                 CoverPhoto = Convert.ToString(reader["coverPhoto"]),

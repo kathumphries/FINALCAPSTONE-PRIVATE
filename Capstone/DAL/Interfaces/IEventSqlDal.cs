@@ -11,6 +11,7 @@ namespace Capstone.DAL.Interfaces
         List<Event> GetAllEvents();
         bool SaveEvent(Event eventItem);
         Event GetEvent(int eventID);
+        bool UpdateEventDetails(Event eventItem);
 
     }
 }

@@ -21,9 +21,9 @@ namespace Capstone.Models
         public int GenreID { get; set; }
         // public bit SoundByte { get; set; }
         public DateTime OriginalRelease { get; set; }
-        public double RunTime { get; set; }
+        public string RunTime { get; set; }
         public string ReleaseFrequency { get; set; }
-        public double AverageLength { get; set; }
+        public string AverageLength { get; set; }
         public int NumOfEpisodes { get; set; }
         public int NumOfDownloads { get; set; }
         public string MeasurementPlatform { get; set; }
