@@ -10,7 +10,7 @@ namespace Capstone.DAL
 {
     public class VenueSqlDal : IVenueSqlDal
     {
-        private string connectionString;
+        private readonly string connectionString;
         const string SQL_GetAllVenues = "SELECT * FROM Venue";
         //const string SQL_SaveReview = "";
 
@@ -45,7 +45,7 @@ namespace Capstone.DAL
 
             return new Venue()
             {
-                VenueId = Convert.ToInt32(reader["VenueID"]),
+                VenueID = Convert.ToInt32(reader["VenueID"]),
                 DisplayName = Convert.ToString(reader["displayName"]),
                 RoomName = Convert.ToString(reader["roomName"]),
                 BuildingName = Convert.ToString(reader["buildingName"]),

@@ -14,6 +14,8 @@ namespace Capstone.DAL
         {
             this.connectionString = connectionString;
         }
+
+
     }
 }
 

@@ -74,7 +74,7 @@ namespace Capstone.Controllers
                     model.EventItem = eventSqlDal.GetEvent(id);
                     eventSqlDal.UpdateEventDetails(model.EventItem);
                    
-                    return RedirectToAction("EventDetail", new { id = model.EventItem.EventId });
+                    return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
             }
             catch
             {
@@ -141,7 +141,7 @@ namespace Capstone.Controllers
 
             foreach (Venue item in venueList)
             {
-                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueId.ToString()));
+                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueID.ToString()));
             }
 
             return selectListVenue;
