@@ -11,17 +11,34 @@ namespace Capstone.Models
         public int EventId { get; set; }
         public DateTime Beginning { get; set; }
         public DateTime Ending { get; set; }
-        public int PodcastId { get; set; }
-        public int VenueId { get; set; }
-        public string Logo { get; set; }
-        public string Copy { get; set; }
-        public string PodcastURL { get; set; }
+        // public string PodcastName { get; set; }
+
+        public string PodcastID { get; set; }
+
+        public Podcast Podcast { get; set; }
+
+        public string Venue { get; set; }
+
+        [Display(Name = "Cover Photo URL (https://bobo.com)")]
+        public string CoverPhoto { get; set; }
+
+        [Display(Name = "Description")]
+        public string DescriptionCopy { get; set; }
+
+        // public string PodcastURL { get; set; }
+        [Display(Name = "Level")]
         public string TicketLevel { get; set; }
+
+        [Display(Name = "Upsale Copy")]
         public string UpsaleCopy { get; set; }
-        [Display(Name = "Publish?")]
+
+        [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
+
+        [Display(Name = "Event Name")]
         public string Name { get; set; }
 
+       
     }
 }
 //using System.ComponentModel.DataAnnotations;

@@ -50,7 +50,7 @@ namespace Capstone.DAL
                 connection.Open();
 
                 SqlCommand command = new SqlCommand(SQL_GetPodcast, connection);
-                //cmd.Parameters.AddWithValue("@podcastID", podcastID);
+                command.Parameters.AddWithValue("@podcastID", podcastID);
 
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -84,9 +84,8 @@ namespace Capstone.DAL
                 MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
                 Demographics = Convert.ToString(reader["demographics"]),
                 Affiliations = Convert.ToString(reader["affiliations"]),
-                broadcastCity = Convert.ToString(reader["broadcastCity"]),
-                broadcastState = Convert.ToString(reader["broadcastState"]),
-                InOhio = Convert.ToBoolean(reader["inOhio"]),
+                BroadcastCity = Convert.ToString(reader["broadcastCity"]),
+                BroadcastState = Convert.ToString(reader["broadcastState"]),
                 IsSponsored = Convert.ToBoolean(reader["isSponsored"])
 
             };

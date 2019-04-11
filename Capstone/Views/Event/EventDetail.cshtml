@@ -4,89 +4,72 @@
     ViewData["Title"] = "EventDetail";
 }
 
-<h2>EventDetail</h2>
+<h2>@Model.EventItem.Name</h2>
+<p class="badge badge-primary badge-pill genre-tag">
+    <a href=@Model.EventItem.Podcast.URL> @Model.EventItem.Podcast</a>
+</p>
+<p class="badge badge-primary badge-pill genre-tag">
+    @Model.EventItem.Podcast.GenreID
+</p>
 
-<div>
-    <h4>Event</h4>
-    <hr />
+
+<div class="date-time-local">
+    <i class="fa fa-calendar fa-fw"></i>
+    <span class="date">
+        @Model.EventItem.Beginning.DayOfWeek,
+        @Model.EventItem.Beginning.ToString("MMMM")
+        @Model.EventItem.Beginning.Day
+    </span>
+    <span class="hours">
+        <i class="fa fa-clock fa-fw"></i>
+        @Model.EventItem.Beginning.ToString("hh:mm")  @Model.EventItem.Beginning.ToString("tt").ToUpper() -  @Model.EventItem.Ending.ToString("hh:mm")  @Model.EventItem.Ending.ToString("tt").ToUpper()
+    </span>
+    <span class="location">
+        <i class="fa fa-map-marker fa-fw"></i>
+        Location: @Model.EventItem.Venue
+    </span>
+</div>
+<div class="podcast-logo">
+    @if (Model.EventItem.CoverPhoto != null)
+    {
+        <a href=@Model.EventItem.Podcast.URL>
+            <img src=@Model.EventItem.CoverPhoto )>
+        </a>
+    }
+</div>
+<div class="podcast info">
     <dl class="dl-horizontal">
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.EventId)
-        </dt>*@
         <dd>
-            @Html.DisplayFor(model => model.EventItem.Name)
+            <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
         </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.Beginning)
-        </dt>*@
         <dd>
-            @Html.DisplayFor(model => model.EventItem.Beginning)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.Ending)
-        </dt>*@
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.Ending)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.PodcastId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.PodcastId)
-        </dd>*@
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.VenueId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.VenueId)
-        </dd>*@
-        @*<dt>
-            @Html.DisplayNameFor(model => model.EventItem.Logo)
-          </dt>*@
-        <dd>
-            
-           @* @Html.DisplayNameFor(model => model.EventItem.Logo)*@
-            @if (Model.EventItem.Logo != null)
-            {
-                
-                <img src = @Html.DisplayFor(model => model.EventItem.Logo)>
-                  
-            }
-            
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventItem.Copy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.Copy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventItem.PodcastURL)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.PodcastURL)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventItem.TicketLevel)
-        </dt>
+            <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
+</dd>
         <dd>
             @Html.DisplayFor(model => model.EventItem.TicketLevel)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventItem.UpsaleCopy)
-        </dt>
         <dd>
             @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventItem.IsFinalized)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.IsFinalized)
-        </dd>
+    
     </dl>
 </div>
+
+<dl class="dl-horizontal">
+
+    <dd>
+        @Html.DisplayFor(model => model.EventItem.DescriptionCopy)
+    </dd>
+    <dd>
+        published @Html.DisplayFor(model => model.EventItem.IsFinalized)  only visible to Admin
+    </dd>
+</dl>
+
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    EDIT BUTTON GOES HERE only visible to Admin
+    
+    @* TODO ADD ADMIN AUTH *@
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
+
+    <a asp-action="Index">Back to List</a> |*@
 </div>
