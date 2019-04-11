@@ -5,22 +5,10 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class TicketLevel
+    public class Ticket
     {
         public int TicketID { get; set; }
-
-        private string ticketLevel;
-
-        public string GetTicketLevel()
-        {
-            return ticketLevel;
-        }
-
-        public void SetTicketLevel(string value)
-        {
-            ticketLevel = value;
-        }
-
+        public string TicketType { get; set; }
         public bool IsVisible { get; set; }
 
     }

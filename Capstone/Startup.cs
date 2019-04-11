@@ -45,6 +45,7 @@ namespace Capstone
             services.AddScoped<IVenueSqlDal>(j => new VenueSqlDal(connectionString));
             services.AddScoped<ITagsSqlDal>(j => new TagsSqlDal(connectionString));
             services.AddScoped<IUserEventSqlDal>(j => new UserEventSqlDal(connectionString));
+            services.AddScoped<ITicketSqlDal>(j => new TicketSqlDal(connectionString));
 
 
             // Indicates Session should be saved "in memory"

@@ -12,12 +12,16 @@ namespace Capstone.DAL
     {
         private readonly string connectionString;
 
-
         private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
-        private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, logo, copy,  ticketLevel, upsaleCopy, isFinalized, name) VALUES (@beginning, @ending, @logo, @copy,  @ticketLevel, @upsaleCopy, @isFinalized, @name);";
+        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy, podcastURL, ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
+        private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
+        private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
+            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
+            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
+        private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
 
-        
+
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -34,13 +38,13 @@ namespace Capstone.DAL
 
                 cmd.Parameters.AddWithValue("@beginning", eventItem.Beginning);
                 cmd.Parameters.AddWithValue("@ending", eventItem.Ending);
-                cmd.Parameters.AddWithValue("@logo", eventItem.CoverPhoto);
-                cmd.Parameters.AddWithValue("@copy", eventItem.DescriptionCopy);
+                cmd.Parameters.AddWithValue("@coverPhoto", eventItem.CoverPhoto);
+                cmd.Parameters.AddWithValue("@descriptionCopy", eventItem.DescriptionCopy);
                 //cmd.Parameters.AddWithValue("@podcastURL", eventItem.PodcastURL);
                 cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
                 cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
-                cmd.Parameters.AddWithValue("@name", eventItem.Name);
+                cmd.Parameters.AddWithValue("@eventName", eventItem.Name);
                 
                 count = cmd.ExecuteNonQuery();
             }
@@ -54,7 +58,7 @@ namespace Capstone.DAL
                 return false;
             }
         }
-        
+
         public List<Event> GetAllEvents()
         {
             List<Event> eventList = new List<Event>();
@@ -94,7 +98,89 @@ namespace Capstone.DAL
 
             return eventItem;
         }
-        
+
+        public List<Event> GetEventsByTimeOfDay(bool morning, bool afternoon, bool evening)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            if (morning && afternoon && evening)
+            {
+                
+            }
+            else if (morning && afternoon && !evening)
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
+                            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
+                            "ORDER BY beginning ASC;";
+            }
+            else if (morning && evening && !afternoon)
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
+                            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
+
+            }
+            else if (afternoon && evening && !morning)
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
+                    "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
+                
+            }
+            else if (morning && !afternoon && !evening)
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 ORDER BY beginning ASC;";
+            }
+            else if (afternoon && !morning && !evening) 
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 ORDER BY beginning ASC;";
+            }
+            else if (evening && !afternoon && !morning)
+            {
+                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
+            }
+            else
+            {
+                return eventItem;
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByTimeOfDay, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        }
+
+        public List<Event> GetEventsByLocation(int locatonID)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByLocation, connection);
+
+                command.Parameters.AddWithValue("@locationID", locatonID);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        }
+
 
         private Event MapToRowEvent(SqlDataReader reader)
         {
@@ -104,22 +190,16 @@ namespace Capstone.DAL
                 VenueID = Convert.ToString(reader["displayName"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
-                CoverPhoto = Convert.ToString(reader["logo"]),
-                DescriptionCopy = Convert.ToString(reader["copy"]),
+                CoverPhoto = Convert.ToString(reader["coverPhoto"]),
+                DescriptionCopy = Convert.ToString(reader["descriptionCopy"]),
                 //PodcastURL = Convert.ToString(reader["podcastURL"]),
                 TicketLevel = Convert.ToString(reader["ticketLevel"]),
                 UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
-                Name = Convert.ToString(reader["name"]),
+                Name = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
                 PodcastID = Convert.ToString(reader["podcastID"])
-
-
-
-
             };
-            
-
         }
     }
 }

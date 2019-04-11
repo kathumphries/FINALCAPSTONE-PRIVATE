@@ -14,17 +14,20 @@ namespace Capstone.Controllers
 {
     public class EventController : Controller
     {
+
         private readonly IPodcastSqlDal podcastDal;
         private readonly IEventSqlDal eventSqlDal;
         private readonly IGenreSqlDal genreSqlDal;
-        private IVenueSqlDal venueSqlDal;
+        private readonly IVenueSqlDal venueSqlDal;
+        private readonly ITicketSqlDal ticketSqlDal;
 
-        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal)
+        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
+            this.ticketSqlDal = ticketSqlDal;
         }
 
         [HttpGet]
@@ -88,10 +91,13 @@ namespace Capstone.Controllers
             Event eventItem = new Event();
             EventViewModel model = new EventViewModel
             {
-              EventItem = eventItem,           
-              VenueList = GetVenueList(),
-              GenreList = GetGenreList(),
-              PodcastList = GetPodcastList()
+
+                EventItem = eventItem,
+                VenueList = GetVenueList(),
+                GenreList = GetGenreList(),
+                TicketList = GetTicketList(),
+                PodcastList = GetPodcastList() 
+
             };
 
             return View(model);
@@ -141,6 +147,21 @@ namespace Capstone.Controllers
             }
 
             return selectListVenue;
+        }
+
+
+        public List<SelectListItem> GetTicketList()
+        {
+            List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
+
+            List<SelectListItem> selectListTickets = new List<SelectListItem>();
+
+            foreach (Ticket item in ticketList)
+            {
+                selectListTickets.Add(new SelectListItem(item.TicketType, item.TicketID.ToString()));
+            }
+
+            return selectListTickets;
         }
 
         public List<SelectListItem> GetPodcastList()
