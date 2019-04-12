@@ -63,6 +63,13 @@ namespace Capstone.DAL
             return podcast;
         }
 
+
+        public bool AddPodcast(Podcast podcast)
+        {
+            return true;
+        }
+
+
         private Podcast MapToRowPodcast(SqlDataReader reader)
         {
             return new Podcast()
@@ -79,10 +86,10 @@ namespace Capstone.DAL
                 RunTime = Convert.ToString(reader["runTime"]),
                 ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]),
                 AverageLength = Convert.ToString(reader["averageLength"]),
-                EpisodeCount = Convert.ToInt32(reader["numOfEpisodes"]),
-                DownloadCount = Convert.ToInt32(reader["numOfDownloads"]),
+                EpisodeCount = Convert.ToInt32(reader["episodeCount"]),
+                DownloadCount = Convert.ToInt32(reader["downloadCount"]),
                 MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
-                Demographic = Convert.ToString(reader["demographics"]),
+                Demographic = Convert.ToString(reader["demographic"]),
                 Affiliations = Convert.ToString(reader["affiliations"]),
                 BroadcastCity = Convert.ToString(reader["broadcastCity"]),
                 BroadcastState = Convert.ToString(reader["broadcastState"]),

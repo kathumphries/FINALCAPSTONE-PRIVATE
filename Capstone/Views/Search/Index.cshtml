@@ -4,92 +4,131 @@
         ViewData["Title"] = "Index";
     }
 
-    <h2>Index</h2>
+    <h2>Search</h2>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.EventID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.Beginning)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.Ending)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.PodcastID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.VenueID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.TicketLevel)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.IsFinalized)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event.EventName)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (Event item in Model.EventList) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Beginning)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ending)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PodcastID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VenueID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CoverPhoto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketLevel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsFinalized)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Search Index</title>
+    </head>
+    <body>
+        <form asp-action="SearchEvents">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Event.Podcast.GenreID" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Event.Podcast.GenreID, Model.GenreList, "", new { @class = "form-control" })
+                <span asp-validation-for="Event.Podcast.GenreID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Event.VenueID" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Event.VenueID, Model.VenueList, "", new { @class = "form-control" })
+                <span asp-validation-for="Event.VenueID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Event.TicketLevel" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Event.TicketLevel, Model.TicketList, "", new { @class = "form-control" })
+                <span asp-validation-for="Event.TicketLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeOfDayString" class="control-label"></label>
+                @Html.DropDownListFor(model => model.TimeOfDayString, Model.TimeOfDayList, "", new { @class = "form-control" })
+                <span asp-validation-for="TimeOfDayString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </form>
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.EventID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.Beginning)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.Ending)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.PodcastID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.VenueID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.CoverPhoto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.TicketLevel)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.IsFinalized)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Event.EventName)
+                        </th>
+                        <th>
+                            Genre
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Event item in Model.EventList) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Beginning)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ending)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PodcastID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VenueID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CoverPhoto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketLevel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpsaleCopy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsFinalized)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Podcast.GenreID)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
     }
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+    </body>
+    </html>
+    
