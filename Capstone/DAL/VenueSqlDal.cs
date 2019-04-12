@@ -46,9 +46,7 @@ namespace Capstone.DAL
             return new Venue()
             {
                 VenueID = Convert.ToInt32(reader["venueID"]),
-                DisplayName = Convert.ToString(reader["displayName"]),
-                RoomName = Convert.ToString(reader["roomName"]),
-                BuildingName = Convert.ToString(reader["buildingName"]),
+                DisplayName = Convert.ToString(reader["venueName"]),
                 Address1 = Convert.ToString(reader["address1"]),
                 Address2 = Convert.ToString(reader["address2"]),
                 City = Convert.ToString(reader["city"]),

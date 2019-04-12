@@ -18,6 +18,8 @@ namespace Capstone.Models
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        [Display(Name = "Genre Type")]
         public int GenreID { get; set; }
         // public string SoundByte { get; set; }
         public DateTime OriginalRelease { get; set; }

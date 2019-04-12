@@ -39,7 +39,7 @@ namespace Capstone.DAL
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
 
-        private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE genre.genreID = @genreID ORDER BY beginning ASC;";
+        private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
 
@@ -151,44 +151,30 @@ namespace Capstone.DAL
        
 
 
-        public List<Event> GetEventsByTimeOfDay(bool morning, bool afternoon, bool evening)
+        public List<Event> GetEventsByTimeOfDay(string timeOfDayString)
         {
             List<Event> eventItem = new List<Event>();
 
-            if (morning && afternoon && evening)
+            if (timeOfDayString == null)
             {
-                
+                return eventItem;
             }
-            else if (morning && afternoon && !evening)
-            {
-                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
-                            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
-                            "ORDER BY beginning ASC;";
-            }
-            else if (morning && evening && !afternoon)
-            {
-                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
-                            "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
 
-            }
-            else if (afternoon && evening && !morning)
-            {
-                SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
-                    "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
-                
-            }
-            else if (morning && !afternoon && !evening)
+            int timeOfDay = Convert.ToInt32(timeOfDayString);
+           
+
+            if (timeOfDay == 1)
             {
                 SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 ORDER BY beginning ASC;";
             }
-            else if (afternoon && !morning && !evening) 
+            else if (timeOfDay == 2)
             {
                 SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 ORDER BY beginning ASC;";
             }
-            else if (evening && !afternoon && !morning)
+            else if (timeOfDay == 3)
             {
                 SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
-            }
+            }         
             else
             {
                 return eventItem;
@@ -210,9 +196,14 @@ namespace Capstone.DAL
             return eventItem;
         }
 
-        public List<Event> GetEventsByLocation(int locatonID)
+        public List<Event> GetEventsByLocation(Event venueEvent)
         {
             List<Event> eventItem = new List<Event>();
+
+            if (venueEvent.VenueID == null)
+            {
+                return eventItem;
+            }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -220,7 +211,7 @@ namespace Capstone.DAL
 
                 SqlCommand command = new SqlCommand(SQL_GetEventsByLocation, connection);
 
-                command.Parameters.AddWithValue("@locationID", locatonID);
+                command.Parameters.AddWithValue("@locationID", venueEvent.VenueID);
 
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -232,8 +223,8 @@ namespace Capstone.DAL
 
             return eventItem;
         }
-
-        public List<Event> GetEventsByGenre(int genreID)
+        
+        public List<Event> GetEventsByGenre(Event genreEvent)
         {
             List<Event> eventItem = new List<Event>();
 
@@ -243,7 +234,7 @@ namespace Capstone.DAL
 
                 SqlCommand command = new SqlCommand(SQL_GetEventsByGenre, connection);
 
-                command.Parameters.AddWithValue("@genreID", genreID);
+                command.Parameters.AddWithValue("@genreID", genreEvent.Podcast.GenreID);
 
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -256,9 +247,14 @@ namespace Capstone.DAL
             return eventItem;
         } 
 
-        public List<Event> GetEventsByTicket(int ticketID)
+        public List<Event> GetEventsByTicket(Event ticketEvent)
         {
             List<Event> eventItem = new List<Event>();
+
+            if (ticketEvent.TicketLevel == null)
+            {
+                return eventItem;
+            }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -266,7 +262,7 @@ namespace Capstone.DAL
 
                 SqlCommand command = new SqlCommand(SQL_GetEventsByTicket, connection);
 
-                command.Parameters.AddWithValue("@ticketID", ticketID);
+                command.Parameters.AddWithValue("@ticketID", ticketEvent.TicketLevel);
 
                 SqlDataReader reader = command.ExecuteReader();
 
