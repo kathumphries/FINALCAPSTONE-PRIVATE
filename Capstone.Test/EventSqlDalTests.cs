@@ -51,12 +51,8 @@ namespace Capstone.Test
                 command.Parameters.AddWithValue("@podcastID", podcastID);
                 command.Parameters.AddWithValue("@venueID", venueID);
 
-                int eventID = (int)command.ExecuteScalar();
-               
-
+                int eventID = (int)command.ExecuteScalar();                         
                 
-
-
             }
         }
 
