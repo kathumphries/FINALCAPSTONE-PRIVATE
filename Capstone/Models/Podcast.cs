@@ -19,7 +19,7 @@ namespace Capstone.Models
 
         public string Description { get; set; }
         public int GenreID { get; set; }
-        // public bit SoundByte { get; set; }
+        // public string SoundByte { get; set; }
         public DateTime OriginalRelease { get; set; }
         public string RunTime { get; set; }
         public string ReleaseFrequency { get; set; }
