@@ -27,14 +27,7 @@ namespace Capstone.DAL
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
 
 
-
-
-
-
-
-
-
-
+                                   
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
@@ -145,12 +138,7 @@ namespace Capstone.DAL
 
            
         }
-    
-    
-    
-       
-
-
+  
         public List<Event> GetEventsByTimeOfDay(bool morning, bool afternoon, bool evening)
         {
             List<Event> eventItem = new List<Event>();
@@ -322,7 +310,7 @@ namespace Capstone.DAL
             return new Event()
             {
                 EventID = Convert.ToInt32(reader["eventID"]),
-                VenueID = Convert.ToString(reader["VenueID"]),
+                VenueID = Convert.ToString(reader["venueID"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
                 CoverPhoto = Convert.ToString(reader["coverPhoto"]),
