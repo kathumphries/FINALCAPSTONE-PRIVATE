@@ -45,7 +45,7 @@ namespace Capstone.DAL
 
             return new Venue()
             {
-                VenueID = Convert.ToInt32(reader["VenueID"]),
+                VenueID = Convert.ToInt32(reader["venueID"]),
                 DisplayName = Convert.ToString(reader["displayName"]),
                 RoomName = Convert.ToString(reader["roomName"]),
                 BuildingName = Convert.ToString(reader["buildingName"]),
@@ -108,7 +108,7 @@ namespace Capstone.DAL
             //    return new Park()
             //    {
             //        ParkCode = Convert.ToString(reader["parkCode"]),
-            //        Name = Convert.ToString(reader["parkName"]), // parkName
+            //        EventName = Convert.ToString(reader["parkName"]), // parkName
             //        State = Convert.ToString(reader["state"]), //state
             //        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
             //        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet

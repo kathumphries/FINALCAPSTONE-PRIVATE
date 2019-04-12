@@ -57,7 +57,7 @@ namespace Capstone.Models
 }
 
 //using System.ComponentModel.DataAnnotations;
-//[Display(Name = "Enter Your Name")]
+//[Display(EventName = "Enter Your EventName")]
 //public string Username { get; set; }
 
 //[Required]

@@ -12,7 +12,7 @@ namespace Capstone.Models
         public int UserID { get; set; }
 
         [Required]
-        [DisplayName("Name")]
+        [DisplayName("EventName")]
         public string Name { get; set; }
 
         [Required]
@@ -49,7 +49,7 @@ namespace Capstone.Models
 
 
 //using System.ComponentModel.DataAnnotations;
-//[Display(Name = "Enter Your Name")]
+//[Display(EventName = "Enter Your EventName")]
 //public string Username { get; set; }
 
 //[Required]

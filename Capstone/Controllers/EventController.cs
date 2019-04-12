@@ -40,25 +40,32 @@ namespace Capstone.Controllers
             };
             model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
             
-            
-            
             return View(model);
         }
 
 
         [HttpGet]
-        public IActionResult EditEvent(int id)
+        public IActionResult EditEvent(int id )
         {
-            EventViewModel model = new EventViewModel
-            {
-                EventItem = eventSqlDal.GetEvent(id)
 
-            };
-            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+            
+                EventViewModel model = new EventViewModel
+                {
+                    EventItem = eventSqlDal.GetEvent(id),
+                };
+
+                if (model.EventItem.PodcastID != null)
+                {model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);}
+
+                model.GenreList = GetGenreList();
+                model.VenueList = GetVenueList();
+                model.TicketList = GetTicketList();
+                model.PodcastList = GetPodcastList();
 
 
 
             return View(model);
+      
 
         }
 
@@ -68,19 +75,29 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditEvent(int id, EventViewModel model)
         {
-            try
+
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
             {
 
-                    model.EventItem = eventSqlDal.GetEvent(id);
-                    eventSqlDal.UpdateEventDetails(model.EventItem);
-                   
-                    return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
+               
+                model.PodcastList = GetPodcastList();
+                model.GenreList = GetGenreList();
+                model.VenueList = GetVenueList();
+                model.TicketList = GetTicketList();
+                model.PodcastList = GetPodcastList();
+
+                bool result = eventSqlDal.UpdateEventDetails(model.EventItem);
+               
+                return RedirectToAction("Index", "Home");
+
             }
-            catch
-            {
-                return View();
-            }
-        }
+
+           }
 
 
         [HttpGet]
@@ -137,16 +154,15 @@ namespace Capstone.Controllers
         {
             List<Venue> venueList = venueSqlDal.GetAllVenues();
 
-            List<SelectListItem> selectListVenue = new List<SelectListItem>();
+            List<SelectListItem> selectListVenues = new List<SelectListItem>();
 
-            foreach (Venue item in venueList)
+            foreach (Venue venue in venueList)
             {
-                selectListVenue.Add(new SelectListItem(item.DisplayName, item.VenueID.ToString()));
+                selectListVenues.Add(new SelectListItem(venue.DisplayName, venue.VenueID.ToString()));
             }
 
-            return selectListVenue;
+            return selectListVenues;
         }
-
 
         public List<SelectListItem> GetTicketList()
         {
@@ -154,15 +170,15 @@ namespace Capstone.Controllers
 
             List<SelectListItem> selectListTickets = new List<SelectListItem>();
 
-            foreach (Ticket item in ticketList)
+            foreach (Ticket level in ticketList)
             {
-                selectListTickets.Add(new SelectListItem(item.TicketType, item.TicketID.ToString()));
+                selectListTickets.Add(new SelectListItem(level.TicketType, level.TicketID.ToString()));
             }
 
             return selectListTickets;
         }
 
-        public List<SelectListItem> GetPodcastList()
+    public List<SelectListItem> GetPodcastList()
         {
             List<Podcast> podcastList = podcastDal.GetAllPodcasts();
 
