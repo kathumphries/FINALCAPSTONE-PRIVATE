@@ -29,76 +29,7 @@ namespace Capstone.Controllers
             return View();
         }
 
-                         
-        //public IActionResult ListOfPodcasts()
-        //{
-        //    List<Podcast> result = podcastSqlDal.GetAllPodcasts();
-        //    return View(result);
-        //}
-
-        //public IActionResult PodcastDetail(string id)
-        //{
-        //    Podcast result = new Podcast();
-        //    return View(result);
-        //}
-        
-     
-
-        //[HttpGet]
-        //public IActionResult ListOfPodcasts()
-        //{
-        //    List<Podcast> podcasts = podcastSqlDal.GetAllPodcasts();
-        //    return View(podcasts);
-        //}
-
-        //public IActionResult ListOfEvents()
-        //{
-        //    List<Event> events = eventSqlDal.GetAllEvents();
-        //    return View(events);
-        //}
-
-        //public IActionResult EditEvent(Event eventItem)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(eventItem);
-        //    }
-        //    else
-        //    {
-        //        bool result = eventSqlDal.AddEventDetail(eventItem);
-        //        //TODO : account for false
-        //        return RedirectToAction(nameof(ListOfEvents));
-        //    }
-        //}
-
-
-        //// GET: Home
-        //public IActionResult Index()
-        //{
-        //    IList<Review> results = reviewDAL.GetAllReviews();
-        //    return View(results);
-        //}
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
-
-        //[HttpGet]
-        //public IActionResult NewReview()
-        //{
-        //    Review review = new Review();
-        //    return View(review);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult NewReview(Review review)
-        //{
-        //    reviewDAL.SaveReview(review);
-        //    return RedirectToAction("Index", "Home");
-
+       
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

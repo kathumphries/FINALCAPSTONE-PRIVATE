@@ -9,6 +9,7 @@ using Capstone.Models;
 using Capstone.DAL.Interfaces;
 using Capstone.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
 
 namespace Capstone.Controllers
 {
@@ -22,13 +23,23 @@ namespace Capstone.Controllers
         private readonly ITicketSqlDal ticketSqlDal;
 
         public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
-        {
+         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
             this.ticketSqlDal = ticketSqlDal;
         }
+
+
+        public IActionResult Index()
+        {
+            List<Event> eventList = eventSqlDal.GetAllEvents();
+
+
+            return View(eventList);
+        }
+
 
         [HttpGet]
         public IActionResult EventDetail(int id = 1)  //do not change variable name id due to routing
@@ -68,8 +79,7 @@ namespace Capstone.Controllers
       
 
         }
-
-
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -93,11 +103,12 @@ namespace Capstone.Controllers
 
                 bool result = eventSqlDal.UpdateEventDetails(model.EventItem);
                
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
+
 
             }
 
-           }
+        }
 
 
         [HttpGet]
@@ -129,13 +140,43 @@ namespace Capstone.Controllers
             else
             {
                bool result = eventSqlDal.SaveEvent(model.EventItem);
-               
-               
-                return RedirectToAction("Index", "Home");
+
+
+              return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
+
             }
         }
 
-        
+        [HttpGet]
+        public IActionResult DeleteEvent(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+            Event eventItem = eventSqlDal.GetEvent((int)id);
+           
+            return View(eventItem);
+
+            }
+        }
+
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public IActionResult DeleteEvent(int id)
+        {
+           Event eventItem = eventSqlDal.GetEvent(id);
+
+           eventSqlDal.RemoveEvent(eventItem.EventID);
+              
+            return RedirectToAction("Index");
+        }
+
+
+
+
         public List<SelectListItem> GetGenreList()
         {
             List<Genre> genreList = genreSqlDal.GetAllGenres();
@@ -178,7 +219,7 @@ namespace Capstone.Controllers
             return selectListTickets;
         }
 
-    public List<SelectListItem> GetPodcastList()
+       public List<SelectListItem> GetPodcastList()
         {
             List<Podcast> podcastList = podcastDal.GetAllPodcasts();
 

@@ -12,7 +12,10 @@ namespace Capstone.DAL
     {
         private readonly string connectionString;
 
-        private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
+        private const string SQL_GetAllEvents ="SELECT  eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName " +
+            "FROM Event  GROUP BY  CAST(event.beginning AS DATE), " +
+            "eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName  " +
+            "Order by CAST(event.beginning AS DATE) ASC ;";
 
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
 
@@ -43,7 +46,7 @@ namespace Capstone.DAL
 
         private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
 
-                                                                                                                                        
+        private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";                                                                                                                                 
                                                                                                                                        
                                                                                                             
         public EventSqlDal(string connectionString)
@@ -124,7 +127,28 @@ namespace Capstone.DAL
             return eventItem;
         }
 
+        public void RemoveEvent(int eventID)
+        {
+            
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
+                using (SqlCommand command = new SqlCommand(SQL_RemoveEvent, connection))
+                {
+                    command.Parameters.AddWithValue("@eventID", eventID);
+                    command.ExecuteNonQuery();
+                }
+
+
+            }
+
+           
+        }
+    
+    
+    
+       
 
 
         public List<Event> GetEventsByTimeOfDay(bool morning, bool afternoon, bool evening)

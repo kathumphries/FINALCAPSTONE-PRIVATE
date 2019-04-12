@@ -66,10 +66,11 @@
 </dl>
 
 <div>
-    EDIT BUTTON GOES HERE only visible to Admin
-    
-    @* TODO ADD ADMIN AUTH *@
-    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })
+    only visible to Admin
 
-    <a asp-action="Index">Back to List</a> |*@
+    @* TODO ADD ADMIN AUTH *@
+ 
+                    @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) 
+                    @Html.ActionLink("Remove", "DeleteEvent", new { id = Model.EventItem.EventID })
+                    @Html.ActionLink("Create New", "SaveEvent")
 </div>
