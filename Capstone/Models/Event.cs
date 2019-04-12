@@ -26,7 +26,7 @@ namespace Capstone.Models
         public string DescriptionCopy { get; set; }
 
         // public string PodcastURL { get; set; }
-        [Display(Name = "Level")]
+        [Display(Name = "Ticket Level")]
         public string TicketLevel { get; set; }
 
         [Display(Name = "Upsale Copy")]
@@ -35,7 +35,7 @@ namespace Capstone.Models
         [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
 
-        [Display(Name = "Event EventName")]
+        [Display(Name = "Event Name")]
         public string EventName { get; set; }
 
        

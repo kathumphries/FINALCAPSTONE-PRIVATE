@@ -12,7 +12,7 @@ namespace Capstone.Models
         public int UserID { get; set; }
 
         [Required]
-        [DisplayName("EventName")]
+        [DisplayName("Event Name")]
         public string Name { get; set; }
 
         [Required]
