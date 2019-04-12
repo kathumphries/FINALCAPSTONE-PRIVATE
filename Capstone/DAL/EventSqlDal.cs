@@ -322,7 +322,7 @@ namespace Capstone.DAL
             return new Event()
             {
                 EventID = Convert.ToInt32(reader["eventID"]),
-                VenueID = Convert.ToString(reader["VenueID"]),
+                VenueID = Convert.ToString(reader["venueID"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
                 CoverPhoto = Convert.ToString(reader["coverPhoto"]),
