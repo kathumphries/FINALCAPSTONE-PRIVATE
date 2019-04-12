@@ -24,10 +24,10 @@ namespace Capstone.Models
         public string RunTime { get; set; }
         public string ReleaseFrequency { get; set; }
         public string AverageLength { get; set; }
-        public int NumOfEpisodes { get; set; }
-        public int NumOfDownloads { get; set; }
+        public int EpisodeCount { get; set; }
+        public int DownloadCount { get; set; }
         public string MeasurementPlatform { get; set; }
-        public string Demographics { get; set; }
+        public string Demographic { get; set; }
         public string Affiliations { get; set; }
 
         [Required]
