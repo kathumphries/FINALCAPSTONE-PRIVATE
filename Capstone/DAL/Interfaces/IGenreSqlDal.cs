@@ -9,5 +9,6 @@ namespace Capstone.DAL.Interfaces
     public interface IGenreSqlDal
     {
         List<Genre> GetAllGenres();
+        string GetGenreDescription(int genreID);
     }
 }

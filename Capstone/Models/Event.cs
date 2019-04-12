@@ -14,7 +14,8 @@ namespace Capstone.Models
         // public string PodcastName { get; set; }
 
         public string PodcastID { get; set; }
-
+        public string GenreDescriptionBasedOnPodcast { get; set; }
+        
         public Podcast Podcast { get; set; }
        
         public string VenueID { get; set; }
@@ -26,7 +27,8 @@ namespace Capstone.Models
         public string DescriptionCopy { get; set; }
 
         // public string PodcastURL { get; set; }
-        [Display(Name = "Level")]
+
+        [Display(Name = "Ticket Level")]
         public string TicketLevel { get; set; }
 
         [Display(Name = "Upsale Copy")]
@@ -35,11 +37,17 @@ namespace Capstone.Models
         [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
 
-        [Display(Name = "Event EventName")]
+        [Display(Name = "Event Title")]
         public string EventName { get; set; }
 
        
+
+
+    
+
     }
+
+
 }
 //using System.ComponentModel.DataAnnotations;
 //[Display(EventName = "Enter Your EventName")]

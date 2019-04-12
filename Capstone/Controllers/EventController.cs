@@ -50,7 +50,7 @@ namespace Capstone.Controllers
 
             };
             model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-            
+            model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
             return View(model);
         }
 
@@ -66,7 +66,10 @@ namespace Capstone.Controllers
                 };
 
                 if (model.EventItem.PodcastID != null)
-                {model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);}
+                {
+                    model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+                    model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
+            }
 
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();
@@ -94,7 +97,7 @@ namespace Capstone.Controllers
             else
             {
 
-               
+                model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
                 model.PodcastList = GetPodcastList();
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();
@@ -115,9 +118,10 @@ namespace Capstone.Controllers
         public IActionResult SaveEvent()
         {
             Event eventItem = new Event();
+
             EventViewModel model = new EventViewModel
             {
-
+                
                 EventItem = eventItem,
                 VenueList = GetVenueList(),
                 GenreList = GetGenreList(),
@@ -157,7 +161,7 @@ namespace Capstone.Controllers
             else
             {
             Event eventItem = eventSqlDal.GetEvent((int)id);
-           
+            eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
             return View(eventItem);
 
             }
@@ -168,7 +172,7 @@ namespace Capstone.Controllers
          public IActionResult DeleteEvent(int id)
         {
            Event eventItem = eventSqlDal.GetEvent(id);
-
+           eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
            eventSqlDal.RemoveEvent(eventItem.EventID);
               
             return RedirectToAction("Index");

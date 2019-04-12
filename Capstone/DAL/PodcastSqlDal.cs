@@ -63,6 +63,13 @@ namespace Capstone.DAL
             return podcast;
         }
 
+
+        public bool AddPodcast(Podcast podcast)
+        {
+            return true;
+        }
+
+
         private Podcast MapToRowPodcast(SqlDataReader reader)
         {
             return new Podcast()
