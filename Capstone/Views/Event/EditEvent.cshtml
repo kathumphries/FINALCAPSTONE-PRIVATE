@@ -1,29 +1,26 @@
 ﻿@model Capstone.Models.ViewModel.EventViewModel
 
 @{
-    ViewData["Title"] = "SaveEvent";
+    ViewData["Title"] = "EditEvent";
 }
 
-<h2>SaveEvent</h2>
+<h2>Change it UP!</h2>
 
 <h4>Testing Here</h4>
 <hr />
 
-@Html.HiddenFor(model => model.EventItem.EventID)
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditEvent">
+
+            @Html.HiddenFor(model => model.EventItem.EventID)
+            
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EventItem.Name" class="control-label"></label>
-                <input asp-for="EventItem.Name" class="form-control" />
-                <span asp-validation-for="EventItem.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PodcastList" class="control-label"></label>
-                @Html.DropDownListFor(model => model.EventItem.PodcastID, Model.PodcastList, new { @class = "form-control" })
-                <span asp-validation-for="EventItem.PodcastID" class="text-danger"></span>
+                <label asp-for="EventItem.EventName" class="control-label"></label>
+                <input asp-for="EventItem.EventName" class="form-control" />
+                <span asp-validation-for="EventItem.EventName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -37,11 +34,6 @@
                 <span asp-validation-for="EventItem.Ending" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="VenueList" class="control-label"></label>
-                @Html.DropDownListFor(model => model.EventItem.VenueID, Model.VenueList, new { @class = "form-control" })
-                <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <label asp-for="EventItem.CoverPhoto" class="control-label"></label>
@@ -56,21 +48,39 @@
 
             <div class="form-group">
                 <label asp-for="EventItem.TicketLevel" class="control-label"></label>
-                <input asp-for="EventItem.TicketLevel" class="form-control" />
+                @Html.DropDownListFor(model => model.EventItem.TicketLevel, Model.TicketList, new { @class = "form-control" })
                 <span asp-validation-for="EventItem.TicketLevel" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
                 <label asp-for="EventItem.UpsaleCopy" class="control-label"></label>
                 <input asp-for="EventItem.UpsaleCopy" class="form-control" />
                 <span asp-validation-for="EventItem.UpsaleCopy" class="text-danger"></span>
             </div>
 
-            
+
             <div class="form-group">
                 <label asp-for="EventItem.IsFinalized" class="control-label"></label>
                 <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
                 <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="EventItem.PodcastID" class="control-label"></label>
+                @Html.DropDownListFor(model => model.EventItem.PodcastID, Model.PodcastList, new { @class = "form-control" })
+                <span asp-validation-for="EventItem.PodcastID" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="VenueList" class="control-label"></label>
+                @Html.DropDownListFor(model => model.EventItem.VenueID, Model.VenueList, new { @class = "form-control" })
+                <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
+            </div>
+
+
+
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-default" />
             </div>
@@ -80,4 +90,5 @@
         </form>
     </div>
 </div>
+
 

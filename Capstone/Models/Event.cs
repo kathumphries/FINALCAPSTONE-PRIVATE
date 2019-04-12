@@ -16,7 +16,7 @@ namespace Capstone.Models
         public string PodcastID { get; set; }
 
         public Podcast Podcast { get; set; }
-
+       
         public string VenueID { get; set; }
 
         [Display(Name = "Cover Photo URL (https://bobo.com)")]
@@ -35,14 +35,14 @@ namespace Capstone.Models
         [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
 
-        [Display(Name = "Event Name")]
-        public string Name { get; set; }
+        [Display(Name = "Event EventName")]
+        public string EventName { get; set; }
 
        
     }
 }
 //using System.ComponentModel.DataAnnotations;
-//[Display(Name = "Enter Your Name")]
+//[Display(EventName = "Enter Your EventName")]
 //public string Username { get; set; }
 
 //[Required]

@@ -12,6 +12,7 @@ namespace Capstone.DAL.Interfaces
         bool SaveEvent(Event eventItem);
         Event GetEvent(int eventID);
         bool UpdateEventDetails(Event eventItem);
+        void RemoveEvent(int eventID);
 
     }
 }

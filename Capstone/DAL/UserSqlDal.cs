@@ -66,7 +66,7 @@ namespace Capstone.DAL
 //    return new Park()
 //    {
 //        ParkCode = Convert.ToString(reader["parkCode"]),
-//        Name = Convert.ToString(reader["parkName"]), // parkName
+//        EventName = Convert.ToString(reader["parkName"]), // parkName
 //        State = Convert.ToString(reader["state"]), //state
 //        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
 //        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet

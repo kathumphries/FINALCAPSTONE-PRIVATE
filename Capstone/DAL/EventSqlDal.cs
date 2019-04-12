@@ -12,10 +12,29 @@ namespace Capstone.DAL
     {
         private readonly string connectionString;
 
-        private const string SQL_GetAllEvents = "SELECT * FROM Event GROUP BY beginning ORDER BY ASC;";
+        private const string SQL_GetAllEvents ="SELECT  eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName " +
+            "FROM Event  GROUP BY  CAST(event.beginning AS DATE), " +
+            "eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName  " +
+            "Order by CAST(event.beginning AS DATE) ASC ;";
+
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
-        private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy, podcastURL, ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy, @podcastURL, @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
-        private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketLevel, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketLevel, @upsaleCopy, @isFinalized, @eventName);";
+
+        //private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketID, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
+
+
+
+        private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
+                                             " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
+
+
+
+
+
+
+
+
+
+
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
@@ -23,8 +42,13 @@ namespace Capstone.DAL
         private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE genre.genreID = @genreID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
-        private const string SQL_UpdateEventDetails = "UPDATE event  SET beginning = @beginning, ending=@ending, logo=@logo, copy=@copy,  ticketLevel=@ticketLevel, upsaleCopy=@upsaleCopy, isFinalized=@isFinalized, name=@name  WHERE eventID = @eventID;";
 
+
+        private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
+
+        private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";                                                                                                                                 
+                                                                                                                                       
+                                                                                                            
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -41,13 +65,14 @@ namespace Capstone.DAL
 
                 cmd.Parameters.AddWithValue("@beginning", eventItem.Beginning);
                 cmd.Parameters.AddWithValue("@ending", eventItem.Ending);
+                cmd.Parameters.AddWithValue("@podcastID", eventItem.PodcastID);
+                cmd.Parameters.AddWithValue("@venueID", eventItem.VenueID);
                 cmd.Parameters.AddWithValue("@coverPhoto", eventItem.CoverPhoto);
                 cmd.Parameters.AddWithValue("@descriptionCopy", eventItem.DescriptionCopy);
-                //cmd.Parameters.AddWithValue("@podcastURL", eventItem.PodcastURL);
-                cmd.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
+                cmd.Parameters.AddWithValue("@ticketID", eventItem.TicketLevel);
                 cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
-                cmd.Parameters.AddWithValue("@eventName", eventItem.Name);
+                cmd.Parameters.AddWithValue("@eventName", eventItem.EventName);
                 
                 count = cmd.ExecuteNonQuery();
             }
@@ -101,6 +126,30 @@ namespace Capstone.DAL
 
             return eventItem;
         }
+
+        public void RemoveEvent(int eventID)
+        {
+            
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(SQL_RemoveEvent, connection))
+                {
+                    command.Parameters.AddWithValue("@eventID", eventID);
+                    command.ExecuteNonQuery();
+                }
+
+
+            }
+
+           
+        }
+    
+    
+    
+       
+
 
         public List<Event> GetEventsByTimeOfDay(bool morning, bool afternoon, bool evening)
         {
@@ -234,7 +283,7 @@ namespace Capstone.DAL
 
         public bool UpdateEventDetails(Event eventItem)
         {
-            int count = 0;
+            int rowsAffected = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -246,17 +295,18 @@ namespace Capstone.DAL
                 command.Parameters.AddWithValue("@ending", eventItem.Ending);
                 command.Parameters.AddWithValue("@logo", eventItem.CoverPhoto);
                 command.Parameters.AddWithValue("@copy", eventItem.DescriptionCopy);
-                command.Parameters.AddWithValue("@ticketLevel", eventItem.TicketLevel);
+                command.Parameters.AddWithValue("@ticketID", eventItem.TicketLevel);
                 command.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 command.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
-                command.Parameters.AddWithValue("@name", eventItem.Name);
-                command.Parameters.AddWithValue("@podcastID", eventItem.PodcastID);
+                command.Parameters.AddWithValue("@eventName", eventItem.EventName);
+                command.Parameters.AddWithValue("@podcastID", Convert.ToInt32(eventItem.PodcastID));
+                command.Parameters.AddWithValue("@venueID", Convert.ToInt32(eventItem.VenueID));
 
-                SqlDataReader reader = command.ExecuteReader();
-                count = command.ExecuteNonQuery();
+            rowsAffected = command.ExecuteNonQuery();
+                
             }
 
-            if (count == 1)
+            if (rowsAffected == 1)
             {
                 return true;
             }
@@ -272,7 +322,7 @@ namespace Capstone.DAL
             return new Event()
             {
                 EventID = Convert.ToInt32(reader["eventID"]),
-                VenueID = Convert.ToString(reader["displayName"]),
+                VenueID = Convert.ToString(reader["VenueID"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
                 Ending = Convert.ToDateTime(reader["ending"]),
                 CoverPhoto = Convert.ToString(reader["coverPhoto"]),
@@ -281,7 +331,7 @@ namespace Capstone.DAL
                 TicketLevel = Convert.ToString(reader["ticketID"]),
                 UpsaleCopy = Convert.ToString(reader["upsaleCopy"]),
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
-                Name = Convert.ToString(reader["eventName"]),
+                EventName = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
                 PodcastID = Convert.ToString(reader["podcastID"])
             };
@@ -346,7 +396,7 @@ namespace Capstone.DAL
 //    return new Park()
 //    {
 //        ParkCode = Convert.ToString(reader["parkCode"]),
-//        Name = Convert.ToString(reader["parkName"]), // parkName
+//        EventName = Convert.ToString(reader["parkName"]), // parkName
 //        State = Convert.ToString(reader["state"]), //state
 //        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
 //        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet
