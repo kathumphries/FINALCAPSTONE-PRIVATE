@@ -18,8 +18,8 @@ namespace Capstone.Test
         private int userID;
         private int genreID;
         private int venueID;
-
-        /*Before adding the Event, get the number of known Events*/
+        private int eventID;
+        private int locationID;
 
         [TestInitialize]
         public void Initialize()
@@ -46,17 +46,13 @@ namespace Capstone.Test
                 venueID = (int)command.ExecuteScalar();
 
                 command = new SqlCommand("INSERT INTO Event(podcastID, venueID, beginning, ending, coverPhoto, descriptionCopy, ticketLevel, upsaleCopy, isFinalized, eventName)" +
-                    "VALUES (@podcastID, @venueID, '11 / 15 / 2016 03: 39 pm', '4 / 10 / 2019 10: 39 pm', 'catCount@johnfoulton.com', 'Enter Copy Here', 'dogCount@johnfoulton.com', 'VIP', 'All the cool kids are doing it!', 1, 'Pet Count = 17'); SELECT CAST(SCOPE_IDENTITY() as int);", connection);
+                    "VALUES (@podcastID, @venueID, '11 / 15 / 2016 03: 39 pm', '4 / 10 / 2019 10: 39 pm', 'catCount@johnfoulton.com', 'Animals are sooo much cooler than people!', 'VIP', 'All the cool kids are doing it!', 1, 'Pet Count = 17'); SELECT CAST(SCOPE_IDENTITY() as int);", connection);
 
                 command.Parameters.AddWithValue("@podcastID", podcastID);
                 command.Parameters.AddWithValue("@venueID", venueID);
 
-                int eventID = (int)command.ExecuteScalar();
-               
-
+                eventID = (int)command.ExecuteScalar();                         
                 
-
-
             }
         }
 
@@ -86,7 +82,7 @@ namespace Capstone.Test
 
             foreach (Event eventItem in eventItems)
             {
-                if (eventItem.Podcast.URL == "catCount@johnfoulton.com")
+                if (eventItem.EventName == "Pet Count = 17")
                 {
                     found = true;
                 }
@@ -95,12 +91,36 @@ namespace Capstone.Test
                   
             }
         }
-           
+        
+        [TestMethod]
+        public void GetEventTest()
+        {
+            //Arrange
+            EventSqlDal eventSqlDal = new EventSqlDal(connectionString);
+
+            //Act
+            Event eventItem = eventSqlDal.GetEvent(eventID);
+
+            //Assert
+            Assert.AreEqual(eventID, eventItem.EventID);
+            
+        }
+
+        //[TestMethod]
+        //public void GetEventsByLocationTest()
+        //{
+        //    //Arrange
+        //    EventSqlDal eventSqlDal = new EventSqlDal(connectionString);
+
+        //    //Act
+        //    List<Event> eventItems = eventSqlDal.GetEventsByLocation(locationID);
+
+        //    //Assert
+        //    Assert.AreEqual(locationID, eventItems.Count);
+
+        //}
     }
 
 }
 
-                //Create User
-                //command = new SqlCommand("INSERT INTO User(name, email, isAdmin, isProducer)" +
-                //    "VALUES ('John Fulton', 'john@techelevator.com', 1, 1); SELECT CAST(SCOPE_IDENTITY() as int);", connection);
-                //userID = (int)command.ExecuteScalar();
+               
