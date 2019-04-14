@@ -28,14 +28,10 @@ namespace Capstone.Models
         public string DescriptionCopy { get; set; }
 
         // public string PodcastURL { get; set; }
-<<<<<<< HEAD
-        [Display(Name = "Ticket Level")]
-        public string TicketLevel { get; set; }
-=======
 
         [Display(Name = "Ticket Level")]
         public string TicketLevel { get; set; }  //TODO: change to int rename TicketID
->>>>>>> f31250eccf44b9da34a54e8ea1b0ee041653978d
+
 
         [Display(Name = "Upsale Copy")]
         public string UpsaleCopy { get; set; }
@@ -43,11 +39,9 @@ namespace Capstone.Models
         [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
 
-<<<<<<< HEAD
-        [Display(Name = "Event Name")]
-=======
+
+
         [Display(Name = "Event Title")]
->>>>>>> f31250eccf44b9da34a54e8ea1b0ee041653978d
         public string EventName { get; set; }
 
        
