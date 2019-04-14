@@ -2,5 +2,7 @@
 {
     internal interface IUserEventSqlDal
     {
+
+
     }
 }

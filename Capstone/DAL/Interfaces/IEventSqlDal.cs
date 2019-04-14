@@ -17,5 +17,6 @@ namespace Capstone.DAL.Interfaces
         List<Event> GetEventsByLocation(Event venueEvent);
         List<Event> GetEventsByGenre(Event genreEvent);
         List<Event> GetEventsByTimeOfDay(string timeOfDayString);
+        List<Event> GetUserEvents(User user);
     }
 }
