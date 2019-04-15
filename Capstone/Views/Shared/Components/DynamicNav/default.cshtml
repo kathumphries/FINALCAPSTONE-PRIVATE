@@ -1,0 +1,48 @@
+﻿@model Capstone.Models.User
+
+@{
+    Layout = null;
+}
+
+
+@if (Model == null)  //not logged in
+{
+    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+    <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+}
+else
+{
+    <li>
+        @Html.DisplayFor(model => model.Email)
+    </li>
+
+    @if (Model.Role == 1) //admin
+    {
+
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Admin
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              
+                <li><a asp-area="" asp-controller="Event" asp-action="Index">Events</a></li>
+                <li><a asp-area="" asp-controller="Podcast" asp-action="Index">Podcasts</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="Index">Accounts</a></li>
+                <li><a asp-area="" asp-controller="Logs" asp-action="Index">Logs</a></li>
+                <li><a asp-area="" asp-controller="Schedule" asp-action="Index">Schedules</a></li>
+             
+            </ul>
+        </li>
+
+
+    }
+
+    @if (Model.Role == 1 || Model.Role== 2) //Registered
+    {
+        <li><a asp-area="" asp-controller="Account" asp-action="UserEdit">My Account</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="MyAccount">My Schedule</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+    }
+
+}

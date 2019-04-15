@@ -8,19 +8,19 @@ namespace Capstone.Models
 {
     public class Venue
     {
-        public int VenueID { get; set; }
-        public string DisplayName { get; set; }
-        public string RoomName { get; set; }
-        public string BuildingName { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public int ZipCode { get; set; }
-        public string PhoneNumber { get; set; }
-        public string AdditionalInfo { get; set; }
-        public string ParkingInfo { get; set; }
-        public bool IsVisible { get; set; }
+        public int      VenueID { get; set; }
+        public string   DisplayName { get; set; }
+       // public string   RoomName { get; set; }
+       // public string   BuildingName { get; set; }
+        public string   Address1 { get; set; }
+        public string   Address2 { get; set; }
+        public string   City { get; set; }
+        public string   State { get; set; }
+        public int      ZipCode { get; set; }
+        public string   PhoneNumber { get; set; }
+        public string   AdditionalInfo { get; set; }
+        public string   ParkingInfo { get; set; }
+        public bool     IsVisible { get; set; }
     }
 }
 

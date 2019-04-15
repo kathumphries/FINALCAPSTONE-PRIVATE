@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; //needed for the SetString and GetString extension methods
 using Capstone.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace Capstone.Controllers
 {
@@ -45,23 +46,11 @@ namespace Capstone.Controllers
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
 
-       
-        [HttpGet]
-        [AuthorizationFilter]
-        public IActionResult Index()
-        {
-            UserAdminViewModel model = new UserAdminViewModel()
-            {
-                User = authProvider.GetCurrentUser(),
-                TicketList = GetTicketList()
-            };
-            model.User.EventList = eventSqlDal.GetUserEvents(model.User);
 
 
 
-            return View(model);
-        }
 
+      
      
         [HttpGet]
         public IActionResult Login()
@@ -90,7 +79,7 @@ namespace Capstone.Controllers
 
         [HttpGet]
         [AuthorizationFilter("1","2","3")]
-        public IActionResult LogOff()
+        public IActionResult Logout()
         {
             // Clear user from session
             authProvider.LogOff();
@@ -125,7 +114,7 @@ namespace Capstone.Controllers
                 }
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Account", "Login");
             }
 
             return View(registerViewModel);

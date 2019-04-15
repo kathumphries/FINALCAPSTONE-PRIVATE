@@ -9,5 +9,6 @@ namespace Capstone.DAL.Interfaces
     public interface IVenueSqlDal
     {
         List<Venue> GetAllVenues();
+        Venue GetVenue(string venueId);
     }
 }

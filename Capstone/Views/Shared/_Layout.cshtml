@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Razor.Extensions
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -38,19 +39,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Capstone</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Podcast Midwest</a>
+                @*// <img class =".nav" src="~/images/pfmw main logo.JPG" />*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Event" asp-action="Index">Manage Events Detail</a></li>
-                    <li><a asp-area="" asp-controller="Event" asp-action="SaveEvent">Create Event</a></li>
-                    <li><a asp-area="" asp-controller="Podcast" asp-action="Index">Manage Podcast</a></li>
                     <li><a asp-area="" asp-controller="Search" asp-action="Index">Search</a></li>
-
                 </ul>
-            </div>
-        </div>
+                    
+                 <ul class="nav navbar-nav navbar-right">
+                       
+                    @await Component.InvokeAsync("DynamicNav")
+                </ul>
+                       </div>
+                </div>
+        
     </nav>
 
     <div class="container body-content">

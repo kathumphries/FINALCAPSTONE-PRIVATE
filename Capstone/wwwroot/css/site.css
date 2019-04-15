@@ -41,3 +41,27 @@ body {
     max-width: 20px;
 }
 
+
+.nav img {
+    border-radius: 8px;
+    max-width: 20px;
+}
+.nav .navbar-inverse {
+    background-color: #f15263 !important;
+    color: #415075 !important
+}
+
+
+/*green navbar*/
+.navbar-inverse {
+    background-color: #f15263 !important;
+}
+
+a.mynav {
+    background-color: #f15263 !important;
+}
+
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+    color: #415075 !important;
+}
+/* end of green navbar*/ 
