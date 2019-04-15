@@ -22,8 +22,10 @@ namespace Capstone.DAL
         private const string SQL_GetAllUsers = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
         private const string SQL_DeleteUser = "DELETE FROM user WHERE userID = @userID;";
         private const string SQL_UpdateUser ="UPDATE users SET password = @password, salt = @salt, role = @role WHERE userID = @userID;";
+        private const string SQL_GetAllUsersByRole = "SELECT* FROM[PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
 
-       
+
+
         public bool CreateUser(User user)
         {
             bool result = false;
@@ -187,8 +189,44 @@ namespace Capstone.DAL
             }
         }
 
-       
 
+        public List<User> GetAllUsersByRole()
+        {
+            List<User> users = new List<User>();
+
+
+           
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_GetAllUsersByRole, connection);
+                 
+
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        users.Add(MaptToRowUser(reader));
+
+                    }
+
+                    return users;
+                }
+            }
+            catch (SqlException ex)
+            {
+                string exception = ex.ToString();
+                users = null;
+            }
+
+            return users;
+        }
+
+    
 
 
 

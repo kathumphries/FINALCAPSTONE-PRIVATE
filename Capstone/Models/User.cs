@@ -32,6 +32,7 @@ namespace Capstone.Models
         [Required]
         [DisplayName("Name")]
 
+        public string RoleDescription { get; set; }
 
         public string Name { get; set; }//name
         
