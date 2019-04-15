@@ -97,7 +97,6 @@ namespace Capstone.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-       
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
