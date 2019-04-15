@@ -95,6 +95,7 @@ ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES =
 GO
 USE [PodfestMidwestDB]
 GO
+
 /****** Object:  Table [dbo].[Event]    Script Date: 4/12/2019 10:48:27 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -322,9 +323,8 @@ CREATE TABLE [dbo].[Venue_Tag](
 GO
 SET IDENTITY_INSERT [dbo].[Event] ON 
 
-INSERT [dbo].[Event] ([eventID], [beginning], [ending], [podcastID], [venueID], [coverPhoto], [descriptionCopy], [ticketID], [upsaleCopy], [isFinalized], [eventName]) VALUES (1, CAST(N'2018-05-13T14:15:00.000' AS DateTime), CAST(N'2018-05-13T015:30:00.000' AS DateTime), 2, 2, NULL, N'In An Hour of our Time Podcast, we choose a new topic each episode. Topics range from sociopolitical, to scientific, to historical, we try to maintain variety. We then each perform an hour of research followed by a marginally focused one hour discussion. Featuring: Joe Wallace, Dave Buker, and Mark Cracraft. 
-Fun for anyone who enjoys funny but sometimes frustrating tangents of referential conversation. For mature audiences.', 4, NULL, 0, N'An Hour of our Time')
-INSERT [dbo].[Event] ([eventID], [beginning], [ending], [podcastID], [venueID], [coverPhoto], [descriptionCopy], [ticketID], [upsaleCopy], [isFinalized], [eventName]) VALUES (2, CAST(N'2018-05-12T14:30:00.000' AS DateTime), CAST(N'2018-05-12T15:45:00.000' AS DateTime), 1, 1, N'ep-30-anti-inauguration-ft-dj-valentine-and-marquis-graves.html', N'Join me, I Am Clarissa F, DJ Valentine and Marquis Graves as we discuss music, traveling, Caucasian Americans and most importantly: Donald Trump. It is one of my favorite and arguable one of our most candid. Tune in and enjoy the show!', 2, N'All the cool kids are doing it!', 1, N'The Final Stretch With Clarissa F')
+INSERT [dbo].[Event] ([eventID], [beginning], [ending], [podcastID], [venueID], [coverPhoto], [descriptionCopy], [ticketID], [upsaleCopy], [isFinalized], [eventName]) VALUES (1, CAST(N'2018-05-13T14:15:00.000' AS DateTime), CAST(N'2018-05-13T15:30:00.000' AS DateTime), 2, 2, NULL, N'Topics range from sociopolitical, to scientific, to historical, we try to maintain variety.For mature audiences.', 4, NULL, 0, N'An Hour of our Time')
+INSERT [dbo].[Event] ([eventID], [beginning], [ending], [podcastID], [venueID], [coverPhoto], [descriptionCopy], [ticketID], [upsaleCopy], [isFinalized], [eventName]) VALUES (2, CAST(N'2018-05-12T14:30:00.000' AS DateTime), CAST(N'2018-05-12T15:45:00.000' AS DateTime), 1, 1, N'ep-30-anti-inauguration-ft-dj-valentine-and-marquis-graves.html', N'Clarissa F, DJ Valentine and Marquis Graves discuss music, traveling, Caucasian Americans and most importantly: Donald Trump.', 2, N'All the cool kids are doing it!', 1, N'The Final Stretch With Clarissa F')
 SET IDENTITY_INSERT [dbo].[Event] OFF
 SET IDENTITY_INSERT [dbo].[Genre] ON 
 
@@ -343,8 +343,8 @@ INSERT [dbo].[Genre] ([genreID], [name], [isVisible]) VALUES (12, N'Society & Cu
 SET IDENTITY_INSERT [dbo].[Genre] OFF
 SET IDENTITY_INSERT [dbo].[Podcast] ON 
 
-INSERT [dbo].[Podcast] ([podcastID], [userID], [hosting], [url], [title], [description], [genreID], [soundByte], [originalRelease], [runTime], [releaseFrequency], [averageLength], [episodeCount], [downloadCount], [measurementPlatform], [demographic], [affiliations], [broadcastCity], [broadcastState], [inOhio], [isSponsored], [sponsor]) VALUES (1, 1, N'iTunes', 'SoundCloud.com/thefinalstretchwithclarissaf', N'The Final Stretch With Clarissa F', N'The Final Stretch With Clarissa F follows me and those who inspire me as I grow up and move out of my home town', 12, NULL, CAST(N'2015-1-24T00:00:00.000' AS DateTime), N NULL, N'Monthly', N'40-75 minutes', 29, NULL, N'Sound Cloud', N'Columbus locals 18-35', N'0', N'unknown', N'unknown', 1, 0, NULL)
-INSERT [dbo].[Podcast] ([podcastID], [userID], [hosting], [url], [title], [description], [genreID], [soundByte], [originalRelease], [runTime], [releaseFrequency], [averageLength], [episodeCount], [downloadCount], [measurementPlatform], [demographic], [affiliations], [broadcastCity], [broadcastState], [inOhio], [isSponsored], [sponsor]) VALUES (2, 2, NULL, NULL, N'An Hour of our Time', N'Three hosts spend one hour discussing their individual hours of research of a chosen topic.', 4, NULL, NULL, NULL, N'Bi-Weekly', N'Just over one hour', 6, 100, N'SoundCloud', N'20-25 year old educated liberals, largely educators.', N'0', N'unknown', N'unknown', 1, 0, NULL)
+INSERT [dbo].[Podcast] ([podcastID], [userID], [hosting], [url], [title], [description], [genreID], [soundByte], [originalRelease], [runTime], [releaseFrequency], [averageLength], [episodeCount], [downloadCount], [measurementPlatform], [demographic], [affiliations], [broadcastCity], [broadcastState], [inOhio], [isSponsored], [sponsor]) VALUES (1, 1, N'iTunes', N'SoundCloud.com/thefinalstretchwithclarissaf', N'The Final Stretch With Clarissa F', N'The Final Stretch With Clarissa F follows me and those who inspire me as I grow up and move out of my home town', 12, NULL, CAST(N'2015-01-24T00:00:00.000' AS DateTime), NULL, N'Monthly', N'40-75 minutes', 29, NULL, N'Sound Cloud', N'Columbus locals 18-35', NULL, N'unknown', N'unknown', 1, 0, NULL)
+INSERT [dbo].[Podcast] ([podcastID], [userID], [hosting], [url], [title], [description], [genreID], [soundByte], [originalRelease], [runTime], [releaseFrequency], [averageLength], [episodeCount], [downloadCount], [measurementPlatform], [demographic], [affiliations], [broadcastCity], [broadcastState], [inOhio], [isSponsored], [sponsor]) VALUES (2, 2, NULL, NULL, N'An Hour of our Time', N'Three hosts spend one hour discussing their individual hours of research of a chosen topic.', 4, NULL, NULL, NULL, N'Bi-Weekly', N'Just over one hour', 6, 100, N'SoundCloud', N'20-25 year old educated liberals, largely educators.', NULL, N'unknown', N'unknown', 1, 0, NULL)
 SET IDENTITY_INSERT [dbo].[Podcast] OFF
 SET IDENTITY_INSERT [dbo].[TicketLevel] ON 
 
@@ -355,9 +355,9 @@ INSERT [dbo].[TicketLevel] ([ticketID], [ticketType], [isVisible]) VALUES (4, N'
 SET IDENTITY_INSERT [dbo].[TicketLevel] OFF
 SET IDENTITY_INSERT [dbo].[User] ON 
 
-INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (1, N'Clarissa', N'iamclarissaf@gmail.com', 0, 1, (614) 787-7044, N'VIP')
-INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (2, N'Joe Spurlock', N'joseph.spurlock@gmail.com', 0, 1, (985) 774-6787, N'Free')
-INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (3, N'Tim Fulton', N'tim@timfulton.com', 1, 1, (614) 209-1021, N'VIP')
+INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (1, N'Clarissa', N'iamclarissaf@gmail.com', 0, 1, N'(614) 787-7044', N'VIP')
+INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (2, N'Joe Spurlock', N'joseph.spurlock@gmail.com', 0, 1, N'(985) 774-6787', N'Free')
+INSERT [dbo].[User] ([userID], [name], [email], [isAdmin], [isProducer], [phoneNumber], [ticketLevel]) VALUES (3, N'Tim Fulton', N'tim@timfulton.com', 1, 1, N'(614) 209-1021', N'VIP')
 SET IDENTITY_INSERT [dbo].[User] OFF
 SET IDENTITY_INSERT [dbo].[Venue] ON 
 

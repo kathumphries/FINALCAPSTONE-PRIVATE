@@ -1,102 +1,239 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
     public class UserSqlDal : IUserSqlDal
     {
-        private string connectionString;
+        private readonly string connectionString;
 
         public UserSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-    }
-}
+        private const string SQL_GetCurrentUser = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] WHERE email = @email;";
+        private const string SQL_CreateUser = "INSERT INTO [PodfestMidwestDB].[dbo].[User] (email, password, salt, role) VALUES (@email, @password, @salt, @role);";  // add extra requirements...
+        private const string SQL_GetAllUsers = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
+        private const string SQL_DeleteUser = "DELETE FROM user WHERE userID = @userID;";
+        private const string SQL_UpdateUser ="UPDATE users SET password = @password, salt = @salt, role = @role WHERE userID = @userID;";
+
+       
+        public bool CreateUser(User user)
+        {
+            bool result = false;
+
+           
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        SqlCommand command = new SqlCommand(SQL_CreateUser, connection);
+
+                        command.Parameters.AddWithValue("@email", user.Email.ToLower());
+                        command.Parameters.AddWithValue("@password", user.Password);
+                        command.Parameters.AddWithValue("@salt", user.Salt);
+                        command.Parameters.AddWithValue("@role", user.Role);
+
+                        result = (command.ExecuteNonQuery() > 0) ? true : false;
+
+                   
+                    }
+                }
+
+                 catch (SqlException ex)
+                 {
+                     string exception = ex.ToString();
+                     result = false;
+                 }
+
+            return result;
+          
+        }
+
+       
+        public void DeleteUser(User user)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_DeleteUser, connection);
+                   command.Parameters.AddWithValue("@userID", user.UserID);
+                    command.ExecuteNonQuery();
+                    return;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+    
+        public User GetUser(string email)
+        {
+            User user = null;
+
+
+            try
+            {
+                
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_GetCurrentUser, connection);
+                    command.Parameters.AddWithValue("@email", email.ToLower());
+
+
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        user = MaptToRowUser(reader);
+
+                    }
+
+                    return user;
+                }
+            }
+            catch (SqlException ex)
+            {
+                string exception = ex.ToString();
+                user = null;
+            }
+
+            return user;
+        }
+
+        
+        public void UpdateUser(User user)
+        {
+            
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_UpdateUser, connection);
+                    command.Parameters.AddWithValue("@password", user.Password);
+                    command.Parameters.AddWithValue("@salt", user.Salt);
+                    command.Parameters.AddWithValue("@role", user.Role);
+                    command.Parameters.AddWithValue("@userID", user.UserID);
+                    command.ExecuteNonQuery();
+
+                    return;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        private User MaptToRowUser(SqlDataReader reader)
+        {
+            return new User()
+            {
+                UserID = Convert.ToInt32(reader["userID"]),
+                Name = Convert.ToString(reader["name"]),//name
+                Email = Convert.ToString(reader["email"]).ToLower(), //email
+                PhoneNumber = Convert.ToString(reader["phoneNumber"]), //phoneNumber
+                TicketLevel = Convert.ToString(reader["ticketLevel"]), //ticketLevel
+                Password = Convert.ToString(reader["password"]), //password
+                Role = Convert.ToInt32(reader["role"]), //role
+                Salt  = Convert.ToString(reader["salt"]) //salt
+            };
+        }
 
 
 
-//public Park GetParkDetail(string parkCode)
-//{
-//    Park park = new Park();
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
+        public bool DuplicateUser(User user)
+        {
+            return GetUser(user.Email.ToLower()) != null;
+        }
 
-//        SqlCommand command = new SqlCommand(SQL_GetParkDetail, connection);
-//        command.Parameters.AddWithValue("@parkCode", parkCode);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
+
+        public List<User> GetAllUsers()
+        {
+            List<User> userList = new List<User>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetAllUsers, connection);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    userList.Add(MaptToRowUser(reader));
+
+                }
+
+                return userList;
+            }
+        }
+
+       
+
+
+
+
+    }//class
+}//namespace
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public User GetCurrentUser(string email, string password)
 //        {
+//           User user = new User();
+//            using (SqlConnection connection = new SqlConnection(connectionString))
+//            {
+//                connection.Open();
 
-//            park = MaptToRowPark(reader);
+//                SqlCommand command = new SqlCommand(SQL_GetCurrentUser, connection);
+//                command.Parameters.AddWithValue("@email", email);
+                
 
+//                var reader = command.ExecuteReader();
+//                while (reader.Read())
+//                {
+
+//                    user = MaptToRowUser(reader);
+
+//                }
+//            }
+
+//            return user;
 //        }
-//    }
-
-//    return park;
-//}
-
-//public List<Park> GetParks()
-//{
-//    List<Park> parkList = new List<Park>();
-
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-
-//        SqlCommand command = new SqlCommand(SQL_GetParks, connection);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
-//        {
-
-//            parkList.Add(MaptToRowPark(reader));
-
-//        }
-//    }
-//    return parkList;
-//}
-
-//private Park MaptToRowPark(SqlDataReader reader)
-//{
-//    return new Park()
-//    {
-//        ParkCode = Convert.ToString(reader["parkCode"]),
-//        EventName = Convert.ToString(reader["parkName"]), // parkName
-//        State = Convert.ToString(reader["state"]), //state
-//        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
-//        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet
-//        MilesOfTrail = Convert.ToInt32(reader["milesOfTrail"]), //milesOfTrail
-//        NumberOfCampsites = Convert.ToInt32(reader["numberOfCampsites"]), //numberOfCampsites
-//        Climate = Convert.ToString(reader["climate"]), //climate
-//        ParkDescription = Convert.ToString(reader["parkDescription"]), //parkDescription
-//        YearFounded = Convert.ToInt32(reader["yearFounded"]), //yearFounded
-//        AnnualVisitorCount = Convert.ToInt32(reader["annualVisitorCount"]), //annualVisitorCount
-//        Quote = Convert.ToString(reader["inspirationalQuote"]), //inspirationalQuote
-//        QuoteSource = Convert.ToString(reader["inspirationalQuoteSource"]), //inspirationalQuoteSource
-//        EntryFee = Convert.ToInt32(reader["entryFee"]), //entryFee
-//        NumberOfAnimalSpecies = Convert.ToInt32(reader["numberOfAnimalSpecies"]), //numbeOfAnimalSpecies
-
-//    };
 
 
 
-//public void SaveSurvey(DailySurvey survey)
-//{
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-//        SqlCommand cmd = new SqlCommand(SQL_SaveNewSurvey, connection);
-//        cmd.Parameters.AddWithValue("@parkCode", survey.ParkCode);
-//        cmd.Parameters.AddWithValue("@emailAddress", survey.EmailAddress);
-//        cmd.Parameters.AddWithValue("@state", survey.State);
-//        cmd.Parameters.AddWithValue("@activityLevel", survey.ActivityLevel);
-
-//        cmd.ExecuteNonQuery();
-//    }
-
-//}

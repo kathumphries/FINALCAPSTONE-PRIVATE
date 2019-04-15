@@ -10,5 +10,7 @@ namespace Capstone.DAL.Interfaces
     {
         List<Podcast> GetAllPodcasts();
         Podcast GetPodcast(string podcastID);
+        bool AddPodcast(Podcast podcast);
     }
 }
+

@@ -9,66 +9,42 @@ namespace Capstone.Models
 {
     public class User
     {
-        public int UserID { get; set; }
-
         [Required]
-        [DisplayName("Event Name")]
-        public string Name { get; set; }
-
+        public int UserID { get; set; }//userID pk
+        
         [Required]
         [DisplayName("Email")]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string Email { get; set; }//email
 
-        public bool IsAdmin { get; set; }
-        public bool IsProducer { get; set; }
-
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
-
-        public string TicketLevel { get; set; }
 
         [Required]
         [DisplayName("Password")]
         [DataType(DataType.Password)]
         [MinLength(8)]
         [MaxLength(100)]
-        public string Password { get; set; }
+        public string Password { get; set; }//password
 
-        [Required]
-        [DisplayName("Confirm Password")]
-        [DataType(DataType.Password)]
-        [Compare("Password")]
-        public string PasswordConfirm { get; set; }
-
-        public string Hash { get; set; }
+        public string Salt { get; set; } //salt
         
+
+        public int Role { get; set; } //role fk
+        [Required]
+        [DisplayName("Name")]
+
+
+        public string Name { get; set; }//name
+        
+        //[Required]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }//phoneNumber
+
+        public string TicketLevel { get; set; }//ticketLevel
+
+        public List<Event> EventList { get; set; }
     }
 }
 
+        //public bool IsAdmin { get; set; }
+        //public bool IsProducer { get; set; }
 
-//using System.ComponentModel.DataAnnotations;
-//[Display(EventName = "Enter Your EventName")]
-//public string Username { get; set; }
-
-//[Required]
-
-//[DataType(DataType.PhoneNumber)]
-
-//[DataType(DataType.EmailAddress)]
-
-//[MinLength(8, ErrorMessage = "Password must be 8 characters or more")]
-
-//[DataType(DataType.Password)]
-
-//[Compare("Password")]
-
-//[MaxLength(160)]
-
-//[MinLength(5)]
-
-//[DisplayName("Artist")]
-
-//[Range(0.01, 100.00,
-//    ErrorMessage = "Price must be between 0.01 and 100.00")]

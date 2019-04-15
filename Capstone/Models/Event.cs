@@ -32,14 +32,11 @@ namespace Capstone.Models
         [Display(Name = "Ticket Level")]
         public string TicketLevel { get; set; }  //TODO: change to int rename TicketID
 
-
         [Display(Name = "Upsale Copy")]
         public string UpsaleCopy { get; set; }
 
         [Display(Name = "Published")]
         public bool IsFinalized { get; set; }
-
-
 
         [Display(Name = "Event Title")]
         public string EventName { get; set; }

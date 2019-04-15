@@ -10,6 +10,7 @@ using Capstone.DAL.Interfaces;
 using Capstone.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
+using Capstone.Providers.Auth;
 
 namespace Capstone.Controllers
 {
@@ -56,6 +57,7 @@ namespace Capstone.Controllers
 
 
         [HttpGet]
+        [AuthorizationFilter("1")]
         public IActionResult EditEvent(int id )
         {
 
@@ -82,8 +84,8 @@ namespace Capstone.Controllers
       
 
         }
-        
 
+        [AuthorizationFilter("1")]  //admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditEvent(int id, EventViewModel model)
@@ -115,6 +117,7 @@ namespace Capstone.Controllers
 
 
         [HttpGet]
+        [AuthorizationFilter("1")]  //admin only
         public IActionResult SaveEvent()
         {
             Event eventItem = new Event();
@@ -135,6 +138,7 @@ namespace Capstone.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizationFilter("1")]  //admin only
         public IActionResult SaveEvent(EventViewModel model)
         {
             if (!ModelState.IsValid)
@@ -152,6 +156,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
+        [AuthorizationFilter("1")]  //admin only
         public IActionResult DeleteEvent(int? id)
         {
             if (id == null)
@@ -168,7 +173,8 @@ namespace Capstone.Controllers
         }
 
          [HttpPost]
-         [ValidateAntiForgeryToken]
+         [AuthorizationFilter("1")]  //admin only
+        [ValidateAntiForgeryToken]
          public IActionResult DeleteEvent(int id)
         {
            Event eventItem = eventSqlDal.GetEvent(id);
