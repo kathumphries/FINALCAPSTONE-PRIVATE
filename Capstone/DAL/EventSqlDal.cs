@@ -139,11 +139,11 @@ namespace Capstone.DAL
         }
 
 
-        public List<Event> GetEventsByDay(int day)
+        public List<Event> GetEventsByDay(DateTime date)
         {
             List<Event> eventItem = new List<Event>();
 
-            if (day == 0)
+            if (date == null)
             {
                 return eventItem;
             }
@@ -153,7 +153,7 @@ namespace Capstone.DAL
                 connection.Open();
 
                 SqlCommand command = new SqlCommand(SQL_GetEventsByDay, connection);
-                command.Parameters.AddWithValue("@day", day);
+                command.Parameters.AddWithValue("@day", date.Date);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
