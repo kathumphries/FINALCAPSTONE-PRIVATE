@@ -21,6 +21,7 @@ namespace Capstone.Models
 
         [Display(Name = "Genre Type")]
         public int GenreID { get; set; }
+        public Genre Genre { get; set; } 
         // public string SoundByte { get; set; }
         public DateTime OriginalRelease { get; set; }
         public string RunTime { get; set; }

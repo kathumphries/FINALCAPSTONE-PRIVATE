@@ -36,8 +36,16 @@ namespace Capstone.Controllers
         public IActionResult Index()
         {
             List<Event> eventList = eventSqlDal.GetAllEvents();
-
-
+           
+            eventList.ForEach(e => {
+                e.Podcast = podcastDal.GetPodcast(e.PodcastID);
+                e.Venue = venueSqlDal.GetVenue(e.VenueID);
+                e.Podcast.Genre = genreSqlDal.GetGenre(e.Podcast.GenreID);
+                e.Ticket = ticketSqlDal.GetTicket(e.TicketLevel);
+            });
+       
+            
+            
             return View(eventList);
         }
 
@@ -47,11 +55,18 @@ namespace Capstone.Controllers
         {
             EventViewModel model = new EventViewModel
             {
-                EventItem = eventSqlDal.GetEvent(id)
+                EventItem = eventSqlDal.GetEvent(id),
+            
+        };
 
-            };
             model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-            //model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
+            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+            model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
+            model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
+            model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
+            
+            
+            
             return View(model);
         }
 
@@ -61,7 +76,6 @@ namespace Capstone.Controllers
         public IActionResult EditEvent(int id )
         {
 
-            
                 EventViewModel model = new EventViewModel
                 {
                     EventItem = eventSqlDal.GetEvent(id),
@@ -70,20 +84,27 @@ namespace Capstone.Controllers
                 if (model.EventItem.PodcastID != null)
                 {
                     model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-                   // model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
-            }
+                    model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
+                }
 
+                if (model.EventItem.VenueID != null)
+                {
+                    model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
+                }
+
+                if (model.EventItem.TicketLevel != null)
+                {
+                    model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
+                }
+            
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();
                 model.TicketList = GetTicketList();
                 model.PodcastList = GetPodcastList();
 
-
-
             return View(model);
       
-
-        }
+            }
 
         [AuthorizationFilter("1")]  //admin only
         [HttpPost]
@@ -98,8 +119,23 @@ namespace Capstone.Controllers
             }
             else
             {
+                if (model.EventItem.PodcastID != null)
+                {
+                    model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+                    model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
+                }
 
-                //model.EventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(model.EventItem.Podcast.GenreID);
+                if (model.EventItem.VenueID != null)
+                {
+                    model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
+                }
+
+                if (model.EventItem.TicketLevel != null)
+                {
+                    model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
+                }
+
+                
                 model.PodcastList = GetPodcastList();
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();
@@ -124,7 +160,6 @@ namespace Capstone.Controllers
 
             EventViewModel model = new EventViewModel
             {
-                
                 EventItem = eventItem,
                 VenueList = GetVenueList(),
                 GenreList = GetGenreList(),

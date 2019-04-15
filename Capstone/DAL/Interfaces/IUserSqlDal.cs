@@ -15,5 +15,6 @@ namespace Capstone.DAL.Interfaces
         void UpdateUser(User user);
         bool DuplicateUser(User user);
         List<User> GetAllUsers();
+       
     }
 }

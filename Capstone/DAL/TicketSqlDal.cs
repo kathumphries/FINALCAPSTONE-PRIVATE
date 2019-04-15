@@ -13,6 +13,7 @@ namespace Capstone.DAL
         private readonly string connectionString;
 
         private const string SQL_GetAllTickets = "SELECT * FROM TicketLevel;";
+        private const string SQL_GetTicket = " Select * FROM TicketLevel WHERE ticketID = @ticketID;";
 
         public TicketSqlDal(string connectionString)
         {
@@ -37,6 +38,30 @@ namespace Capstone.DAL
             }
             return ticketList;
         }
+
+
+        public Ticket GetTicket(string ticketLevel)
+        {
+            Ticket ticket = new Ticket();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetTicket, connection);
+                command.Parameters.AddWithValue("@ticketID", Convert.ToInt32(ticketLevel));
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ticket = (MapToRowTicket(reader));
+                }
+            }
+
+            return ticket;
+        }
+
+
 
         private Ticket MapToRowTicket(SqlDataReader reader)
         {

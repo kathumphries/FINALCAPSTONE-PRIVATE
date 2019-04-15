@@ -14,12 +14,11 @@ namespace Capstone.Models
         // public string PodcastName { get; set; }
 
         public string PodcastID { get; set; }
-        public string GenreDescriptionBasedOnPodcast { get; set; }
-        
-        public Podcast Podcast { get; set; }
+        public Podcast Podcast { get; set; }  //will pull details from db but wont store. 
 
         [Display(Name = "Venue Location")]
         public string VenueID { get; set; }
+        public Venue Venue { get; set; }
 
         [Display(Name = "Cover Photo URL (https://bobo.com)")]
         public string CoverPhoto { get; set; }
@@ -31,6 +30,7 @@ namespace Capstone.Models
 
         [Display(Name = "Ticket Level")]
         public string TicketLevel { get; set; }  //TODO: change to int rename TicketID
+        public Ticket Ticket { get; set; }
 
         [Display(Name = "Upsale Copy")]
         public string UpsaleCopy { get; set; }
