@@ -14,6 +14,7 @@ namespace Capstone.DAL
 
         private const string SQL_GetAllGenres = "SELECT * FROM Genre WHERE isVisible = 1 ORDER BY genreID ASC;";
         private const string SQL_GetGenreDescription = "SELECT name FROM Genre WHERE  genreID = @genreID;";
+        private const string SQL_GetGenre = "SELECT * FROM Genre WHERE  genreID = @genreID;";
 
         public GenreSqlDal(string connectionString)
         {
@@ -70,10 +71,37 @@ namespace Capstone.DAL
                 genreDescription = command.ExecuteScalar().ToString();
 
 
-            return genreDescription;
+                return genreDescription;
+            }
         }
 
-    }
+        public Genre GetGenre(int genreID)
+            {
+                Genre genre = new Genre();
+                
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetGenre, connection);
+
+                    command.Parameters.AddWithValue("@genreID", genreID);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                    genre = (MapToRowGenreName(reader));
+
+                    }
+
+
+
+                    return genre;
+
+                }
+
+            }
 }
 }
 

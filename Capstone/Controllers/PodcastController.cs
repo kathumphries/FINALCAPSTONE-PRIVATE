@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Capstone.DAL.Interfaces;
-using Capstone.Models;
-using Capstone.Models.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Capstone.Models;
+using Capstone.DAL.Interfaces;
+using Capstone.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
+using Capstone.Providers.Auth;
 
 namespace Capstone.Controllers
 {
@@ -46,44 +49,45 @@ namespace Capstone.Controllers
         }
 
         //// GET: Podcast/Create
-        //public ActionResult Create()
-        //{
-        //    Podcast podcast = new Podcast();
-        //    PodcastViewModel model = new PodcastViewModel()
-        //    {
+        public ActionResult Create()
+        {
+            Podcast podcast = new Podcast();
+            PodcastViewModel model = new PodcastViewModel()
+            {
 
 
-        //        GenreList = GetGenreList(),
+                GenreList = GetGenreList(),
 
 
-        //    };
+            };
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //// POST: Podcast/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(PodcastViewModel model)
-        //{
+        // POST: Podcast/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(PodcastViewModel model)
+        {
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    else
-        //    {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
 
-        //        model.GenreList = GetGenreList();
-        //        bool result = podcastDal.AddPodcast(model.Podcast);
+                model.GenreList = GetGenreList();
+                bool result = podcastDal.AddPodcast(model.Podcast);
 
 
-        //        return RedirectToAction("Detail", new {id = model.Podcast.PodcastID});
+                return RedirectToAction("Detail", new { id = model.Podcast.PodcastID });
 
-        //    }
-        //}
+            }
+        }
 
         // GET: Podcast/Edit/5
+        [AuthorizationFilter("1")]  //admin only
         public ActionResult Edit(int id)
         {
             PodcastViewModel model = new PodcastViewModel

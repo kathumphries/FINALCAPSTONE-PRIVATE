@@ -1,0 +1,102 @@
+﻿@model Capstone.Models.Account.UserAdminViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h2>My Schedule</h2>
+
+@*//TODO  Kat for tomorrow*@
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList..EventID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.Beginning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.Ending)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.PodcastID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.GenreDescriptionBasedOnPodcast)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.VenueID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.CoverPhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.DescriptionCopy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.TicketLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.UpsaleCopy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.IsFinalized)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.EventList.EventName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (Event eventItem in Model.User.EventList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(eventItem => eventItem.User.EventList. 
+                @Html.DisplayFor(modelItem => item.User.EventList.Beginning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.Ending)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.PodcastID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.GenreDescriptionBasedOnPodcast)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.VenueID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.CoverPhoto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.DescriptionCopy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.TicketLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.UpsaleCopy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.IsFinalized)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.EventList.EventName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@

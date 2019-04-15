@@ -22,12 +22,11 @@ namespace Capstone.DAL
         //private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketID, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
 
 
-
+        private const string SQL_GetUserEvents = "Select *FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 AND User_Event.userID = @userID ORDER BY  beginning;";
+        
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
-
-
-                                   
+        
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
@@ -140,7 +139,6 @@ namespace Capstone.DAL
         }
 
 
-
         public List<Event> GetEventsByDay(int day)
         {
             List<Event> eventItem = new List<Event>();
@@ -166,8 +164,6 @@ namespace Capstone.DAL
 
             return eventItem;
         }
-
-
 
         public List<Event> GetEventsByTimeOfDay(string timeOfDayString)
         {
@@ -295,8 +291,6 @@ namespace Capstone.DAL
             return eventItem;
         }
 
-
-
         public bool UpdateEventDetails(Event eventItem)
         {
             int rowsAffected = 0;
@@ -331,9 +325,32 @@ namespace Capstone.DAL
                 return false;
             }
         }
-            
 
-            private Event MapToRowEvent(SqlDataReader reader)
+
+        public List<Event> GetUserEvents(User user)
+        {
+            List<Event> eventList = new List<Event>();
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetUserEvents, connection);
+                command.Parameters.AddWithValue("@userID", user.UserID);
+                
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    eventList.Add(MapToRowEvent(reader));
+                }
+
+
+                return eventList;
+            }
+        }
+
+        private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
             {
@@ -352,97 +369,11 @@ namespace Capstone.DAL
                 PodcastID = Convert.ToString(reader["podcastID"])
             };
         }
-    }
+
+
+
+       }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-//public Park GetParkDetail(string parkCode)
-//{
-//    Park park = new Park();
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-
-//        SqlCommand command = new SqlCommand(SQL_GetParkDetail, connection);
-//        command.Parameters.AddWithValue("@parkCode", parkCode);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
-//        {
-
-//            park = MaptToRowPark(reader);
-
-//        }
-//    }
-
-//    return park;
-//}
-
-//public List<Park> GetParks()
-//{
-//    List<Park> parkList = new List<Park>();
-
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-
-//        SqlCommand command = new SqlCommand(SQL_GetParks, connection);
-//        var reader = command.ExecuteReader();
-//        while (reader.Read())
-//        {
-
-//            parkList.Add(MaptToRowPark(reader));
-
-//        }
-//    }
-//    return parkList;
-//}
-
-//private Park MaptToRowPark(SqlDataReader reader)
-//{
-//    return new Park()
-//    {
-//        ParkCode = Convert.ToString(reader["parkCode"]),
-//        EventName = Convert.ToString(reader["parkName"]), // parkName
-//        State = Convert.ToString(reader["state"]), //state
-//        Acreage = Convert.ToInt32(reader["acreage"]), //acreage
-//        ElevationInFeet = Convert.ToInt32(reader["elevationInFeet"]), //elevationInFeet
-//        MilesOfTrail = Convert.ToInt32(reader["milesOfTrail"]), //milesOfTrail
-//        NumberOfCampsites = Convert.ToInt32(reader["numberOfCampsites"]), //numberOfCampsites
-//        Climate = Convert.ToString(reader["climate"]), //climate
-//        ParkDescription = Convert.ToString(reader["parkDescription"]), //parkDescription
-//        YearFounded = Convert.ToInt32(reader["yearFounded"]), //yearFounded
-//        AnnualVisitorCount = Convert.ToInt32(reader["annualVisitorCount"]), //annualVisitorCount
-//        Quote = Convert.ToString(reader["inspirationalQuote"]), //inspirationalQuote
-//        QuoteSource = Convert.ToString(reader["inspirationalQuoteSource"]), //inspirationalQuoteSource
-//        EntryFee = Convert.ToInt32(reader["entryFee"]), //entryFee
-//        NumberOfAnimalSpecies = Convert.ToInt32(reader["numberOfAnimalSpecies"]), //numbeOfAnimalSpecies
-
-//    };
-
-
-
-//public void SaveSurvey(DailySurvey survey)
-//{
-//    using (SqlConnection connection = new SqlConnection(connectionString))
-//    {
-//        connection.Open();
-//        SqlCommand cmd = new SqlCommand(SQL_SaveNewSurvey, connection);
-//        cmd.Parameters.AddWithValue("@parkCode", survey.ParkCode);
-//        cmd.Parameters.AddWithValue("@emailAddress", survey.EmailAddress);
-//        cmd.Parameters.AddWithValue("@state", survey.State);
-//        cmd.Parameters.AddWithValue("@activityLevel", survey.ActivityLevel);
-
-//        cmd.ExecuteNonQuery();
-//    }
-
-//}

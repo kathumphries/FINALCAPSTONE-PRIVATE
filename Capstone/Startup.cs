@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Capstone.DAL;
 using Capstone.DAL.Interfaces;
 using Capstone.Models;
+using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,16 +27,24 @@ namespace Capstone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-          
-            
+            // Session must be configured for our authentication
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                // This determines whether user consent for non-essential cookies
+                //is needed.
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                // Sets session expiration to 20 minuates
+                //options.IdleTimeout = TimeSpan.FromMinutes(20);
+                //options.Cookie.HttpOnly = true;
+            });
+
+            // Dependency Injection
             string connectionString = Configuration.GetConnectionString("MidwestPodcast");
             services.AddScoped<IEventSqlDal>(j => new EventSqlDal(connectionString));
             services.AddScoped<IGenreSqlDal>(j => new GenreSqlDal(connectionString));
@@ -47,24 +56,15 @@ namespace Capstone
             services.AddScoped<IUserEventSqlDal>(j => new UserEventSqlDal(connectionString));
             services.AddScoped<ITicketSqlDal>(j => new TicketSqlDal(connectionString));
 
+            // For Authentication
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthProvider, SessionAuthProvider>();
+            services.AddTransient<IUserSqlDal>(m => new UserSqlDal(connectionString));
 
-            // Indicates Session should be saved "in memory"
-            services.AddDistributedMemoryCache();
-
-
-            // Sets the options on Session
-            services.AddSession(options =>
-            {
-                // Sets session expiration to 20 minuates
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-            });
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMvc();
 
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,16 +73,17 @@ namespace Capstone
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            // Tells our application to use session
             app.UseSession();
 
             app.UseMvc(routes =>

@@ -9,5 +9,6 @@ namespace Capstone.DAL.Interfaces
     public interface ITicketSqlDal
     {
         List<Ticket> GetAllTickets();
+        Ticket GetTicket(string ticketLevel);
     }
 }

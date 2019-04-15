@@ -15,14 +15,25 @@ namespace Capstone.Models.ViewModel
         [Display(Name = "Venue")]
         public List<SelectListItem> VenueList { get; set; }
 
+       
+
         public List<SelectListItem> TicketList { get; set; }
+       
 
         [Display(Name = "Podcast")]
         public List<SelectListItem> PodcastList { get; set; }
 
+
         public List<Event> ComingEvents { get; set; }
 
         public List<Event> PastEvents { get; set; }
+
+      
+
+       
+
+
+
 
     }
 }
