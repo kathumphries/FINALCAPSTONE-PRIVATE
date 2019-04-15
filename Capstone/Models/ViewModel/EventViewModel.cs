@@ -19,6 +19,10 @@ namespace Capstone.Models.ViewModel
 
         [Display(Name = "Podcast")]
         public List<SelectListItem> PodcastList { get; set; }
-       
+
+        public List<Event> ComingEvents { get; set; }
+
+        public List<Event> PastEvents { get; set; }
+
     }
 }

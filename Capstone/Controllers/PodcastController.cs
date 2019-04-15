@@ -42,7 +42,7 @@ namespace Capstone.Controllers
             };
 
             return View(model);
-            ;
+            
         }
 
         //// GET: Podcast/Create

@@ -31,7 +31,7 @@
                     @Html.DisplayNameFor(model => model.Event.VenueID)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Event.CoverPhoto)
+                   Cover Photo
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
@@ -70,7 +70,12 @@
                     @Html.DisplayFor(modelItem => item.VenueID)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CoverPhoto)
+                    <div class="podcast-logo">
+                        @if (item.CoverPhoto != null)
+                        {
+                            <img src=@item.CoverPhoto )>
+                        }
+                    </div>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DescriptionCopy)

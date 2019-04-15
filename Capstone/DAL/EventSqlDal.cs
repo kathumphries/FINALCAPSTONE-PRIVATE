@@ -40,8 +40,8 @@ namespace Capstone.DAL
         private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
 
         private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";                                                                                                                                 
-                                                                                                                                       
-                                                                                                            
+        private const string SQL_GetEventsByDay = "SELECT * FROM Event WHERE DATEPART(dd, [beginning]) = @day ORDER BY beginning ASC;";
+
         public EventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
@@ -139,10 +139,34 @@ namespace Capstone.DAL
            
         }
 
-    
-    
-    
-       
+
+
+        public List<Event> GetEventsByDay(int day)
+        {
+            List<Event> eventItem = new List<Event>();
+
+            if (day == 0)
+            {
+                return eventItem;
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetEventsByDay, connection);
+                command.Parameters.AddWithValue("@day", day);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventItem.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventItem;
+        }
+
 
 
         public List<Event> GetEventsByTimeOfDay(string timeOfDayString)
@@ -217,6 +241,8 @@ namespace Capstone.DAL
 
             return eventItem;
         }
+
+
         
         public List<Event> GetEventsByGenre(Event genreEvent)
         {

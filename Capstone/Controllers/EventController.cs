@@ -41,6 +41,13 @@ namespace Capstone.Controllers
         }
 
 
+        public IActionResult EventCalender()
+        {
+            EventViewModel eventViewModel = GetEventCalenderDay();
+
+            return View(eventViewModel);
+        }
+
         [HttpGet]
         public IActionResult EventDetail(int id = 1)  //do not change variable name id due to routing
         {
@@ -237,7 +244,35 @@ namespace Capstone.Controllers
             return selectListPodcast;
         }
 
-        
+        private EventViewModel GetEventCalenderDay()
+        {
+            EventViewModel eventViewModel = new EventViewModel();
+            List<Event> eventList = new List<Event>();
+            List<Event> comingEvents = new List<Event>();
+            List<Event> pastEvents = new List<Event>();
+            Event eventItem = new Event();
+
+            eventList = eventSqlDal.GetAllEvents();
+
+            foreach (Event item in eventList)
+            {
+                if (item.Beginning.Date >= DateTime.Today.Date)
+                {
+                    comingEvents.Add(item);
+                }
+                else if (item.Beginning.Date < DateTime.Today.Date)
+                {
+                    pastEvents.Add(item);
+                }
+            }
+
+            eventViewModel.ComingEvents.AddRange(comingEvents);
+            eventViewModel.PastEvents.AddRange(pastEvents);
+
+            return eventViewModel;
+        }
+
+
 
     }
 }
