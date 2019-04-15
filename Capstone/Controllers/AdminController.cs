@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
 using Capstone.Models.ViewModel;
@@ -9,6 +10,9 @@ using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; //needed for the SetString and GetString extension methods
 using Capstone.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+
 
 namespace Capstone.Controllers
 {
@@ -50,14 +54,39 @@ namespace Capstone.Controllers
 
         [AuthorizationFilter("1")]  //<-- or filtered to only those that have a certain role
          [HttpGet]
-            public IActionResult Index()
+         public IActionResult Index()
             {
-                User user = authProvider.GetCurrentUser();
-               //what else?
-
-                return View(user);
+                List<User> users = userSqlDal.GetAllUsersByRole();
+                return View(users);
             }
 
-        
+//            [AuthorizationFilter("1")] 
+//            [HttpPost]
+//            if (ModelState.IsValid)
+//           {
+//                foreach (User user in users)
+//                {
+//                    var getCode = _context.TBMapBalances.Where(p => p.TbMapId == TbListId.TbMapId).FirstOrDefault();
+
+//                    if (getCode != null)
+//                    {
+//                        getCode.TbMapId = TbListId.TbMapId;
+//                    }
+
+//                }
+//// _context.Update(tbMapViewModel.TBMapBalances);
+//                _context.SaveChanges();
+
+//            }
+
+//            return RedirectToAction("TbMapView");
+//    }
+
+
+
+
+
+
+
     }
 }
