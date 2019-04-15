@@ -114,7 +114,7 @@ namespace Capstone.Controllers
                 }
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Account", "Login");
+                return RedirectToAction("Login", "Account");
             }
 
             return View(registerViewModel);

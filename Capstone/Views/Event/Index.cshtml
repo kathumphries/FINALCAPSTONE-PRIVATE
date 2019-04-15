@@ -92,6 +92,10 @@
 
                 @Html.ActionLink("DELETE Event", "DeleteEvent", "Event", new { id = item.PodcastID }, null)
 
+                @using (Html.BeginForm("EncodeICal", "Event", new {eventId = item.EventID }))
+                {
+                    <input type="submit" value="Add to iCal" class="ical-button" id="button" /><br />
+                }
 
             </td>
         </tr>

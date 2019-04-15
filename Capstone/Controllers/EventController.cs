@@ -11,6 +11,7 @@ using Capstone.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using Capstone.Providers.Auth;
+using System.Text;
 
 namespace Capstone.Controllers
 {
@@ -313,7 +314,43 @@ namespace Capstone.Controllers
             return eventViewModel;
         }
 
+        public ActionResult EncodeICal(int eventID)
+        {
+            Event eventItem = eventSqlDal.GetEvent(eventID);
+            eventItem.Venue = venueSqlDal.GetVenue(eventItem.VenueID);
 
+            string downloadFileName = "PodfestMidWestEvent.ics";
+            iCalendar ical = new iCalendar();
+            var icalStringbuilder = new StringBuilder();
 
-    }
+            icalStringbuilder.AppendLine("BEGIN:VCALENDAR");
+            icalStringbuilder.AppendLine("PRODID:-//PodfestMidwest//EN");
+            icalStringbuilder.AppendLine("VERSION:2.0");
+
+            icalStringbuilder.AppendLine("BEGIN:VEVENT");
+            icalStringbuilder.AppendLine("SUMMARY;LANGUAGE=en-us:" + eventItem.EventName);
+            icalStringbuilder.AppendLine("CLASS:PUBLIC");
+            icalStringbuilder.AppendLine(string.Format("CREATED:{0:yyyyMMddTHHmmssZ}", DateTime.UtcNow));
+            icalStringbuilder.AppendLine("DESCRIPTION:" + eventItem.DescriptionCopy);
+            icalStringbuilder.AppendLine(string.Format("DTSTART:{0:yyyyMMddTHHmmssZ}", eventItem.Beginning));
+            icalStringbuilder.AppendLine(string.Format("DTEND:{0:yyyyMMddTHHmmssZ}", eventItem.Ending));
+            icalStringbuilder.AppendLine("SEQUENCE:0");
+            icalStringbuilder.AppendLine("UID:" + Guid.NewGuid());
+            icalStringbuilder.AppendLine(
+                string.Format(
+                    "LOCATION:{0}\\, {1}\\, {2}\\, {3} {4}",
+                    eventItem.Venue.DisplayName,
+                    eventItem.Venue.Address1,
+                    eventItem.Venue.City,
+                    eventItem.Venue.State,
+                    eventItem.Venue.ZipCode).Trim());
+            icalStringbuilder.AppendLine("END:VEVENT");
+            icalStringbuilder.AppendLine("END:VCALENDAR");
+
+            var bytes = Encoding.UTF8.GetBytes(icalStringbuilder.ToString());
+
+            return this.File(bytes, "text/calendar", downloadFileName);
+        }
+
+        }
 }

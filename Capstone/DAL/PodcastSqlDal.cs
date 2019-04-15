@@ -72,7 +72,9 @@ namespace Capstone.DAL
 
         private Podcast MapToRowPodcast(SqlDataReader reader)
         {
-            return new Podcast()
+            Podcast podcast = new Podcast();
+
+            podcast = new Podcast()
             {
                 PodcastID = Convert.ToInt32(reader["podcastID"]),
                 UserID = Convert.ToInt32(reader["userID"]),
@@ -80,13 +82,11 @@ namespace Capstone.DAL
                 URL = Convert.ToString(reader["url"]),
                 Title = Convert.ToString(reader["title"]),
                 Description = Convert.ToString(reader["description"]),
-                GenreID = Convert.ToInt32(reader["genreID"]),                
+                GenreID = Convert.ToInt32(reader["genreID"]),
                 OriginalRelease = Convert.ToDateTime(reader["originalRelease"]),
                 RunTime = Convert.ToString(reader["runTime"]),
                 ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]),
                 AverageLength = Convert.ToString(reader["averageLength"]),
-                EpisodeCount = Convert.ToInt32(reader["episodeCount"]),
-                DownloadCount = Convert.ToInt32(reader["downloadCount"]),
                 MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
                 Demographic = Convert.ToString(reader["demographic"]),
                 Affiliations = Convert.ToString(reader["affiliations"]),
@@ -96,7 +96,30 @@ namespace Capstone.DAL
 
             };
 
+            int colIndex = reader.GetOrdinal("episodeCount");
 
+            if(reader.IsDBNull(colIndex))
+            {
+                podcast.EpisodeCount = 0;
+            }
+            else
+            {
+                podcast.EpisodeCount = Convert.ToInt32(reader["episodeCount"]);
+            }
+
+            colIndex = reader.GetOrdinal("downloadCount");
+
+            if (reader.IsDBNull(colIndex))
+            {
+                podcast.DownloadCount = 0;
+            }
+            else
+            {
+                podcast.DownloadCount = Convert.ToInt32(reader["downloadCount"]);
+            }
+
+            return podcast;
+            
         }
     }
 }
