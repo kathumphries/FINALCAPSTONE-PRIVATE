@@ -89,7 +89,7 @@ namespace Capstone.Controllers
 
                 bool result = userSqlDal.UpdateUserRole(model.User);
 
-                return RedirectToAction("Index", "AdminController");
+                return RedirectToAction("Index", "Admin");
 
 
             }
