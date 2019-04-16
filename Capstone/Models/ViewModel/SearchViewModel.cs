@@ -14,8 +14,12 @@ namespace Capstone.Models.ViewModel
 
         public Event Event { get; set; }
         public List<Event> EventList { get; set; }
+        public List<Event> ArchivedEventList { get; set; }
+  
+        public List<List<Event>> EventListByDay { get; set; }
 
-        [Display(Name = "Genre List")]
+
+       [Display(Name = "Genre List")]
         public List<SelectListItem> GenreList { get; set; }
 
         [Display(Name = "Time of Day")]

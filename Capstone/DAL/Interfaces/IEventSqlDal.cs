@@ -17,5 +17,6 @@ namespace Capstone.DAL.Interfaces
         List<Event> Search(Event eventItem, User user);
         List<Event> GetFutureEventsByDay(Event eventItem, User user);
         List<Event> GetPastEvents(Event eventItem, User user);
+        List<Event> GetFutureEvents(Event eventItem, User user);
     }
 }

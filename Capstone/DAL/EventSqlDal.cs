@@ -12,7 +12,7 @@ namespace Capstone.DAL
     {
         private readonly string connectionString;
 
-        private const string SQL_GetAllEvents ="SELECT  eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName " +
+        private const string SQL_GetAllEvents = "SELECT  eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName " +
             "FROM Event  GROUP BY  CAST(event.beginning AS DATE), " +
             "eventID, beginning,ending ,podcastID ,venueID ,coverPhoto,descriptionCopy,ticketID,upsaleCopy,isFinalized,eventName  " +
             "Order by CAST(event.beginning AS DATE) ASC ;";
@@ -23,10 +23,10 @@ namespace Capstone.DAL
         private const string SQL_GetPublicEvents = "Select * FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 ORDER BY  beginning;";
 
         private const string SQL_GetUserEvents = "Select * FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 AND User_Event.userID = @userID ORDER BY  beginning;";
-        
+
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
-        
+
         private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
@@ -41,7 +41,7 @@ namespace Capstone.DAL
 
         private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
 
-        private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";                                                                                                                                 
+        private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";
         private const string SQL_GetEventsByDay = "SELECT * FROM Event WHERE DATEPART(dd, [beginning]) = @day ORDER BY beginning ASC;";
 
         public EventSqlDal(string connectionString)
@@ -68,7 +68,7 @@ namespace Capstone.DAL
                 cmd.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 cmd.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
                 cmd.Parameters.AddWithValue("@eventName", eventItem.EventName);
-                
+
                 count = cmd.ExecuteNonQuery();
             }
 
@@ -124,7 +124,7 @@ namespace Capstone.DAL
 
         public void RemoveEvent(int eventID)
         {
-            
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -134,7 +134,7 @@ namespace Capstone.DAL
                     command.Parameters.AddWithValue("@eventID", eventID);
                     command.ExecuteNonQuery();
                 }
-            }     
+            }
         }
 
 
@@ -176,31 +176,19 @@ namespace Capstone.DAL
 
             if (user.Role == 1)
             {
-                if (eventItem.Podcast.GenreID != 0)
-                {
-                    SQL_Search = "SELECT* FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID WHERE CONVERT(date, GETDATE()) <= CAST(beginning AS DATE)";
-                }
-                else if (eventItem.TimeOfDayString != null || eventItem.VenueID != null || eventItem.TicketLevel != null)
-                {
-                    SQL_Search = "SELECT * FROM Event WHERE"; // AND CONVERT(date, GETDATE()) <= CAST(beginning AS DATE)
-                }
+                SQL_Search = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID WHERE CONVERT(date, GETDATE()) <= CAST(beginning AS DATE)";
+
             }
             else
             {
-                if (eventItem.Podcast.GenreID != 0)
-                {
-                    SQL_Search = "SELECT* FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID WHERE Event.isFinalized = 1 AND CONVERT(date, GETDATE()) <= CAST(beginning AS DATE)";
-                }
-                else if (eventItem.TimeOfDayString != null || eventItem.VenueID != null || eventItem.TicketLevel != null)
-                {
-                    SQL_Search = "SELECT * FROM Event WHERE Event.isFinalized = 1"; // AND CONVERT(date, GETDATE()) <= CAST(beginning AS DATE)
-                }
+                SQL_Search = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID WHERE CONVERT(date, GETDATE()) <= CAST(beginning AS DATE) AND Event.isFinalized = 1"; 
+
             }
-           
+
 
             if (eventItem.TimeOfDayString != null)
             {
-                timeOfDay = Convert.ToInt32(eventItem.TimeOfDayString);              
+                timeOfDay = Convert.ToInt32(eventItem.TimeOfDayString);
             }
 
             if (timeOfDay == 1)
@@ -217,13 +205,18 @@ namespace Capstone.DAL
             }
 
             if (eventItem.VenueID != null)
-            {
+            {     
                 SQL_Search += " AND venueID = @locationID";
             }
 
             if (eventItem.TicketLevel != null)
             {
                 SQL_Search += " AND ticketID = @ticketID";
+            }
+
+            if (eventItem.Podcast.GenreID != 0)
+            {
+                SQL_Search += " AND Podcast.genreID = @genreID";
             }
 
             if (eventItem.TimeOfDayString != null || eventItem.VenueID != null || eventItem.TicketLevel != null || eventItem.Podcast.GenreID != 0)
@@ -239,7 +232,7 @@ namespace Capstone.DAL
             {
                 connection.Open();
 
-                SqlCommand command = new SqlCommand(SQL_Search, connection);         
+                SqlCommand command = new SqlCommand(SQL_Search, connection);
 
                 if (eventItem.VenueID != null)
                 {
@@ -267,9 +260,18 @@ namespace Capstone.DAL
             return eventList;
         }
 
-        public List<Event> GetFutureEvents(Event eventItem)
+        public List<Event> GetFutureEvents(Event eventItem, User user)
         {
             List<Event> eventList = new List<Event>();
+
+            if (user.Role == 1)
+            {
+                SQL_GetPastEvents = "SELECT * FROM Event WHERE  CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+            }
+            else
+            {
+                SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+            }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -318,7 +320,7 @@ namespace Capstone.DAL
             return eventList;
         }
 
-       
+
         public bool UpdateEventDetails(Event eventItem)
         {
             int rowsAffected = 0;
@@ -327,7 +329,7 @@ namespace Capstone.DAL
                 connection.Open();
 
                 SqlCommand command = new SqlCommand(SQL_UpdateEventDetails, connection);
-                  
+
                 command.Parameters.AddWithValue("@eventID", eventItem.EventID);
                 command.Parameters.AddWithValue("@beginning", eventItem.Beginning);
                 command.Parameters.AddWithValue("@ending", eventItem.Ending);
@@ -340,8 +342,8 @@ namespace Capstone.DAL
                 command.Parameters.AddWithValue("@podcastID", Convert.ToInt32(eventItem.PodcastID));
                 command.Parameters.AddWithValue("@venueID", Convert.ToInt32(eventItem.VenueID));
 
-            rowsAffected = command.ExecuteNonQuery();
-                
+                rowsAffected = command.ExecuteNonQuery();
+
             }
 
             if (rowsAffected == 1)
@@ -366,7 +368,7 @@ namespace Capstone.DAL
 
                 SqlCommand command = new SqlCommand(SQL_GetUserEvents, connection);
                 command.Parameters.AddWithValue("@userID", user.UserID);
-                
+
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -395,12 +397,14 @@ namespace Capstone.DAL
                 EventName = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
                 PodcastID = Convert.ToString(reader["podcastID"])
+                
+                
             };
         }
 
 
-       
-        
+
+
 
     }
 }

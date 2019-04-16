@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
 using Capstone.Models;
 using Capstone.Models.ViewModel;
+using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,27 +15,31 @@ namespace Capstone.Controllers
 {
     public class SearchController : Controller
     {
+        const string SessionName = "User_Auth";
 
+        private readonly IAuthProvider authProvider;
         private readonly IPodcastSqlDal podcastDal;
         private readonly IEventSqlDal eventSqlDal;
         private readonly IGenreSqlDal genreSqlDal;
         private readonly IVenueSqlDal venueSqlDal;
         private readonly ITicketSqlDal ticketSqlDal;
 
-        public SearchController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
+        public SearchController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal, IAuthProvider authProvider)
         {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
             this.ticketSqlDal = ticketSqlDal;
+            this.authProvider = authProvider;
         }
 
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Index()
         {
-
+            User user = new User();
+            user = authProvider.GetCurrentUser();
 
             Event eventItem = new Event();
             eventItem.Podcast = new Podcast();
@@ -48,7 +53,13 @@ namespace Capstone.Controllers
                 TimeOfDayList = GetTimeOfDay()
             };
 
-            model.EventList = eventSqlDal.GetAllEvents();
+            model.EventList = eventSqlDal.GetFutureEvents(eventItem, user);
+            model.ArchivedEventList = eventSqlDal.GetPastEvents(eventItem, user);
+
+            model.EventListByDay = model.EventList
+            .GroupBy(p => p.Beginning.Date)
+            .Select(g => g.ToList())
+            .ToList();
 
             return View(model);
         }
@@ -57,8 +68,8 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SearchEvents(SearchViewModel model)
         {
-            User user = new User();
-            user.Role = 1;
+            User user = authProvider.GetCurrentUser();
+
             model.EventList = eventSqlDal.Search(model.Event, user);
 
             return View(model);
