@@ -65,12 +65,14 @@
     </dd>
 </dl>
 
+
 <div>
-    only visible to Admin
+    @*only visible to Admin*@
 
     @* TODO ADD ADMIN AUTH *@
  
                     @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) 
                     @Html.ActionLink("Remove", "DeleteEvent", new { id = Model.EventItem.EventID })
                     @Html.ActionLink("Create New", "SaveEvent")
+                    @Html.ActionLink("iCal", "EncodeiCal")
 </div>
