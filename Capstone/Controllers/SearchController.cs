@@ -41,7 +41,6 @@ namespace Capstone.Controllers
             User user = new User();
             user = authProvider.GetCurrentUser();
 
-
             Event eventItem = new Event();
             eventItem.Podcast = new Podcast();
             SearchViewModel model = new SearchViewModel
@@ -55,28 +54,12 @@ namespace Capstone.Controllers
             };
 
             model.EventList = eventSqlDal.GetFutureEvents(eventItem, user);
-           
-            //eventItem.Day = 0;
-            //model.EventListDay0 = eventSqlDal.GetFutureEventsByDay(eventItem, user);
-            //eventItem.Day = 1;
-            //model.EventListDay1 = eventSqlDal.GetFutureEventsByDay(eventItem, user);
-            //eventItem.Day = 2;
-            //model.EventListDay2 = eventSqlDal.GetFutureEventsByDay(eventItem, user);
-            //eventItem.Day = 3;
-            //model.EventListDay3 = eventSqlDal.GetFutureEventsByDay(eventItem, user);
-            //eventItem.Day = 4;
-            //model.EventListDay4 = eventSqlDal.GetFutureEventsByDay(eventItem, user);
-
             model.ArchivedEventList = eventSqlDal.GetPastEvents(eventItem, user);
 
             model.EventListByDay = model.EventList
             .GroupBy(p => p.Beginning.Date)
             .Select(g => g.ToList())
             .ToList();
-
-            var temp = model.EventListByDay[0];
-
-            var listTo = model.EventListByDay[1];
 
             return View(model);
         }
