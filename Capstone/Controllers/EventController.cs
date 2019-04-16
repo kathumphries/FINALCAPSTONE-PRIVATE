@@ -312,8 +312,5 @@ namespace Capstone.Controllers
 
             return eventViewModel;
         }
-
-
-
     }
 }

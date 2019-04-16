@@ -20,9 +20,9 @@ namespace Capstone.DAL
         private const string SQL_GetEvent = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID Join Venue ON Event.venueID = Venue.venueID WHERE eventID = @eventID;";
 
         //private const string SQL_AddEventDetail = "INSERT INTO Event (beginning, ending, coverPhoto, descriptionCopy,  ticketID, upsaleCopy, isFinalized, eventName) VALUES (@beginning, @ending, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
+        private const string SQL_GetPublicEvents = "Select * FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 ORDER BY  beginning;";
 
-
-        private const string SQL_GetUserEvents = "Select *FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 AND User_Event.userID = @userID ORDER BY  beginning;";
+        private const string SQL_GetUserEvents = "Select * FROM Event JOIN User_Event ON User_Event.eventID = Event.eventID WHERE Event.isFinalized = 1 AND User_Event.userID = @userID ORDER BY  beginning;";
         
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
@@ -34,7 +34,9 @@ namespace Capstone.DAL
         private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
-
+        private const string SQL_GetFutureEventsByDay = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, @date + @day) <= CAST(beginning AS DATE) AND CONVERT (date, @date + @day + 1) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
+        private const string SQL_GetFutureEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC;";
+        private const string SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
 
         private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
 
@@ -131,11 +133,7 @@ namespace Capstone.DAL
                     command.Parameters.AddWithValue("@eventID", eventID);
                     command.ExecuteNonQuery();
                 }
-
-
-            }
-
-           
+            }     
         }
 
 
@@ -163,6 +161,49 @@ namespace Capstone.DAL
             }
 
             return eventItem;
+        }
+
+        public List<Event> GetFutureEvents(Event eventItem)
+        {
+            List<Event> eventList = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetFutureEvents, connection);
+                command.Parameters.AddWithValue("@day", eventItem.Day);
+                command.Parameters.AddWithValue("@date", eventItem.PodfestStartTime);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventList.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventList;
+        }
+
+        public List<Event> GetPastEvents(Event eventItem)
+        {
+            List<Event> eventList = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetPastEvents, connection);
+                //command.Parameters.AddWithValue("@day", eventItem.Day);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventList.Add(MapToRowEvent(reader));
+                }
+            }
+
+            return eventList;
         }
 
         public List<Event> GetEventsByTimeOfDay(string timeOfDayString)

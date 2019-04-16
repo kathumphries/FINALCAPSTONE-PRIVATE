@@ -9,8 +9,10 @@ namespace Capstone.Models
     public class Event
     {
         public int EventID { get; set; }
+        public int Day { get; set; }
         public DateTime Beginning { get; set; }
         public DateTime Ending { get; set; }
+        public DateTime PodfestStartTime { get; set; } = new DateTime(2019, 8, 23);
         // public string PodcastName { get; set; }
 
         public string PodcastID { get; set; }
