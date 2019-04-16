@@ -7,36 +7,31 @@ using System.Web;
 
 
 
-
-
-
-
 namespace Capstone.Models
 {
     public static class CalendarHelpers
     {
         //Google Calender
 
-        public static string GoogleCalendar(this HtmlHelper helper, string linkText, string what, DateTime start, DateTime? end, string description, string location, string websiteName, string websiteAddress, string attributes)
+        public static string GoogleCalendar(this HtmlHelper helper, string linkText, Event eventItem, string attributes)
         {
             //parse dates
-            var dates = start.ToString("yyyyMMddTHHmmssZ");
-            if (end.HasValue && end > start)
+            var dates = eventItem.Beginning.ToString("yyyyMMddTHHmmssZ");
+            if ((eventItem.Ending != null) && eventItem.Ending > eventItem.Beginning)
             {
-                dates += "/" + end.Value.ToString("yyyyMMddTHHmmssZ");
+                dates += "/" + eventItem.Ending.ToString("yyyyMMddTHHmmssZ");
             }
             else
             {
-                dates += "/" + start.ToString("yyyyMMddTHHmmssZ");
+                dates += "/" + eventItem.Beginning.ToString("yyyyMMddTHHmmssZ");
             }
 
-            var path = string.Format("http://www.google.com/calendar/event?action=TEMPLATE&text={0}&dates={1}&details={2}&location={3}&trp=false&sprop={4}&sprop=name:{5}",
-                                            what,
+            var path = string.Format("http://www.google.com/calendar/event?action=TEMPLATE&text={0}&dates={1}&details={2}&location={3}",
+                                            eventItem.EventName,
                                             dates,
-                                            description,
-                                            location,
-                                            websiteName,
-                                            websiteAddress);
+                                            eventItem.DescriptionCopy,
+                                            eventItem.VenueID                                           
+                                            );
 
             var calendar = string.Format("<a href='{0}' target='_blank' {1}>{2}</a>",
                                             HttpUtility.UrlPathEncode(path),
@@ -46,16 +41,12 @@ namespace Capstone.Models
             return calendar;
         }
 
-        public static string GoogleCalendar(this HtmlHelper helper, string linkText, string what, DateTime start, DateTime? end, string description, string location, string websiteName, string websiteAddress)
+        public static string GoogleCalendar(this HtmlHelper helper, string linkText, Event eventItem)
         {
-            return GoogleCalendar(helper, linkText, what, start, end, description, location, websiteName, websiteAddress, "");
+            return GoogleCalendar(helper, linkText, eventItem, "");
         }
 
-        public static string GoogleCalendar(this HtmlHelper helper, string linkText, string what, DateTime start, string description)
-        {
-            return GoogleCalendar(helper, linkText, what, start, null, description, "", "", "", "");
-        }
-
+       
         //Yahoo CalendarHelpers
 
         public static string YahooCalendar(this HtmlHelper helper, string linkText, string what, DateTime start, DateTime? end, string description, string venue, string street, string city, string attributes)
