@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
 using Capstone.Models.ViewModel;
@@ -33,9 +32,8 @@ namespace Capstone.Controllers
 
 
         public AdminController(IAuthProvider authProvider, IUserSqlDal userSqlDal)
-        //IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal,
-        //IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal , ITicketSqlDal ticketSqlDal)
-
+            //IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal,
+            //IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
         {
             this.authProvider = authProvider;
             this.userSqlDal = userSqlDal;
@@ -43,7 +41,7 @@ namespace Capstone.Controllers
             //this.eventSqlDal = eventSqlDal;
             //this.genreSqlDal = genreSqlDal;
             //this.venueSqlDal = venueSqlDal;
-            // this.ticketSqlDal = ticketSqlDal;
+            //this.ticketSqlDal = ticketSqlDal;
         }
 
         //Roles in db: 
@@ -55,53 +53,40 @@ namespace Capstone.Controllers
 
 
         [AuthorizationFilter("1")]  //<-- or filtered to only those that have a certain role
-        [HttpGet]
-        public IActionResult Index()
-        {
-            List<User> users = userSqlDal.GetAllUsersByRole();
-            return View(users);
-        }
-
-
-        [HttpGet]
-       // [AuthorizationFilter("1")]
-        public IActionResult EditRole(int id)
-        {
-
-            UserRoleAdminViewModel model = new UserRoleAdminViewModel();
-            model.User = userSqlDal.GetUserByID(id);
-            return View(model);
-
-        }
-
-        [AuthorizationFilter("1")] //admin only
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditRole(UserRoleAdminViewModel model)
-        {
-
-            if (!ModelState.IsValid)
+         [HttpGet]
+         public IActionResult Index()
             {
-                return View(model);
-            }
-            else
-            {
-
-                bool result = userSqlDal.UpdateUserRole(model.User);
-
-                return RedirectToAction("Index", "AdminController");
-
-
+                List<User> users = userSqlDal.GetAllUsersByRole();
+                return View(users);
             }
 
+//            [AuthorizationFilter("1")] 
+//            [HttpPost]
+//            if (ModelState.IsValid)
+//           {
+//                foreach (User user in users)
+//                {
+//                    var getCode = _context.TBMapBalances.Where(p => p.TbMapId == TbListId.TbMapId).FirstOrDefault();
 
-        }
+//                    if (getCode != null)
+//                    {
+//                        getCode.TbMapId = TbListId.TbMapId;
+//                    }
+
+//                }
+//// _context.Update(tbMapViewModel.TBMapBalances);
+//                _context.SaveChanges();
+
+//            }
+
+//            return RedirectToAction("TbMapView");
+//    }
+
+
+
 
 
 
 
     }
-
 }
-
-

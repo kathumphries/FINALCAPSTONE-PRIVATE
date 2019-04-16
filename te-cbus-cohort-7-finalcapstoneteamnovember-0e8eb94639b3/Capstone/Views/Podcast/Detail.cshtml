@@ -1,0 +1,138 @@
+﻿@model Capstone.Models.ViewModel.PodcastViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>Podcast</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.PodcastID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.PodcastID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.UserID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.UserID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.Hosting)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.Hosting)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.URL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.URL)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.GenreID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.GenreID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.OriginalRelease)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.OriginalRelease)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.RunTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.RunTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.ReleaseFrequency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.ReleaseFrequency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.AverageLength)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.AverageLength)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.EpisodeCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.EpisodeCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.DownloadCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.DownloadCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.MeasurementPlatform)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.MeasurementPlatform)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.Demographic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.Demographic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.Affiliations)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.Affiliations)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.BroadcastCity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.BroadcastCity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.BroadcastState)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.BroadcastState)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.InOhio)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.InOhio)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Podcast.IsSponsored)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Podcast.IsSponsored)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id= Model.Podcast.PodcastID} )
+    <a asp-action="Index">Back to List</a>
+</div>

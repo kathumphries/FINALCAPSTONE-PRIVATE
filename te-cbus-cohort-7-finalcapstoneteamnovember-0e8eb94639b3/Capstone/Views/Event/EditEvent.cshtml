@@ -1,0 +1,94 @@
+﻿@model Capstone.Models.ViewModel.EventViewModel
+
+@{
+    ViewData["Title"] = "EditEvent";
+}
+
+<h2>Change it UP!</h2>
+
+<h4>Testing Here</h4>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditEvent">
+
+            @Html.HiddenFor(model => model.EventItem.EventID)
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EventItem.EventName" class="control-label"></label>
+                <input asp-for="EventItem.EventName" class="form-control" />
+                <span asp-validation-for="EventItem.EventName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EventItem.Beginning" class="control-label"></label>
+                <input asp-for="EventItem.Beginning" class="form-control" />
+                <span asp-validation-for="EventItem.Beginning" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventItem.Ending" class="control-label"></label>
+                <input asp-for="EventItem.Ending" class="form-control" />
+                <span asp-validation-for="EventItem.Ending" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="EventItem.CoverPhoto" class="control-label"></label>
+                <input asp-for="EventItem.CoverPhoto" class="form-control" />
+                <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventItem.DescriptionCopy" class="control-label"></label>
+                <input asp-for="EventItem.DescriptionCopy" class="form-control" />
+                <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EventItem.TicketLevel" class="control-label"></label>
+                @Html.DropDownListFor(model => model.EventItem.TicketLevel, Model.TicketList, new { @class = "form-control" })
+                <span asp-validation-for="EventItem.TicketLevel" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="EventItem.UpsaleCopy" class="control-label"></label>
+                <input asp-for="EventItem.UpsaleCopy" class="form-control" />
+                <span asp-validation-for="EventItem.UpsaleCopy" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="EventItem.IsFinalized" class="control-label"></label>
+                <input type="checkbox" asp-for="EventItem.IsFinalized" value="true"><br>
+                <span asp-validation-for="EventItem.IsFinalized" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EventItem.PodcastID" class="control-label"></label>
+                @Html.DropDownListFor(model => model.EventItem.PodcastID, Model.PodcastList, new { @class = "form-control" })
+                <span asp-validation-for="EventItem.PodcastID" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="VenueList" class="control-label"></label>
+                @Html.DropDownListFor(model => model.EventItem.VenueID, Model.VenueList, new { @class = "form-control" })
+                <span asp-validation-for="EventItem.CoverPhoto" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+            <div class="form-group-home">
+                <a id="home-link" asp-controller="Home" asp-action="Index">Back to Home page</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

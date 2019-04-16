@@ -66,9 +66,9 @@
             
             
             <td>
-                @Html.ActionLink("Event - Edit", "EditRole", "admin", new { id = item.Email }, null)
-                
-                </td>
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
         </tr>
 }
     </tbody>

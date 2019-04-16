@@ -16,7 +16,7 @@ namespace Capstone.DAL.Interfaces
         bool DuplicateUser(User user);
         List<User> GetAllUsers();
         List<User> GetAllUsersByRole();
-        bool UpdateUserRole(User user);
-        User GetUserByID(int id);
+
+
     }
 }

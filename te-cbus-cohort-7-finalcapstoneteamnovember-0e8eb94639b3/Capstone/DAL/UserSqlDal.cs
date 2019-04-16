@@ -18,15 +18,11 @@ namespace Capstone.DAL
         }
 
         private const string SQL_GetCurrentUser = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] WHERE email = @email;";
-        private const string SQL_GetUserByID = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] WHERE userID = @userID;";
         private const string SQL_CreateUser = "INSERT INTO [PodfestMidwestDB].[dbo].[User] (email, password, salt, role) VALUES (@email, @password, @salt, @role);";  // add extra requirements...
         private const string SQL_GetAllUsers = "SELECT * FROM [PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
         private const string SQL_DeleteUser = "DELETE FROM user WHERE userID = @userID;";
         private const string SQL_UpdateUser ="UPDATE users SET password = @password, salt = @salt, role = @role WHERE userID = @userID;";
-
-        private const string SQL_GetAllUsersByRole =
-            "SELECT* FROM[PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
-        private const string SQL_UpdateUserRole = "UPDATE event SET role=@role WHERE userID = @userID";
+        private const string SQL_GetAllUsersByRole = "SELECT* FROM[PodfestMidwestDB].[dbo].[User] ORDER BY role, email;";
 
 
 
@@ -122,45 +118,7 @@ namespace Capstone.DAL
             return user;
         }
 
-
-        public User GetUserByID(int id)
-        {
-            User user = null;
-
-
-            try
-            {
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand(SQL_GetUserByID, connection);
-                    command.Parameters.AddWithValue("@userID",id);
-
-
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-
-                        user = MaptToRowUser(reader);
-
-                    }
-
-                    return user;
-                }
-            }
-            catch (SqlException ex)
-            {
-                string exception = ex.ToString();
-                user = null;
-            }
-
-            return user;
-        }
-
-
-
+        
         public void UpdateUser(User user)
         {
             
@@ -268,33 +226,8 @@ namespace Capstone.DAL
             return users;
         }
 
+    
 
-
-        public bool UpdateUserRole(User user)
-        {
-            int rowsAffected = 0;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand(SQL_UpdateUserRole, connection);
-
-                command.Parameters.AddWithValue("@userID", user.UserID);
-                command.Parameters.AddWithValue("@role", user.Role);
-
-                rowsAffected = command.ExecuteNonQuery();
-
-            }
-
-            if (rowsAffected == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
 
     }//class
