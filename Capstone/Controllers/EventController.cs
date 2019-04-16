@@ -74,8 +74,6 @@ namespace Capstone.Controllers
             model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
             model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
 
-
-
             return View(model);
         }
 
