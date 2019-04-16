@@ -5,7 +5,7 @@
 }
 
 
-@if (Model == null)  //not logged in
+@if (Model.Role == 0)  //not logged in
 {
     <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
     <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
