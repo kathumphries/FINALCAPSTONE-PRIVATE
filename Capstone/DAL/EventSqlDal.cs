@@ -267,9 +267,18 @@ namespace Capstone.DAL
             return eventList;
         }
 
-        public List<Event> GetFutureEvents(Event eventItem)
+        public List<Event> GetFutureEvents(Event eventItem, User user)
         {
             List<Event> eventList = new List<Event>();
+
+            if (user.Role == 1)
+            {
+                SQL_GetPastEvents = "SELECT * FROM Event WHERE  CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+            }
+            else
+            {
+                SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+            }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

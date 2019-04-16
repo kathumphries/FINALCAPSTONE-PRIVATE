@@ -108,8 +108,11 @@ namespace Capstone.Providers.Auth
             {
                 return userDAL.GetUser(email);
             }
-            
-            return null;
+            else
+            {
+                User user = new User();
+                return user;
+            }
         }
 
         /// <summary>
