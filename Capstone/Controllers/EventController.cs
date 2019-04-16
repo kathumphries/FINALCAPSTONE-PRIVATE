@@ -11,6 +11,7 @@ using Capstone.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using Capstone.Providers.Auth;
+using System.Text;
 
 namespace Capstone.Controllers
 {
@@ -24,7 +25,7 @@ namespace Capstone.Controllers
         private readonly ITicketSqlDal ticketSqlDal;
 
         public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
-         {
+        {
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
@@ -36,16 +37,17 @@ namespace Capstone.Controllers
         public IActionResult Index()
         {
             List<Event> eventList = eventSqlDal.GetAllEvents();
-           
-            eventList.ForEach(e => {
+
+            eventList.ForEach(e =>
+            {
                 e.Podcast = podcastDal.GetPodcast(e.PodcastID);
                 e.Venue = venueSqlDal.GetVenue(e.VenueID);
                 e.Podcast.Genre = genreSqlDal.GetGenre(e.Podcast.GenreID);
                 e.Ticket = ticketSqlDal.GetTicket(e.TicketLevel);
             });
-       
-            
-            
+
+
+
             return View(eventList);
         }
 
@@ -63,55 +65,55 @@ namespace Capstone.Controllers
             EventViewModel model = new EventViewModel
             {
                 EventItem = eventSqlDal.GetEvent(id),
-            
-        };
+
+            };
 
             model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
             model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
             model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
             model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
             model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
-            
-            
-            
+
+
+
             return View(model);
         }
 
 
         [HttpGet]
         [AuthorizationFilter("1")]
-        public IActionResult EditEvent(int id )
+        public IActionResult EditEvent(int id)
         {
 
-                EventViewModel model = new EventViewModel
-                {
-                    EventItem = eventSqlDal.GetEvent(id),
-                };
+            EventViewModel model = new EventViewModel
+            {
+                EventItem = eventSqlDal.GetEvent(id),
+            };
 
-                if (model.EventItem.PodcastID != null)
-                {
-                    model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-                    model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
-                }
+            if (model.EventItem.PodcastID != null)
+            {
+                model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
+                model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
+            }
 
-                if (model.EventItem.VenueID != null)
-                {
-                    model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
-                }
+            if (model.EventItem.VenueID != null)
+            {
+                model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
+            }
 
-                if (model.EventItem.TicketLevel != null)
-                {
-                    model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
-                }
-            
-                model.GenreList = GetGenreList();
-                model.VenueList = GetVenueList();
-                model.TicketList = GetTicketList();
-                model.PodcastList = GetPodcastList();
+            if (model.EventItem.TicketLevel != null)
+            {
+                model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
+            }
+
+            model.GenreList = GetGenreList();
+            model.VenueList = GetVenueList();
+            model.TicketList = GetTicketList();
+            model.PodcastList = GetPodcastList();
 
             return View(model);
-      
-            }
+
+        }
 
         [AuthorizationFilter("1")]  //admin only
         [HttpPost]
@@ -142,7 +144,7 @@ namespace Capstone.Controllers
                     model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
                 }
 
-                
+
                 model.PodcastList = GetPodcastList();
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();
@@ -150,7 +152,7 @@ namespace Capstone.Controllers
                 model.PodcastList = GetPodcastList();
 
                 bool result = eventSqlDal.UpdateEventDetails(model.EventItem);
-               
+
                 return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
 
 
@@ -171,7 +173,7 @@ namespace Capstone.Controllers
                 VenueList = GetVenueList(),
                 GenreList = GetGenreList(),
                 TicketList = GetTicketList(),
-                PodcastList = GetPodcastList() 
+                PodcastList = GetPodcastList()
 
             };
 
@@ -189,10 +191,10 @@ namespace Capstone.Controllers
             }
             else
             {
-               bool result = eventSqlDal.SaveEvent(model.EventItem);
+                bool result = eventSqlDal.SaveEvent(model.EventItem);
 
 
-              return RedirectToAction("Index");
+                return RedirectToAction("Index");
 
             }
         }
@@ -207,22 +209,22 @@ namespace Capstone.Controllers
             }
             else
             {
-            Event eventItem = eventSqlDal.GetEvent((int)id);
-            //eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
-            return View(eventItem);
+                Event eventItem = eventSqlDal.GetEvent((int)id);
+                //eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
+                return View(eventItem);
 
             }
         }
 
-         [HttpPost]
-         [AuthorizationFilter("1")]  //admin only
+        [HttpPost]
+        [AuthorizationFilter("1")]  //admin only
         [ValidateAntiForgeryToken]
-         public IActionResult DeleteEvent(int id)
+        public IActionResult DeleteEvent(int id)
         {
-           Event eventItem = eventSqlDal.GetEvent(id);
-           //eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
-           eventSqlDal.RemoveEvent(eventItem.EventID);
-              
+            Event eventItem = eventSqlDal.GetEvent(id);
+            //eventItem.GenreDescriptionBasedOnPodcast = genreSqlDal.GetGenreDescription(eventItem.Podcast.GenreID);
+            eventSqlDal.RemoveEvent(eventItem.EventID);
+
             return RedirectToAction("Index");
         }
 
@@ -239,7 +241,7 @@ namespace Capstone.Controllers
             {
                 selectListGenre.Add(new SelectListItem(item.GenreName, item.GenreID.ToString()));
             }
-            
+
             return selectListGenre;
         }
 
@@ -271,12 +273,12 @@ namespace Capstone.Controllers
             return selectListTickets;
         }
 
-       public List<SelectListItem> GetPodcastList()
+        public List<SelectListItem> GetPodcastList()
         {
             List<Podcast> podcastList = podcastDal.GetAllPodcasts();
 
             List<SelectListItem> selectListPodcast = new List<SelectListItem>();
-            
+
             foreach (Podcast podcast in podcastList)
             {
                 selectListPodcast.Add(new SelectListItem(podcast.Title, podcast.PodcastID.ToString()));
@@ -312,5 +314,48 @@ namespace Capstone.Controllers
 
             return eventViewModel;
         }
-    }
+
+
+
+
+        public ActionResult EncodeICal(int eventID)
+        {
+            Event eventItem = eventSqlDal.GetEvent(eventID);
+            eventItem.Venue = venueSqlDal.GetVenue(eventItem.VenueID);
+
+            string downloadFileName = "PodfestMidWestEvent.ics";
+            iCalendar ical = new iCalendar();
+            var icalStringbuilder = new StringBuilder();
+
+            icalStringbuilder.AppendLine("BEGIN:VCALENDAR");
+            icalStringbuilder.AppendLine("PRODID:-//PodfestMidwest//EN");
+            icalStringbuilder.AppendLine("VERSION:2.0");
+
+            icalStringbuilder.AppendLine("BEGIN:VEVENT");
+            icalStringbuilder.AppendLine("SUMMARY;LANGUAGE=en-us:" + eventItem.EventName);
+            icalStringbuilder.AppendLine("CLASS:PUBLIC");
+            icalStringbuilder.AppendLine(string.Format("CREATED:{0:yyyyMMddTHHmmssZ}", DateTime.UtcNow));
+            icalStringbuilder.AppendLine("DESCRIPTION:" + eventItem.DescriptionCopy);
+            icalStringbuilder.AppendLine(string.Format("DTSTART:{0:yyyyMMddTHHmmssZ}", eventItem.Beginning));
+            icalStringbuilder.AppendLine(string.Format("DTEND:{0:yyyyMMddTHHmmssZ}", eventItem.Ending));
+            icalStringbuilder.AppendLine("SEQUENCE:0");
+            icalStringbuilder.AppendLine("UID:" + Guid.NewGuid());
+            icalStringbuilder.AppendLine(
+                string.Format(
+                    "LOCATION:{0}\\, {1}\\, {2}\\, {3} {4}",
+                    eventItem.Venue.DisplayName,
+                    eventItem.Venue.Address1,
+                    eventItem.Venue.City,
+                    eventItem.Venue.State,
+                    eventItem.Venue.ZipCode).Trim());
+            icalStringbuilder.AppendLine("END:VEVENT");
+            icalStringbuilder.AppendLine("END:VCALENDAR");
+
+            var bytes = Encoding.UTF8.GetBytes(icalStringbuilder.ToString());
+
+            return this.File(bytes, "text/calendar", downloadFileName);
+        }
+
+    }   
+
 }

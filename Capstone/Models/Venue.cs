@@ -13,7 +13,6 @@ namespace Capstone.Models
        // public string   RoomName { get; set; }
        // public string   BuildingName { get; set; }
         public string   Address1 { get; set; }
-        public string   Address2 { get; set; }
         public string   City { get; set; }
         public string   State { get; set; }
         public int      ZipCode { get; set; }

@@ -43,10 +43,16 @@ namespace Capstone.Models
         [Display(Name = "Event Title")]
         public string EventName { get; set; }
 
-       
+        public iCalendar ICalendar { get; set; }
+
+        public string TimeOfDayString { get; set; }
 
 
-    
+
+
+
+
+
 
     }
 

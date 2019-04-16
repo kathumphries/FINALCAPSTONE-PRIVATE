@@ -57,10 +57,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SearchEvents(SearchViewModel model)
         {
-            model.EventList = eventSqlDal.GetEventsByGenre(model.Event);
-            model.EventList.AddRange(eventSqlDal.GetEventsByLocation(model.Event));
-            model.EventList.AddRange(eventSqlDal.GetEventsByTicket(model.Event));
-            model.EventList.AddRange(eventSqlDal.GetEventsByTimeOfDay(model.TimeOfDayString));
+            User user = new User();
+            user.Role = 1;
+            model.EventList = eventSqlDal.Search(model.Event, user);
 
             return View(model);
         }
