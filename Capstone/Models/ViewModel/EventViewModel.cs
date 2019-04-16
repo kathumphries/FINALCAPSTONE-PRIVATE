@@ -28,6 +28,8 @@ namespace Capstone.Models.ViewModel
 
         public List<Event> PastEvents { get; set; }
 
+        public Event GoogleCalendar { get; set; }
+
       
 
        
