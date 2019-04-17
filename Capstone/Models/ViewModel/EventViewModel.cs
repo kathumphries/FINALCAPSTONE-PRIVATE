@@ -27,9 +27,7 @@ namespace Capstone.Models.ViewModel
         public List<Event> ComingEvents { get; set; }
 
         public List<Event> PastEvents { get; set; }
-
-        public Event GoogleCalendar { get; set; }
-
+       
       
 
        

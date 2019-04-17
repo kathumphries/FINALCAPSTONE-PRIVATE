@@ -78,8 +78,7 @@ namespace Capstone.DAL
             {
                 PodcastID = Convert.ToInt32(reader["podcastID"]),
                 UserID = Convert.ToInt32(reader["userID"]),
-                Hosting = Convert.ToString(reader["hosting"]),
-                URL = Convert.ToString(reader["url"]),
+                Hosting = Convert.ToString(reader["hosting"]),           
                 Title = Convert.ToString(reader["title"]),
                 Description = Convert.ToString(reader["description"]),
                 GenreID = Convert.ToInt32(reader["genreID"]),
@@ -96,15 +95,26 @@ namespace Capstone.DAL
 
             };
 
-            int colIndex = reader.GetOrdinal("episodeCount");
+            int colIndex = reader.GetOrdinal("url");
 
-            if(reader.IsDBNull(colIndex))
+            if (reader.IsDBNull(colIndex))
             {
-                podcast.EpisodeCount = 0;
+               podcast.URL = "";
             }
             else
             {
-                podcast.EpisodeCount = Convert.ToInt32(reader["episodeCount"]);
+               podcast.URL = Convert.ToString(reader["url"]);
+            }
+
+            colIndex = reader.GetOrdinal("episodeCount");
+
+            if(reader.IsDBNull(colIndex))
+            {
+               podcast.EpisodeCount = 0;
+            }
+            else
+            {   
+               podcast.EpisodeCount = Convert.ToInt32(reader["episodeCount"]);
             }
 
             colIndex = reader.GetOrdinal("downloadCount");

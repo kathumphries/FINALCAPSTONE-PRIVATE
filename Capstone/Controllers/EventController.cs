@@ -44,9 +44,10 @@ namespace Capstone.Controllers
                 e.Venue = venueSqlDal.GetVenue(e.VenueID);
                 e.Podcast.Genre = genreSqlDal.GetGenre(e.Podcast.GenreID);
                 e.Ticket = ticketSqlDal.GetTicket(e.TicketLevel);
+                //e.GoogleURL = GenerateGoogleCal(e.EventID);
             });
 
-
+            
 
             return View(eventList);
         }
@@ -73,7 +74,7 @@ namespace Capstone.Controllers
             model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
             model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
             model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
-
+         
             return View(model);
         }
 
@@ -322,13 +323,12 @@ namespace Capstone.Controllers
             eventItem.Venue = venueSqlDal.GetVenue(eventItem.VenueID);
 
             string downloadFileName = "PodfestMidWestEvent.ics";
-            iCalendar ical = new iCalendar();
+            ICalendar ical = new ICalendar();
             var icalStringbuilder = new StringBuilder();
 
             icalStringbuilder.AppendLine("BEGIN:VCALENDAR");
             icalStringbuilder.AppendLine("PRODID:-//PodfestMidwest//EN");
             icalStringbuilder.AppendLine("VERSION:2.0");
-
             icalStringbuilder.AppendLine("BEGIN:VEVENT");
             icalStringbuilder.AppendLine("SUMMARY;LANGUAGE=en-us:" + eventItem.EventName);
             icalStringbuilder.AppendLine("CLASS:PUBLIC");
@@ -354,9 +354,39 @@ namespace Capstone.Controllers
             return this.File(bytes, "text/calendar", downloadFileName);
         }
 
-        
+        //public string GenerateGoogleCal(int eventID)
+        //{
+        //    Event eventItem = eventSqlDal.GetEvent(eventID);
+        //    eventItem.Podcast = podcastDal.GetPodcast(eventItem.PodcastID);
+        //    eventItem.Venue = venueSqlDal.GetVenue(eventItem.VenueID);
+        //    eventItem.Podcast.Genre = genreSqlDal.GetGenre(eventItem.Podcast.GenreID);
+        //    eventItem.Ticket = ticketSqlDal.GetTicket(eventItem.TicketLevel);
+        //    eventItem.GoogleURL = GenerateGoogleCal(eventItem.EventID);
 
+        //    string googleURLstart = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=";
+        //    string eventName = eventItem.EventName;
+        //    string googledates = @"&dates=";
+        //    string beginning =  eventItem.Beginning.ToString("yyyyMMddTHHmmssZ");
+        //    string googelSlash = @"/";
+        //    string ending = eventItem.Ending.ToString("yyyyMMddTHHmmssZ");
+        //    string googleDetails = @"&details = For + details,+link + here:+";
+        //    string url = (eventItem.Podcast.URL==null)?"": eventItem.Podcast.URL;
+        //    string googleLocation = "&location = ";
+        //    string venue = System.Web.HttpUtility.UrlEncode(eventItem.Venue.DisplayName + "," +
+        //            eventItem.Venue.Address1 + "," +
+        //            eventItem.Venue.City + "," +
+        //            eventItem.Venue.State + "," +
+        //            eventItem.Venue.ZipCode);            
+        //    string googleOut = @"& sf = true & output = xml";
+        //    string googleURL = googleURLstart + eventName + googledates + beginning + googelSlash + ending + googleDetails+url+googleLocation+ venue + googleOut;
+        //    return Uri.EscapeUriString(googleURL);
 
+        //}
+
+        //}
+
+        // https://calendar.google.com/calendar/render?action=TEMPLATE&text=Birthday&dates=20180201T090000/20180201T180000&sprop=&sprop=name:
+        //https://www.google.com/calendar   +301+Park+Ave+,+New+York,+NY+10022&sf=true&output=xml
 
     }
 

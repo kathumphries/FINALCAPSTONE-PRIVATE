@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class iCalendar
+    public class ICalendar
     {
         public DateTime EventStartDateTime { get; set; }
         public DateTime EventEndDateTime { get; set; }
@@ -21,7 +21,7 @@ namespace Capstone.Models
         public string AlarmDuration { get; set; }
         public string AlarmDescription { get; set; }
 
-        public iCalendar()
+        public ICalendar()
         {
             EventTimeStamp = DateTime.Now;
             EventCreatedDateTime = EventTimeStamp;
