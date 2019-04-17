@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Capstone.DAL.Interfaces;
-using Capstone.Models.ViewModel;
+﻿using Capstone.DAL.Interfaces;
+using Capstone.Models;
 using Capstone.Models.Account;
 using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; //needed for the SetString and GetString extension methods
-using Capstone.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Razor.Language;
+using System.Collections.Generic;
 
 namespace Capstone.Controllers
 {
@@ -89,8 +83,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-       
-        public IActionResult Register()
+       public IActionResult Register()
         {
             return View();
         }
@@ -113,11 +106,21 @@ namespace Capstone.Controllers
                 }
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Registered", "Account");
             }
-
+            
             return View(registerViewModel);
         }
+
+
+        [AuthorizationFilter]
+        [HttpGet]
+        public IActionResult Registered()
+        {
+            return View();
+        }
+
+
 
         public List<SelectListItem> GetTicketList()
         {

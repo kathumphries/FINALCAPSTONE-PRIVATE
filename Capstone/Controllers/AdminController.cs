@@ -115,6 +115,54 @@ namespace Capstone.Controllers
         }
 
 
+        [HttpGet]
+          public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+       [AuthorizationFilter("1")]
+        public IActionResult Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+            // Redirect the user where you want them to go after registering
+                return RedirectToAction("Register", "Admin");
+            }
+
+            return View(registerViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult RegisterCompleted()
+        {
+            return View();
+        }
+
+
+        //create update delete for venue
+        // //create update delete for venue
+        //creat ticketLevel update add visible...?
+        //create tags crud?
+        //genre editor
+
+
+        public List<SelectListItem> GetTicketList()
+        {
+            List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
+
+            List<SelectListItem> selectListTickets = new List<SelectListItem>();
+
+            foreach (Ticket level in ticketList)
+            {
+                selectListTickets.Add(new SelectListItem(level.TicketType, level.TicketID.ToString()));
+            }
+
+            return selectListTickets;
+        }
+
 
 
     }

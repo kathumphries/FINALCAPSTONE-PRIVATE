@@ -34,7 +34,7 @@ namespace Capstone.Controllers
             this.ticketSqlDal = ticketSqlDal;
         }
 
-
+        [AuthorizationFilter("1")]
         public IActionResult Index()
         {
             List<Event> eventList = eventSqlDal.GetAllEvents();
@@ -155,34 +155,34 @@ namespace Capstone.Controllers
             }
         }
 
-        [HttpGet]
-        [AuthorizationFilter("1")]  //admin only
-        public IActionResult DeleteEvent(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            else
-            {
-                Event eventItem = eventSqlDal.GetEvent((int)id);
+        //[HttpGet]
+        //[AuthorizationFilter("1")]  //admin only
+        //public IActionResult DeleteEvent(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    else
+        //    {
+        //        Event eventItem = eventSqlDal.GetEvent((int)id);
               
-                return View(eventItem);
+        //        return View(eventItem);
 
-            }
-        }
+        //    }
+        //}
 
-        [HttpPost]
-        [AuthorizationFilter("1")]  //admin only
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteEvent(int id)
-        {
-            Event eventItem = eventSqlDal.GetEvent(id);
+        //[HttpPost]
+        //[AuthorizationFilter("1")]  //admin only
+        //[ValidateAntiForgeryToken]
+        //public IActionResult DeleteEvent(int id)
+        //{
+        //    Event eventItem = eventSqlDal.GetEvent(id);
            
-            eventSqlDal.RemoveEvent(eventItem.EventID);
+        //    eventSqlDal.RemoveEvent(eventItem.EventID);
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
 
 
 

@@ -12,17 +12,9 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Podcast.PodcastID" class="control-label"></label>
-                <input asp-for="Podcast.PodcastID" class="form-control" />
-                <span asp-validation-for="Podcast.PodcastID" class="text-danger"></span>
-            </div>
-
-            @*<div class="form-group">
-            <label asp-for="Hosting" class="control-label"></label>
-            <input asp-for="Hosting" class="form-control" />
-            <span asp-validation-for="Hosting" class="text-danger"></span>
-        </div>*@
+           
+            @Html.HiddenFor(model => model.Podcast.PodcastID)
+            
             <div class="form-group">
                 <label asp-for="Podcast.URL" class="control-label"></label>
                 <input asp-for="Podcast.URL" class="form-control" />
@@ -34,7 +26,6 @@
                 <span asp-validation-for="Podcast.Title" class="text-danger"></span>
             </div>
          
-
             <div class="form-group">
                 <label asp-for="Podcast.GenreID" class="control-label"></label>
                 @Html.DropDownListFor(Model => Model.Podcast.GenreID, Model.GenreList, new { @class = "form-control" })

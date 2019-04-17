@@ -5,7 +5,7 @@
     ViewData["Title"] = "EditRole";
 }
 
-<h2>EditRole</h2>
+<h2>User Roles</h2>
 
 <hr />
 <div class="row">
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             @Html.HiddenFor(model => model.UserID)
-
+            <button>Register User</button>
             <div class="form-group">
                 <label>@Model.UserEmail</label>
             </div>

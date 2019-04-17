@@ -5,12 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>User Roles</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-area="" asp-controller="Account" asp-action="Register">Register User</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -76,9 +76,15 @@
             </td>
             
             <td>
-              <a href=@Url.Action("EditRole", "Admin", new {id = item.UserID})>
-                <i class="fa fa-edit">icon</i>
-            </a>
+            <a href=@Url.Action("EditRole", "Admin", new {id = item.UserID})
+               type="submit" 
+               id="runReport" 
+               target="_blank"
+               class="button Secondary">
+                
+                <i class="fa fa-edit"></i>
+            
+                </a>
 </tr>
 }
     </tbody>
