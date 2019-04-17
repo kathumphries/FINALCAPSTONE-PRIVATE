@@ -395,12 +395,9 @@ namespace Capstone.DAL
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
                 EventName = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
-<<<<<<< HEAD
-                PodcastID = Convert.ToString(reader["podcastID"])              
-=======
-                PodcastID = Convert.ToString(reader["podcastID"])               
->>>>>>> 31a90af6756a0eb664896bda421bef4f216039e1
-                
+                PodcastID = Convert.ToString(reader["podcastID"])         
+                                        
+                               
             };
 
         }

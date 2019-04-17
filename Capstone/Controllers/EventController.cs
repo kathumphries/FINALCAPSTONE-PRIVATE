@@ -39,22 +39,8 @@ namespace Capstone.Controllers
         {
             List<Event> eventList = eventSqlDal.GetAllEvents();
 
-<<<<<<< HEAD
-            eventList.ForEach(e =>
-            {
-                e.Podcast = podcastDal.GetPodcast(e.PodcastID);
-                e.Venue = venueSqlDal.GetVenue(e.VenueID);
-                e.Podcast.Genre = genreSqlDal.GetGenre(e.Podcast.GenreID);
-                e.Ticket = ticketSqlDal.GetTicket(e.TicketLevel);
-                //e.GoogleURL = GenerateGoogleCal(e.EventID);
-            });
+            eventList.ForEach(eventItem => PopulateEventDetails(eventItem.EventID));            
 
-            
-
-=======
-            eventList.ForEach(eventItem => PopulateEventDetails(eventItem.EventID));
-            
->>>>>>> 31a90af6756a0eb664896bda421bef4f216039e1
             return View(eventList);
         }
 
@@ -73,18 +59,8 @@ namespace Capstone.Controllers
             {
                 EventItem = PopulateEventDetails(id),
 
-            };
+            };                   
 
-<<<<<<< HEAD
-            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-            model.EventItem.Podcast = podcastDal.GetPodcast(model.EventItem.PodcastID);
-            model.EventItem.Venue = venueSqlDal.GetVenue(model.EventItem.VenueID);
-            model.EventItem.Podcast.Genre = genreSqlDal.GetGenre(model.EventItem.Podcast.GenreID);
-            model.EventItem.Ticket = ticketSqlDal.GetTicket(model.EventItem.TicketLevel);
-         
-=======
-          
->>>>>>> 31a90af6756a0eb664896bda421bef4f216039e1
             return View(model);
         }
 
@@ -178,34 +154,7 @@ namespace Capstone.Controllers
             }
         }
 
-        //[HttpGet]
-        //[AuthorizationFilter("1")]  //admin only
-        //public IActionResult DeleteEvent(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    else
-        //    {
-        //        Event eventItem = eventSqlDal.GetEvent((int)id);
-              
-        //        return View(eventItem);
-
-        //    }
-        //}
-
-        //[HttpPost]
-        //[AuthorizationFilter("1")]  //admin only
-        //[ValidateAntiForgeryToken]
-        //public IActionResult DeleteEvent(int id)
-        //{
-        //    Event eventItem = eventSqlDal.GetEvent(id);
-           
-        //    eventSqlDal.RemoveEvent(eventItem.EventID);
-
-        //    return RedirectToAction("Index");
-        //}
+      
 
 
 
@@ -334,7 +283,7 @@ namespace Capstone.Controllers
             return this.File(bytes, "text/calendar", downloadFileName);
         }
 
-<<<<<<< HEAD
+
         //public string GenerateGoogleCal(int eventID)
         //{
         //    Event eventItem = eventSqlDal.GetEvent(eventID);
@@ -368,7 +317,7 @@ namespace Capstone.Controllers
 
         // https://calendar.google.com/calendar/render?action=TEMPLATE&text=Birthday&dates=20180201T090000/20180201T180000&sprop=&sprop=name:
         //https://www.google.com/calendar   +301+Park+Ave+,+New+York,+NY+10022&sf=true&output=xml
-=======
+
 
         private Event PopulateEventDetails(int id)
         {
@@ -395,7 +344,7 @@ namespace Capstone.Controllers
             return eventItem;
         }
 
->>>>>>> 31a90af6756a0eb664896bda421bef4f216039e1
+
 
 }
 
