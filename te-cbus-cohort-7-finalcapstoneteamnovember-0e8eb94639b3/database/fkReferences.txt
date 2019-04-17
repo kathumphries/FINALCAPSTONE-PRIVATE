@@ -1,0 +1,82 @@
+GO
+ALTER TABLE [dbo].[Event] CHECK CONSTRAINT [FK_Event_Venue]
+GO
+ALTER TABLE [dbo].[Event_Tag]  WITH CHECK ADD  CONSTRAINT [FK_Event_Tag_Event] FOREIGN KEY([eventID])
+REFERENCES [dbo].[Event] ([eventID])
+GO
+ALTER TABLE [dbo].[Event_Tag] CHECK CONSTRAINT [FK_Event_Tag_Event]
+GO
+ALTER TABLE [dbo].[Event_Tag]  WITH CHECK ADD  CONSTRAINT [FK_Event_Tag_Tag] FOREIGN KEY([tagID])
+REFERENCES [dbo].[Tag] ([tagID])
+GO
+ALTER TABLE [dbo].[Event_Tag] CHECK CONSTRAINT [FK_Event_Tag_Tag]
+GO
+ALTER TABLE [dbo].[Event_Ticket]  WITH CHECK ADD  CONSTRAINT [FK_Event_Ticket_Event] FOREIGN KEY([eventID])
+REFERENCES [dbo].[Event] ([eventID])
+GO
+ALTER TABLE [dbo].[Event_Ticket] CHECK CONSTRAINT [FK_Event_Ticket_Event]
+GO
+ALTER TABLE [dbo].[Event_Ticket]  WITH CHECK ADD  CONSTRAINT [FK_Event_Ticket_TicketLevel] FOREIGN KEY([ticketID])
+REFERENCES [dbo].[TicketLevel] ([ticketID])
+GO
+ALTER TABLE [dbo].[Event_Ticket] CHECK CONSTRAINT [FK_Event_Ticket_TicketLevel]
+GO
+ALTER TABLE [dbo].[Podcast]  WITH CHECK ADD  CONSTRAINT [FK_Podcast_Genre] FOREIGN KEY([genreID])
+REFERENCES [dbo].[Genre] ([genreID])
+GO
+ALTER TABLE [dbo].[Podcast] CHECK CONSTRAINT [FK_Podcast_Genre]
+GO
+ALTER TABLE [dbo].[Podcast]  WITH CHECK ADD  CONSTRAINT [FK_Podcast_User] FOREIGN KEY([userID])
+REFERENCES [dbo].[User] ([userID])
+GO
+ALTER TABLE [dbo].[Podcast] CHECK CONSTRAINT [FK_Podcast_User]
+GO
+ALTER TABLE [dbo].[PodcasterAvailabilty]  WITH CHECK ADD  CONSTRAINT [FK_PodcasterAvailabilty_Event] FOREIGN KEY([eventID])
+REFERENCES [dbo].[Event] ([eventID])
+GO
+ALTER TABLE [dbo].[PodcasterAvailabilty] CHECK CONSTRAINT [FK_PodcasterAvailabilty_Event]
+GO
+ALTER TABLE [dbo].[PodcasterAvailabilty]  WITH CHECK ADD  CONSTRAINT [FK_PodcasterAvailabilty_User] FOREIGN KEY([userID])
+REFERENCES [dbo].[User] ([userID])
+GO
+ALTER TABLE [dbo].[PodcasterAvailabilty] CHECK CONSTRAINT [FK_PodcasterAvailabilty_User]
+GO
+ALTER TABLE [dbo].[Tag]  WITH CHECK ADD  CONSTRAINT [FK_Tag_Genre] FOREIGN KEY([genreID])
+REFERENCES [dbo].[Genre] ([genreID])
+GO
+ALTER TABLE [dbo].[Tag] CHECK CONSTRAINT [FK_Tag_Genre]
+GO
+ALTER TABLE [dbo].[User_Event]  WITH CHECK ADD  CONSTRAINT [FK_User_Event_Event] FOREIGN KEY([eventID])
+REFERENCES [dbo].[Event] ([eventID])
+GO
+ALTER TABLE [dbo].[User_Event] CHECK CONSTRAINT [FK_User_Event_Event]
+GO
+ALTER TABLE [dbo].[User_Event]  WITH CHECK ADD  CONSTRAINT [FK_User_Event_User] FOREIGN KEY([userID])
+REFERENCES [dbo].[User] ([userID])
+GO
+ALTER TABLE [dbo].[User_Event] CHECK CONSTRAINT [FK_User_Event_User]
+GO
+ALTER TABLE [dbo].[User_Ticket]  WITH CHECK ADD  CONSTRAINT [FK_User_Ticket_TicketLevel] FOREIGN KEY([ticketID])
+REFERENCES [dbo].[TicketLevel] ([ticketID])
+GO
+ALTER TABLE [dbo].[User_Ticket] CHECK CONSTRAINT [FK_User_Ticket_TicketLevel]
+GO
+ALTER TABLE [dbo].[User_Ticket]  WITH CHECK ADD  CONSTRAINT [FK_User_Ticket_User] FOREIGN KEY([userID])
+REFERENCES [dbo].[User] ([userID])
+GO
+ALTER TABLE [dbo].[User_Ticket] CHECK CONSTRAINT [FK_User_Ticket_User]
+GO
+ALTER TABLE [dbo].[Venue_Tag]  WITH CHECK ADD  CONSTRAINT [FK_Venue_Tag_Tag] FOREIGN KEY([tagID])
+REFERENCES [dbo].[Tag] ([tagID])
+GO
+ALTER TABLE [dbo].[Venue_Tag] CHECK CONSTRAINT [FK_Venue_Tag_Tag]
+GO
+ALTER TABLE [dbo].[Venue_Tag]  WITH CHECK ADD  CONSTRAINT [FK_Venue_Tag_Venue] FOREIGN KEY([venueID])
+REFERENCES [dbo].[Venue] ([venueID])
+GO
+ALTER TABLE [dbo].[Venue_Tag] CHECK CONSTRAINT [FK_Venue_Tag_Venue]
+GO
+USE [master]
+GO
+ALTER DATABASE [PodfestMidwestDB] SET  READ_WRITE 
+GO

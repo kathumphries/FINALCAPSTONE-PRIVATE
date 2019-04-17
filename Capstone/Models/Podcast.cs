@@ -56,6 +56,7 @@ namespace Capstone.Models
 
         [Required]
         public bool IsSponsored { get; set; }
+        public string Sponsor { get; set; }
     }
 }
 

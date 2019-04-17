@@ -1,0 +1,131 @@
+﻿@model Capstone.Models.ViewModel.PodcastViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Podcast</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Podcast.PodcastID" class="control-label"></label>
+                <input asp-for="Podcast.PodcastID" class="form-control" />
+                <span asp-validation-for="Podcast.PodcastID" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+            <label asp-for="Hosting" class="control-label"></label>
+            <input asp-for="Hosting" class="form-control" />
+            <span asp-validation-for="Hosting" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Podcast.URL" class="control-label"></label>
+                <input asp-for="Podcast.URL" class="form-control" />
+                <span asp-validation-for="Podcast.URL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Podcast.Title" class="control-label"></label>
+                <input asp-for="Podcast.Title" class="form-control" />
+                <span asp-validation-for="Podcast.Title" class="text-danger"></span>
+            </div>
+         
+
+            <div class="form-group">
+                <label asp-for="Podcast.GenreID" class="control-label"></label>
+                @Html.DropDownListFor(Model => Model.Podcast.GenreID, Model.GenreList, new { @class = "form-control" })
+                <span asp-validation-for="Podcast.GenreID" class="text-danger"></span>
+            </div>
+
+
+
+
+
+
+            @*<div class="form-group">
+            <label asp-for="OriginalRelease" class="control-label"></label>
+            <input asp-for="OriginalRelease" class="form-control" />
+            <span asp-validation-for="OriginalRelease" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="RunTime" class="control-label"></label>
+            <input asp-for="RunTime" class="form-control" />
+            <span asp-validation-for="RunTime" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReleaseFrequency" class="control-label"></label>
+            <input asp-for="ReleaseFrequency" class="form-control" />
+            <span asp-validation-for="ReleaseFrequency" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AverageLength" class="control-label"></label>
+            <input asp-for="AverageLength" class="form-control" />
+            <span asp-validation-for="AverageLength" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EpisodeCount" class="control-label"></label>
+            <input asp-for="EpisodeCount" class="form-control" />
+            <span asp-validation-for="EpisodeCount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DownloadCount" class="control-label"></label>
+            <input asp-for="DownloadCount" class="form-control" />
+            <span asp-validation-for="DownloadCount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MeasurementPlatform" class="control-label"></label>
+            <input asp-for="MeasurementPlatform" class="form-control" />
+            <span asp-validation-for="MeasurementPlatform" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Demographic" class="control-label"></label>
+            <input asp-for="Demographic" class="form-control" />
+            <span asp-validation-for="Demographic" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Affiliations" class="control-label"></label>
+            <input asp-for="Affiliations" class="form-control" />
+            <span asp-validation-for="Affiliations" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BroadcastCity" class="control-label"></label>
+            <input asp-for="BroadcastCity" class="form-control" />
+            <span asp-validation-for="BroadcastCity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BroadcastState" class="control-label"></label>
+            <input asp-for="BroadcastState" class="form-control" />
+            <span asp-validation-for="BroadcastState" class="text-danger"></span>
+        </div>*@
+            @*<div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="InOhio" /> @Html.DisplayNameFor(model => model.InOhio)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="IsSponsored" /> @Html.DisplayNameFor(model => model.IsSponsored)
+                </label>
+            </div>
+        </div>*@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

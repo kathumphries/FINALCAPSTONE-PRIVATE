@@ -35,7 +35,7 @@ namespace Capstone.DAL
         private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
         private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
         private string SQL_GetFutureEventsByDay = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, @date + @day) <= CAST(beginning AS DATE) AND CONVERT (date, @date + @day + 1) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
-        private const string SQL_GetFutureEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC;";
+        private string SQL_GetFutureEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC;";
         private string SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
         private string SQL_Search = "";
 
@@ -266,11 +266,11 @@ namespace Capstone.DAL
 
             if (user.Role == 1)
             {
-                SQL_GetPastEvents = "SELECT * FROM Event WHERE  CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+                SQL_GetFutureEvents = "SELECT * FROM Event WHERE  CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
             }
             else
             {
-                SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
+                SQL_GetFutureEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC";
             }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -382,7 +382,7 @@ namespace Capstone.DAL
         private Event MapToRowEvent(SqlDataReader reader)
         {
             return new Event()
-            {
+            {              
                 EventID = Convert.ToInt32(reader["eventID"]),
                 VenueID = Convert.ToString(reader["venueID"]),
                 Beginning = Convert.ToDateTime(reader["beginning"]),
@@ -395,7 +395,11 @@ namespace Capstone.DAL
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
                 EventName = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
+<<<<<<< HEAD
                 PodcastID = Convert.ToString(reader["podcastID"])              
+=======
+                PodcastID = Convert.ToString(reader["podcastID"])               
+>>>>>>> 31a90af6756a0eb664896bda421bef4f216039e1
                 
             };
 

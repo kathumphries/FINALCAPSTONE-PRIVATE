@@ -71,6 +71,8 @@ namespace Capstone.Controllers
             User user = authProvider.GetCurrentUser();
 
             model.EventList = eventSqlDal.Search(model.Event, user);
+            model.Event.Venue = venueSqlDal.GetVenue(model.Event.VenueID);
+            model.Event.Podcast.Genre = genreSqlDal.GetGenre(model.Event.Podcast.GenreID);
 
             return View(model);
         }

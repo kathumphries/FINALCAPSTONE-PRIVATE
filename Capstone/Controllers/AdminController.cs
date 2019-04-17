@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
 using Capstone.Models.ViewModel;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; //needed for the SetString and GetString extension methods
 using Capstone.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.CodeAnalysis.CSharp;
 
 
 namespace Capstone.Controllers
@@ -27,13 +28,14 @@ namespace Capstone.Controllers
         //private readonly IEventSqlDal eventSqlDal;
         //private readonly IGenreSqlDal genreSqlDal;
         //private readonly IVenueSqlDal venueSqlDal;
-        //private readonly ITicketSqlDal ticketSqlDal;
+        private readonly ITicketSqlDal ticketSqlDal;
 
 
 
-        public AdminController(IAuthProvider authProvider, IUserSqlDal userSqlDal)
-            //IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal,
-            //IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
+        public AdminController(IAuthProvider authProvider, IUserSqlDal userSqlDal, ITicketSqlDal ticketSqlDal)
+        //IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal,
+        //IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal , ITicketSqlDal ticketSqlDal)
+
         {
             this.authProvider = authProvider;
             this.userSqlDal = userSqlDal;
@@ -41,7 +43,7 @@ namespace Capstone.Controllers
             //this.eventSqlDal = eventSqlDal;
             //this.genreSqlDal = genreSqlDal;
             //this.venueSqlDal = venueSqlDal;
-            //this.ticketSqlDal = ticketSqlDal;
+             this.ticketSqlDal = ticketSqlDal;
         }
 
         //Roles in db: 
@@ -53,40 +55,118 @@ namespace Capstone.Controllers
 
 
         [AuthorizationFilter("1")]  //<-- or filtered to only those that have a certain role
-         [HttpGet]
-         public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index()
+        {
+            List<User> users = userSqlDal.GetAllUsersByRole();
+            users.ForEach(user =>
             {
-                List<User> users = userSqlDal.GetAllUsersByRole();
-                return View(users);
+                if (!String.IsNullOrEmpty(user.TicketLevel))
+                {
+                    user.Ticket = ticketSqlDal.GetTicket(user.TicketLevel);
+
+                }
+            });
+            
+
+
+            //model.UserRoleID = userSqlDal.GetUserByID(id).Role;
+
+            return View(users);
+        }
+
+
+        [HttpGet]
+       // [AuthorizationFilter("1")]
+        public IActionResult EditRole(int id)
+       {
+
+           UserRoleAdminViewModel model = new UserRoleAdminViewModel();
+            model.UserID = id;
+            
+            model.UserName = userSqlDal.GetUserByID(id).Name;
+            model.UserEmail = userSqlDal.GetUserByID(id).Email;
+            model.UserRoleID = userSqlDal.GetUserByID(id).Role;
+            return View(model);
+
+        }
+
+        [AuthorizationFilter("1")] //admin only
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditRole(UserRoleAdminViewModel model, int id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+
+                bool result = userSqlDal.UpdateUserRole(model);
+
+                return RedirectToAction("Index", "Admin");
+
+
             }
 
-//            [AuthorizationFilter("1")] 
-//            [HttpPost]
-//            if (ModelState.IsValid)
-//           {
-//                foreach (User user in users)
-//                {
-//                    var getCode = _context.TBMapBalances.Where(p => p.TbMapId == TbListId.TbMapId).FirstOrDefault();
 
-//                    if (getCode != null)
-//                    {
-//                        getCode.TbMapId = TbListId.TbMapId;
-//                    }
-
-//                }
-//// _context.Update(tbMapViewModel.TBMapBalances);
-//                _context.SaveChanges();
-
-//            }
-
-//            return RedirectToAction("TbMapView");
-//    }
+        }
 
 
+        [HttpGet]
+          public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+       [AuthorizationFilter("1")]
+        public IActionResult Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+            // Redirect the user where you want them to go after registering
+                return RedirectToAction("Register", "Admin");
+            }
+
+            return View(registerViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult RegisterCompleted()
+        {
+            return View();
+        }
 
 
+        //create update delete for venue
+        // //create update delete for venue
+        //creat ticketLevel update add visible...?
+        //create tags crud?
+        //genre editor
+
+
+        public List<SelectListItem> GetTicketList()
+        {
+            List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
+
+            List<SelectListItem> selectListTickets = new List<SelectListItem>();
+
+            foreach (Ticket level in ticketList)
+            {
+                selectListTickets.Add(new SelectListItem(level.TicketType, level.TicketID.ToString()));
+            }
+
+            return selectListTickets;
+        }
 
 
 
     }
+
 }
+
+

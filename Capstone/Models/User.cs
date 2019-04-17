@@ -41,6 +41,7 @@ namespace Capstone.Models
         public string PhoneNumber { get; set; }//phoneNumber
 
         public string TicketLevel { get; set; }//ticketLevel
+        public Ticket Ticket{ get; set; }
 
         public List<Event> EventList { get; set; }
     }
