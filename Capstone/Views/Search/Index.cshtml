@@ -10,8 +10,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Search Index</title>
+    <link href="~/css/SearchStyle.css" rel="stylesheet" />
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <form asp-action="SearchEvents">
@@ -42,8 +43,8 @@
     </form>
 
     <div class="container">
-        <h2>Dynamic Tabs</h2>
-        <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+        <h2>Event Schedule</h2>
+        <p></p>
 
         <ul class="nav nav-tabs">
             <li><a data-toggle="tab" href="#past">Archived Events</a></li>
@@ -60,11 +61,10 @@
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
                 <h3></h3>
-                <table class="table">
+                <table class="table table-hover table-responsive-sm">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.EventID)
 
                             </th>
                             <th>
@@ -76,27 +76,26 @@
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.PodcastID)
+                                Podcast
+                            </th>
+                            <th>
+                                Location
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.VenueID)
+                                Cover Photo
 
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-
-                            </th>
-                            <th>
+                            <th class="description-copy">
                                 @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.TicketLevel)
+                                Ticket
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
+
 
                             </th>
                             <th>
@@ -104,8 +103,7 @@
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.EventName)
-
+                                Event
                             </th>
                             <th>
                                 Genre
@@ -120,10 +118,7 @@
                         @foreach (Event item in Model.EventList)
                         {
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventID)
-
-                                </td>
+                                <td></td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Beginning)
 
@@ -133,11 +128,11 @@
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PodcastID)
+                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.VenueID)
+                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
 
                                 </td>
                                 <td>
@@ -145,17 +140,22 @@
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    @if (item.DescriptionCopy.Length > 75)
+                                    {
+                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketLevel)
+                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
-
-                                </td>
+                                <td></td>
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsFinalized)
@@ -166,7 +166,7 @@
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.GenreID)
+                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
 
                                 </td>
                                 <td>
@@ -181,11 +181,10 @@
             </div>
             <div id="past" class="tab-pane fade">
                 <h3></h3>
-                <table class="table">
+                <table class="table table-hover table-responsive-sm">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.EventID)
 
                             </th>
                             <th>
@@ -197,27 +196,25 @@
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.PodcastID)
+                                Podcast
+                            </th>
+                            <th>
+                                Location
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.VenueID)
+                                Cover Photo
 
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-
-                            </th>
-                            <th>
+                            <th class="description-copy">
                                 @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.TicketLevel)
+                                Ticket
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
 
                             </th>
                             <th>
@@ -225,8 +222,7 @@
 
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Event.EventName)
-
+                                Event
                             </th>
                             <th>
                                 Genre
@@ -240,11 +236,9 @@
                     <tbody>
                         @foreach (Event item in Model.ArchivedEventList)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventID)
 
-                                </td>
+                            <tr>
+                                <td></td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Beginning)
 
@@ -254,27 +248,33 @@
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PodcastID)
+                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.VenueID)
+                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
 
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CoverPhoto)
+                                </td>
+                                <td>
+                                    @if (item.DescriptionCopy.Length > 75)
+                                    {
+                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketLevel)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
 
                                 </td>
 
@@ -287,7 +287,7 @@
 
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.GenreID)
+                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
 
                                 </td>
                                 <td>
@@ -311,11 +311,10 @@
                 {
                     <div id="@("menu"+z)" class="tab-pane fade">
                         <h3></h3>
-                        <table class="table">
+                        <table class="table table-hover table-responsive-sm">
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.EventID)
 
                                     </th>
                                     <th>
@@ -327,27 +326,26 @@
 
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.PodcastID)
+                                        Podcast
+                                    </th>
+                                    <th>
+                                        Location
 
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.VenueID)
+                                        Cover Photo
 
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-
-                                    </th>
-                                    <th>
+                                    <th class="description-copy">
                                         @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
 
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.TicketLevel)
+                                        Ticket
 
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
+
 
                                     </th>
                                     <th>
@@ -355,8 +353,7 @@
 
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Event.EventName)
-
+                                        Event
                                     </th>
                                     <th>
                                         Genre
@@ -385,11 +382,11 @@
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.PodcastID)
+                                            @Html.DisplayFor(modelItem => item.Podcast.Title)
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.VenueID)
+                                            @Html.DisplayFor(modelItem => item.Venue.DisplayName)
 
                                         </td>
                                         <td>
@@ -397,17 +394,22 @@
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                            @if (item.DescriptionCopy.Length > 75)
+                                            {
+                                                item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                            }
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TicketLevel)
+                                            @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                         </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UpsaleCopy)
-
-                                        </td>
+                                        <td></td>
 
                                         <td>
                                             @Html.DisplayFor(modelItem => item.IsFinalized)
@@ -418,7 +420,7 @@
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Podcast.GenreID)
+                                            @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
 
                                         </td>
                                         <td>
