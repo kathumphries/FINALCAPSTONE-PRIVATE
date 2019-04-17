@@ -30,7 +30,7 @@ namespace Capstone.Models
 
         //public string PodcastURL { get; set; }
 
-        [Display(Name = "Ticket Level")]
+        [Display(Name = "Ticket Type")]
         public string TicketLevel { get; set; }  //TODO: change to int rename TicketID
         public Ticket Ticket { get; set; }
 
@@ -45,6 +45,7 @@ namespace Capstone.Models
 
         public ICalendar ICalendar { get; set; }
 
+        [Display(Name = "Time of Day")]
         public string TimeOfDayString { get; set; }
 
         public string GoogleURL { get; set; }

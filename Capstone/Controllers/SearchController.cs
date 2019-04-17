@@ -34,6 +34,11 @@ namespace Capstone.Controllers
             this.authProvider = authProvider;
         }
 
+        public IActionResult Copy()
+        {
+            return View();
+        }
+
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Index()
@@ -52,10 +57,9 @@ namespace Capstone.Controllers
                 GenreList = GetGenreList(),
                 TicketList = GetTicketList(),
                 PodcastList = GetPodcastList(),
-                TimeOfDayList = GetTimeOfDay()
-            };
-
-            
+                TimeOfDayList = GetTimeOfDay(),
+                User = user
+            };          
 
             model.EventList = eventSqlDal.GetFutureEvents(eventItem, user);
             
@@ -92,7 +96,7 @@ namespace Capstone.Controllers
         public IActionResult SearchEvents(SearchViewModel model)
         {
             User user = authProvider.GetCurrentUser();
-
+            model.User = user;
             model.EventList = eventSqlDal.Search(model.Event, user);
 
             foreach (Event item in model.EventList)

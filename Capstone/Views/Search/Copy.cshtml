@@ -1,0 +1,515 @@
+﻿@model Capstone.Models.ViewModel.SearchViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    int z = 0;
+}
+
+<h2>Search</h2>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Search Index</title>
+    <link href="~/css/SearchStyle.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .selectList {
+            float: left;
+            padding-right: 5em;
+        }
+
+            .selectList > form-control {
+                background-color: orangered;
+            }
+    </style>
+</head>
+<body>
+
+
+    <form asp-action="SearchEvents">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group selectList">
+            <label asp-for="Event.Podcast.GenreID" class="control-label"></label>
+            @Html.DropDownListFor(model => model.Event.Podcast.GenreID, Model.GenreList, "", new { @class = "form-control" })
+            <span asp-validation-for="Event.Podcast.GenreID" class="text-danger"></span>
+        </div>
+        <div class="form-group selectList">
+            <label asp-for="Event.VenueID" class="control-label"></label>
+            @Html.DropDownListFor(model => model.Event.VenueID, Model.VenueList, "", new { @class = "form-control" })
+            <span asp-validation-for="Event.VenueID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group selectList">
+            <label asp-for="Event.TicketLevel" class="control-label"></label>
+            @Html.DropDownListFor(model => model.Event.TicketLevel, Model.TicketList, "", new { @class = "form-control" })
+            <span asp-validation-for="Event.TicketLevel" class="text-danger"></span>
+        </div>
+        <div class="form-group selectList">
+            <label asp-for="Event.TimeOfDayString" class="control-label"></label>
+            @Html.DropDownListFor(model => model.Event.TimeOfDayString, Model.TimeOfDayList, "", new { @class = "form-control" })
+            <span asp-validation-for="Event.TimeOfDayString" class="text-danger"></span>
+        </div>
+        <div class="form-group selectButton">
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </form>
+
+    <div class="container">
+        <h2>Event Schedule</h2>
+        <p></p>
+
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#past">Archived Events</a></li>
+            <li class="active"><a data-toggle="tab" href="#home">All Events</a></li>
+            @for (int i = 0; i < Model.EventListByDay.Count; i++)
+            {
+                if (i <= 7)
+                {
+                    <li><a data-toggle="tab" href="@("#menu"+ i)">@(Model.EventListByDay[i][0].Beginning.Day + ", " + Model.EventListByDay[i][0].Beginning.ToString("MMMM"))</a></li>
+                }
+            }
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <h3></h3>
+                <table class="table table-hover table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Event.Beginning)
+
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Event.Ending)
+
+                            </th>
+                            <th>
+                                Podcast
+                            </th>
+                            <th>
+                                Location
+
+                            </th>
+                            <th class="description-copy">
+                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
+
+                            </th>
+                            <th>
+                                Ticket
+
+                            </th>
+                            <th>
+
+
+                            </th>
+
+                            @if (Model.User.Role == 1)
+                            {
+                                <th> IsFinal </th>
+                            }
+
+
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Genre
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Event item in Model.EventList)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>
+                                    @item.Beginning.ToString("M/d/yyyy")
+                                    @item.Beginning.ToString("H:mm tt")
+                                </td>
+                                <td>
+                                    @item.Ending.ToString("M/d/yyyy")
+                                    @item.Ending.ToString("H:mm tt")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
+
+                                </td>
+                                <td>
+                                    @if (item.CoverPhoto != null)
+                                    {
+                                        <a href=@item.Podcast.URL>
+                                            <img src=@item.CoverPhoto )>
+                                        </a>
+                                    }
+
+                                </td>
+                                <td>
+                                    @if (item.DescriptionCopy.Length > 75)
+                                    {
+                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+
+                                </td>
+                                <td></td>
+
+                                <td>
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.IsFinalized)
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
+
+                                </td>
+                                <td>
+                                    @Html.ActionLink("iCal", "EncodeICal")
+                                    @Html.ActionLink("Google", "EncodeGoogleCal")
+                                    @Html.ActionLink("Yahoo", "EncodeYahooCal")
+
+                                </td>
+                                <td>
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div id="past" class="tab-pane fade">
+                <h3></h3>
+                <table class="table table-hover table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Event.Beginning)
+
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Event.Ending)
+
+                            </th>
+                            <th>
+                                Podcast
+                            </th>
+                            <th>
+                                Location
+
+                            </th>
+                            <th>
+
+
+                            </th>
+                            <th class="description-copy">
+                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
+
+                            </th>
+                            <th>
+                                Ticket
+
+                            </th>
+                            <th>
+
+                            </th>
+                            @if (Model.User.Role == 1)
+                            {
+                                <th> IsFinal </th>
+                            }
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Genre
+
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Event item in Model.ArchivedEventList)
+                        {
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    @item.Beginning.ToString("M/d/yyyy")
+                                    @item.Beginning.ToString("H:mm tt")
+                                </td>
+                                <td>
+                                    @item.Ending.ToString("M/d/yyyy")
+                                    @item.Ending.ToString("H:mm tt")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
+
+                                </td>
+                                <td>
+                                    @if (item.CoverPhoto != null)
+                                    {
+                                        <a href=@item.Podcast.URL>
+                                            <img src=@item.CoverPhoto )>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.DescriptionCopy.Length > 75)
+                                    {
+                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+
+                                </td>
+                                <td></td>
+
+                                <td>
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.IsFinalized)
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
+
+                                </td>
+                                <td>
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                        <br />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+            @if (z <= 7)
+            {
+                @foreach (var day in Model.EventListByDay)
+                {
+                    <div id="@("menu"+z)" class="tab-pane fade">
+                        <h3></h3>
+                        <table class="table table-hover table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Event.Beginning)
+
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Event.Ending)
+
+                                    </th>
+                                    <th>
+                                        Podcast
+                                    </th>
+                                    <th>
+                                        Location
+
+                                    </th>
+                                    <th>
+
+
+                                    </th>
+                                    <th class="description-copy">
+                                        @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
+
+                                    </th>
+                                    <th>
+                                        Ticket
+
+                                    </th>
+                                    <th>
+
+
+                                    </th>
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        <th> IsFinal </th>
+                                    }
+                                    <th>
+                                        Event
+                                    </th>
+                                    <th>
+                                        Genre
+
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @foreach (var item in day)
+                            {
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            @item.Beginning.ToString("M/d/yyyy")
+                                            @item.Beginning.ToString("H:mm tt")
+                                        </td>
+                                        <td>
+                                            @item.Ending.ToString("M/d/yyyy")
+                                            @item.Ending.ToString("H:mm tt")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Podcast.Title)
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Venue.DisplayName)
+
+                                        </td>
+                                        <td>
+                                            @if (item.CoverPhoto != null)
+                                            {
+                                                <a href=@item.Podcast.URL>
+                                                    <img src=@item.CoverPhoto )>
+                                                </a>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.DescriptionCopy.Length > 75)
+                                            {
+                                                item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
+                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+
+                                        </td>
+                                        <td></td>
+
+                                        <td>
+                                            @if (Model.User.Role == 1)
+                                            {
+                                                @Html.DisplayFor(modelItem => item.IsFinalized)
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EventName)
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
+
+                                        </td>
+                                        <td>
+
+                                            @Html.ActionLink("iCal", "EncodeICal")
+                                            @Html.ActionLink("Google", "EncodeGoogleCal")
+                                            @Html.ActionLink("Yahoo", "EncodeYahooCal")
+
+                                        </td>
+                                        <td>
+                                            @if (Model.User.Role == 1)
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                                                <br />
+                                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                                                <br />
+                                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                                <br />
+                                            }
+                                        </td>
+                                    </tr>
+                                </thead>
+                            }
+                        </table>
+                    </div>
+                    z++;
+                }
+            }
+
+        </div>
+    </div>
+</body>
+</html>
+

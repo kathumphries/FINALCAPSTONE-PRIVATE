@@ -5,7 +5,7 @@
 th {
     background-color: #f15263;
     color: white;
-    text-align: center;
+    
 }
 
 table th:first-child {
@@ -19,3 +19,8 @@ table th:last-child {
 .description-copy{
     text-indent: 5em;
 }
+
+.form-group{
+    width: 50%;
+}
+

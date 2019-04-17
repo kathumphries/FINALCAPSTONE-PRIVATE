@@ -13,31 +13,73 @@
     <link href="~/css/SearchStyle.css" rel="stylesheet" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .selectList {
+            float: left;
+            padding-right: 5em;
+        }
+
+        .date-time-local{
+            text-align: center;
+            padding: 1em 0 1em 0;
+            color: #d5e5f0;
+        }
+
+        .fa-clock{
+            padding-bottom: 6px;
+        }
+
+        .img-card {
+            display: block;
+            background-color: #686275;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .img-card {
+            transition: all .2s ease-in-out;
+        }
+
+        .img-card:hover {
+            transform: scale(1.1);
+        }
+
+        .img-responsive{
+            position:relative;
+            top: 5px;
+            width: 95%;    
+        }
+
+    </style>
 </head>
 <body>
+
+
     <form asp-action="SearchEvents">
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.Podcast.GenreID" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.Podcast.GenreID, Model.GenreList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.Podcast.GenreID" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.VenueID" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.VenueID, Model.VenueList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.VenueID" class="text-danger"></span>
         </div>
-        <div class="form-group">
+
+        <div class="form-group selectList">
             <label asp-for="Event.TicketLevel" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.TicketLevel, Model.TicketList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.TicketLevel" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.TimeOfDayString" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.TimeOfDayString, Model.TimeOfDayList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.TimeOfDayString" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectButton">
             <input type="submit" value="Submit" class="btn btn-default" />
         </div>
     </form>
@@ -53,7 +95,7 @@
             {
                 if (i <= 7)
                 {
-                    <li><a data-toggle="tab" href="@("#menu"+ i)">@(Model.EventListByDay[i][0].Beginning.Day + ", " + Model.EventListByDay[i][0].Beginning.ToString("MMMM"))</a></li>
+                    <li><a data-toggle="tab" href="@("#menu" + i)">@(Model.EventListByDay[i][0].Beginning.Day + ", " + Model.EventListByDay[i][0].Beginning.ToString("MMMM"))</a></li>
                 }
             }
         </ul>
@@ -61,388 +103,74 @@
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
                 <h3></h3>
-                <table class="table table-hover table-responsive-sm">
-                    <thead>
-                        <tr>
-                            <th>
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Beginning)
+                <div class="container-fluid">
+                    <div class="row">
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Ending)
-
-                            </th>
-                            <th>
-                                Podcast
-                            </th>
-                            <th>
-                                Location
-
-                            </th>
-                            <th>
-                                Cover Photo
-
-                            </th>
-                            <th class="description-copy">
-                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                            </th>
-                            <th>
-                                Ticket
-
-                            </th>
-                            <th>
-
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                            </th>
-                            <th>
-                                Event
-                            </th>
-                            <th>
-                                Genre
-
-                            </th>
-                            <th>
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
                         @foreach (Event item in Model.EventList)
                         {
-                            <tr>
-                                <td></td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Beginning)
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ending)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CoverPhoto)
-
-                                </td>
-                                <td>
-                                    @if (item.DescriptionCopy.Length > 75)
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="img-card">
+                                    @if (item.CoverPhoto != null)
                                     {
-                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
-                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                        <a href=@item.Podcast.URL>
+                                            <img class="center-block img-responsive" src=@item.CoverPhoto )>
+                                        </a>
                                     }
                                     else
                                     {
-                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                                        <img src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                                     }
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
-
-                                </td>
-                                <td></td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
-
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                </td>
-                            </tr>
+                                    <div class="date-time-local">                                    
+                                        <span class="hours">
+                                            <i class="fa fa-clock fa-fw"></i>
+                                            @item.Beginning.ToString("hh:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("hh:mm")  @item.Ending.ToString("tt").ToUpper()
+                                        </span>
+                                        <br />
+                                        <span class="location">
+                                            <i class="fa fa-map-marker fa-fw"></i>
+                                            Location: @item.Venue.DisplayName
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </tbody>
-                </table>
+
+                    </div>
+                </div>
             </div>
+
             <div id="past" class="tab-pane fade">
                 <h3></h3>
-                <table class="table table-hover table-responsive-sm">
-                    <thead>
-                        <tr>
-                            <th>
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Beginning)
+                @foreach (Event item in Model.ArchivedEventList)
+                {
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Ending)
+                }
 
-                            </th>
-                            <th>
-                                Podcast
-                            </th>
-                            <th>
-                                Location
-
-                            </th>
-                            <th>
-                                Cover Photo
-
-                            </th>
-                            <th class="description-copy">
-                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                            </th>
-                            <th>
-                                Ticket
-
-                            </th>
-                            <th>
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                            </th>
-                            <th>
-                                Event
-                            </th>
-                            <th>
-                                Genre
-
-                            </th>
-                            <th>
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Event item in Model.ArchivedEventList)
-                        {
-
-                            <tr>
-                                <td></td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Beginning)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ending)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.Title)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Venue.DisplayName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CoverPhoto)
-                                </td>
-                                <td>
-                                    @if (item.DescriptionCopy.Length > 75)
-                                    {
-                                        item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
-                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(modelItem => item.DescriptionCopy)
-                                    }
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
-
-                                </td>
-                                <td>
-
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
-
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                    @Html.ActionLink("iCal", "EncodeICal")
-                                    @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
-
 
             @if (z <= 7)
             {
                 @foreach (var day in Model.EventListByDay)
                 {
-                    <div id="@("menu"+z)" class="tab-pane fade">
+                    <div id="@("menu" + z)" class="tab-pane fade">
                         <h3></h3>
-                        <table class="table table-hover table-responsive-sm">
-                            <thead>
-                                <tr>
-                                    <th>
 
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.Beginning)
+                        @foreach (var item in day)
+                        {
 
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.Ending)
+                        }
 
-                                    </th>
-                                    <th>
-                                        Podcast
-                                    </th>
-                                    <th>
-                                        Location
-
-                                    </th>
-                                    <th>
-                                        Cover Photo
-
-                                    </th>
-                                    <th class="description-copy">
-                                        @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                                    </th>
-                                    <th>
-                                        Ticket
-
-                                    </th>
-                                    <th>
-
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                                    </th>
-                                    <th>
-                                        Event
-                                    </th>
-                                    <th>
-                                        Genre
-
-                                    </th>
-                                    <th>
-
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            @foreach (var item in day)
-                            {
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.EventID)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Beginning)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ending)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Podcast.Title)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Venue.DisplayName)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.CoverPhoto)
-
-                                        </td>
-                                        <td>
-                                            @if (item.DescriptionCopy.Length > 75)
-                                            {
-                                                item.DescriptionCopy = item.DescriptionCopy.Substring(0, 75) + "...";
-                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
-                                            }
-                                            else
-                                            {
-                                                @Html.DisplayFor(modelItem => item.DescriptionCopy)
-                                            }
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ticket.TicketType)
-
-                                        </td>
-                                        <td></td>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.EventName)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
-
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("iCal", "EncodeICal") |
-                                            @Html.ActionLink("Google", "EncodeGoogleCal") |
-                                            @Html.ActionLink("Yahoo", "EncodeYahooCal")
-
-                                        </td>
-                                    </tr>
-                                </thead>
-                            }
-                        </table>
                     </div>
                     z++;
                 }
             }
-
         </div>
     </div>
+
+
 </body>
 </html>
 
