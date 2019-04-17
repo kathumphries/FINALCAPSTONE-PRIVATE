@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,9 +14,10 @@ namespace Capstone.Models.Account
         public User User { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
+        [Browsable(false)]
         public int UserID { get; set; }
         public int UserRoleID { get; set; }
-        public string UserRoleDescription { get; set; }
+       
         
         public List<SelectListItem> RoleList
         {

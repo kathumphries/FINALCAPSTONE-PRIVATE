@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Capstone.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Capstone.DAL.Interfaces
         bool DuplicateUser(User user);
         List<User> GetAllUsers();
         List<User> GetAllUsersByRole();
-        bool UpdateUserRole(User user);
+        bool UpdateUserRole(UserRoleAdminViewModel model);
         User GetUserByID(int id);
     }
 }

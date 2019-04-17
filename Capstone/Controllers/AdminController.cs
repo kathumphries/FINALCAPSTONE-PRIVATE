@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; //needed for the SetString and GetString extension methods
 using Capstone.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.CodeAnalysis.CSharp;
 
 
 namespace Capstone.Controllers
@@ -28,11 +28,11 @@ namespace Capstone.Controllers
         //private readonly IEventSqlDal eventSqlDal;
         //private readonly IGenreSqlDal genreSqlDal;
         //private readonly IVenueSqlDal venueSqlDal;
-        //private readonly ITicketSqlDal ticketSqlDal;
+        private readonly ITicketSqlDal ticketSqlDal;
 
 
 
-        public AdminController(IAuthProvider authProvider, IUserSqlDal userSqlDal)
+        public AdminController(IAuthProvider authProvider, IUserSqlDal userSqlDal, ITicketSqlDal ticketSqlDal)
         //IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal,
         //IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal , ITicketSqlDal ticketSqlDal)
 
@@ -43,7 +43,7 @@ namespace Capstone.Controllers
             //this.eventSqlDal = eventSqlDal;
             //this.genreSqlDal = genreSqlDal;
             //this.venueSqlDal = venueSqlDal;
-            // this.ticketSqlDal = ticketSqlDal;
+             this.ticketSqlDal = ticketSqlDal;
         }
 
         //Roles in db: 
@@ -59,6 +59,19 @@ namespace Capstone.Controllers
         public IActionResult Index()
         {
             List<User> users = userSqlDal.GetAllUsersByRole();
+            users.ForEach(user =>
+            {
+                if (!String.IsNullOrEmpty(user.TicketLevel))
+                {
+                    user.Ticket = ticketSqlDal.GetTicket(user.TicketLevel);
+
+                }
+            });
+            
+
+
+            //model.UserRoleID = userSqlDal.GetUserByID(id).Role;
+
             return View(users);
         }
 
@@ -66,10 +79,14 @@ namespace Capstone.Controllers
         [HttpGet]
        // [AuthorizationFilter("1")]
         public IActionResult EditRole(int id)
-        {
+       {
 
-            UserRoleAdminViewModel model = new UserRoleAdminViewModel();
-            model.User = userSqlDal.GetUserByID(id);
+           UserRoleAdminViewModel model = new UserRoleAdminViewModel();
+            model.UserID = id;
+            
+            model.UserName = userSqlDal.GetUserByID(id).Name;
+            model.UserEmail = userSqlDal.GetUserByID(id).Email;
+            model.UserRoleID = userSqlDal.GetUserByID(id).Role;
             return View(model);
 
         }
@@ -77,7 +94,7 @@ namespace Capstone.Controllers
         [AuthorizationFilter("1")] //admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditRole(UserRoleAdminViewModel model)
+        public IActionResult EditRole(UserRoleAdminViewModel model, int id)
         {
 
             if (!ModelState.IsValid)
@@ -87,7 +104,7 @@ namespace Capstone.Controllers
             else
             {
 
-                bool result = userSqlDal.UpdateUserRole(model.User);
+                bool result = userSqlDal.UpdateUserRole(model);
 
                 return RedirectToAction("Index", "Admin");
 

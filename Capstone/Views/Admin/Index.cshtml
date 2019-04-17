@@ -13,7 +13,6 @@
 <table class="table">
     <thead>
         <tr>
-            
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
@@ -45,31 +44,42 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
+
             <td>
-                @Html.RadioButtonFor(modelItem => item.TicketLevel, 1)
+                @if (item.Role == 1)
+                {<text>✔️ </text>}
+
+
             </td>
+          
             <td>
-                @Html.RadioButtonFor(modelItem => item.TicketLevel, 2)
+                @if (item.Role == 3)
+                {<text>✔️ </text>}
+
             </td>
+            
             <td>
-                @Html.RadioButtonFor(modelItem => item.TicketLevel, 3)
-           
+                @if (item.Role == 2)
+                {<text>✔️ </text>}
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             
-            
-            
-            
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+            </td>
             
             <td>
-                @Html.ActionLink("Event - Edit", "EditRole", "admin", new { id = item.UserID }, null)
-                
-                </td>
-        </tr>
+              <a href=@Url.Action("EditRole", "Admin", new {id = item.UserID})>
+                <i class="fa fa-edit">icon</i>
+            </a>
+</tr>
 }
     </tbody>
 </table>

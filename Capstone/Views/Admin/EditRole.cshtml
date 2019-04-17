@@ -12,24 +12,21 @@
     <div class="col-md-4">
         <form asp-action="EditRole">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-         
+
+            @Html.HiddenFor(model => model.UserID)
 
             <div class="form-group">
-                <label asp-for="@Model.User.Name" class="control-label"></label>
-                <input asp-for="@Model.User.Name" class="form-control" />
-                <span asp-validation-for="@Model.User.Name" class="text-danger"></span>
+                <label>@Model.UserEmail</label>
             </div>
-            
+
             <div class="form-group">
-                <label asp-for="@Model.User.Email" class="control-label"></label>
-                <input asp-for="@Model.User.Email" class="form-control" />
-                <span asp-validation-for="@Model.User.Email" class="text-danger"></span>
+                <label>@Model.UserName</label>
             </div>
-            
+
+
             <div class="form-group">
-                <label asp-for="@Model.User.Role" class="control-label"></label>
-                @Html.DropDownListFor(model => model.User.Role, Model.RoleList, new { @class = "form-control" })
-                <span asp-validation-for="@Model.User.Role" class="text-danger"></span>
+                @Html.DropDownListFor(model => model.UserRoleID, Model.RoleList, new { @class = "form-control" })
+                <span asp-validation-for="@Model.UserRoleID" class="text-danger"></span>
             </div>
 
             <div class="form-group">
