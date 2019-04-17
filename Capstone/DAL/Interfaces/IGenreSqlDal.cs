@@ -11,5 +11,6 @@ namespace Capstone.DAL.Interfaces
         List<Genre> GetAllGenres();
         string GetGenreDescription(int genreID);
         Genre GetGenre(int genreID);
+        Genre GetGenreEventID(int eventID);
     }
 }

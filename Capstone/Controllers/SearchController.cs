@@ -18,7 +18,7 @@ namespace Capstone.Controllers
         const string SessionName = "User_Auth";
 
         private readonly IAuthProvider authProvider;
-        private readonly IPodcastSqlDal podcastDal;
+        private readonly IPodcastSqlDal podcastSqlDal;
         private readonly IEventSqlDal eventSqlDal;
         private readonly IGenreSqlDal genreSqlDal;
         private readonly IVenueSqlDal venueSqlDal;
@@ -26,7 +26,7 @@ namespace Capstone.Controllers
 
         public SearchController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal, IAuthProvider authProvider)
         {
-            this.podcastDal = podcastSqlDal;
+            this.podcastSqlDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
@@ -43,6 +43,8 @@ namespace Capstone.Controllers
 
             Event eventItem = new Event();
             eventItem.Podcast = new Podcast();
+            eventItem.Podcast.Genre = new Genre();
+
             SearchViewModel model = new SearchViewModel
             {
                 Event = eventItem,
@@ -53,8 +55,29 @@ namespace Capstone.Controllers
                 TimeOfDayList = GetTimeOfDay()
             };
 
+            
+
             model.EventList = eventSqlDal.GetFutureEvents(eventItem, user);
+            
+
+            foreach (Event item in model.EventList)
+            {  
+                item.Venue = venueSqlDal.GetVenue(item.VenueID);
+                item.Podcast = podcastSqlDal.GetPodcast(item.PodcastID);
+                item.Podcast.Genre = genreSqlDal.GetGenreEventID(item.EventID);
+                item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
+
+            }
+
             model.ArchivedEventList = eventSqlDal.GetPastEvents(eventItem, user);
+            foreach (Event item in model.ArchivedEventList)
+            {         
+                item.Venue = venueSqlDal.GetVenue(item.VenueID);
+                item.Podcast = podcastSqlDal.GetPodcast(item.PodcastID);
+                item.Podcast.Genre = genreSqlDal.GetGenreEventID(item.EventID);
+                item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
+
+            }
 
             model.EventListByDay = model.EventList
             .GroupBy(p => p.Beginning.Date)
@@ -71,8 +94,14 @@ namespace Capstone.Controllers
             User user = authProvider.GetCurrentUser();
 
             model.EventList = eventSqlDal.Search(model.Event, user);
-            model.Event.Venue = venueSqlDal.GetVenue(model.Event.VenueID);
-            model.Event.Podcast.Genre = genreSqlDal.GetGenre(model.Event.Podcast.GenreID);
+
+            foreach (Event item in model.EventList)
+            {
+                item.Venue = venueSqlDal.GetVenue(item.VenueID);               
+                item.Podcast = podcastSqlDal.GetPodcast(item.PodcastID);
+                item.Podcast.Genre = genreSqlDal.GetGenre(item.Podcast.GenreID);
+                item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
+            }
 
             return View(model);
         }
@@ -121,7 +150,7 @@ namespace Capstone.Controllers
 
         public List<SelectListItem> GetPodcastList()
         {
-            List<Podcast> podcastList = podcastDal.GetAllPodcasts();
+            List<Podcast> podcastList = podcastSqlDal.GetAllPodcasts();
 
             List<SelectListItem> selectListPodcast = new List<SelectListItem>();
 

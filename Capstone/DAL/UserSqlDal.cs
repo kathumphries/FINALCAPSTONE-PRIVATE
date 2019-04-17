@@ -70,7 +70,7 @@ namespace Capstone.DAL
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(SQL_DeleteUser, connection);
-                   command.Parameters.AddWithValue("@userID", user.UserID);
+                    command.Parameters.AddWithValue("@userID", user.UserID);
                     command.ExecuteNonQuery();
                     return;
                 }

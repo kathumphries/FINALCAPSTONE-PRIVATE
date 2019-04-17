@@ -14,7 +14,8 @@ namespace Capstone.DAL
 
         private const string SQL_GetAllGenres = "SELECT * FROM Genre WHERE isVisible = 1 ORDER BY genreID ASC;";
         private const string SQL_GetGenreDescription = "SELECT name FROM Genre WHERE  genreID = @genreID;";
-        private const string SQL_GetGenre = "SELECT * FROM Genre WHERE  genreID = @genreID;";
+        private const string SQL_GetGenre = "SELECT * FROM Genre WHERE genreID = @genreID;";
+        private const string SQL_GetGenreEventID = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID WHERE Event.eventID = @eventID;";
 
         public GenreSqlDal(string connectionString)
         {
@@ -49,7 +50,7 @@ namespace Capstone.DAL
             {
                 GenreID = Convert.ToInt32(reader["genreID"]),
                 GenreName = Convert.ToString(reader["name"]),
-                IsVisible = Convert.ToBoolean(reader["isVisible"])                
+                IsVisible = Convert.ToBoolean(reader["isVisible"])
             };
 
 
@@ -76,33 +77,61 @@ namespace Capstone.DAL
         }
 
         public Genre GetGenre(int genreID)
-            {
-                Genre genre = new Genre();
-                
+        {
+            Genre genre = new Genre();
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
                 SqlCommand command = new SqlCommand(SQL_GetGenre, connection);
 
-                    command.Parameters.AddWithValue("@genreID", genreID);
-                    SqlDataReader reader = command.ExecuteReader();
+                command.Parameters.AddWithValue("@genreID", genreID);
+                SqlDataReader reader = command.ExecuteReader();
 
-                    while (reader.Read())
-                    {
+                while (reader.Read())
+                {
                     genre = (MapToRowGenreName(reader));
-
-                    }
-
-
-
-                    return genre;
 
                 }
 
+
+
+                return genre;
+
             }
-}
+
+        }
+
+        public Genre GetGenreEventID(int eventID)
+        {
+            Genre genre = new Genre();
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_GetGenreEventID, connection);
+
+                command.Parameters.AddWithValue("@eventID", eventID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    genre = (MapToRowGenreName(reader));
+
+                }
+
+
+
+                return genre;
+
+            }
+
+        }
+    }
 }
 
 
