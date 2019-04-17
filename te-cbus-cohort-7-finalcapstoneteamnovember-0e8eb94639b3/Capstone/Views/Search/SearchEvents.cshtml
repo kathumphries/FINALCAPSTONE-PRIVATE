@@ -1,0 +1,101 @@
+﻿@model Capstone.Models.ViewModel.SearchViewModel
+
+@{
+    ViewData["Title"] = "SearchEvents";
+}
+
+<h2>Search</h2>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+   
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.EventID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.Beginning)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.Ending)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.PodcastID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.VenueID)
+                </th>
+                <th>
+                   Cover Photo
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.TicketLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.IsFinalized)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event.EventName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Event item in Model.EventList) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beginning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ending)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PodcastID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VenueID)
+                </td>
+                <td>
+                    <div class="podcast-logo">
+                        @if (item.CoverPhoto != null)
+                        {
+                            <img src=@item.CoverPhoto )>
+                        }
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsFinalized)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>
+</body>
+</html>
+

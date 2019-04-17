@@ -1,0 +1,17 @@
+﻿.date-time-local{}
+.date {
+}
+.hours {
+}
+.location {
+}
+
+.podcast-logo img {
+    border-radius: 8px;
+    max-width: 100px;
+}
+.genre-tag {
+    color:#FFFFFF;
+    font-size:14px;
+    background:#4DA2E5;
+}

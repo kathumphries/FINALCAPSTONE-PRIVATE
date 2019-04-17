@@ -27,7 +27,7 @@ namespace Capstone.DAL
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
 
-        private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
+        private readonly string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
 
@@ -374,8 +374,7 @@ namespace Capstone.DAL
                 {
                     eventList.Add(MapToRowEvent(reader));
                 }
-
-
+                
                 return eventList;
             }
         }
@@ -396,9 +395,11 @@ namespace Capstone.DAL
                 IsFinalized = Convert.ToBoolean(reader["isFinalized"]),
                 EventName = Convert.ToString(reader["eventName"]),
                 //Podcast = Convert.ToString(reader["title"]),
-                PodcastID = Convert.ToString(reader["podcastID"])               
-                
+                PodcastID = Convert.ToString(reader["podcastID"])         
+                                        
+                               
             };
+
         }
 
 
