@@ -116,32 +116,32 @@ namespace Capstone.Controllers
             return View();
         }
         
-        [HttpGet]
-        [AuthorizationFilter("2")]  //user
-        public IActionResult AddMyEvent(int id)
-        {
-            User user = authProvider.GetCurrentUser();
-            List<Event> allMyEvents = eventSqlDal.GetUserEvents(user);
+        //[HttpGet]
+        //[AuthorizationFilter("2")]  //user
+        //public IActionResult AddMyEvent(int id)
+        //{
+        //    User user = authProvider.GetCurrentUser();
+        //    List<Event> allMyEvents = eventSqlDal.GetUserEvents(user);
 
-            foreach (Event eventItem in allMyEvents)
-            {
-                if (7 == eventItem.EventID)  //TODO remove
-                {
-                    return View("EventDetail");
-                }
-                else
-                {
-                    bool result = userEventSqlDal.AddMyEvent(user.UserID, eventItem);
+        //    foreach (Event eventItem in allMyEvents)
+        //    {
+        //        if (7 == eventItem.EventID)  //TODO remove
+        //        {
+        //            return View("EventDetail");
+        //        }
+        //        else
+        //        {
+        //            bool result = userEventSqlDal.AddMyEvent(user.UserID, eventItem);
 
 
-                }
+        //        }
 
-            }
+        //    }
 
            
-            return View();//TODO remove this
+        //    return View();//TODO remove this
 
-        }
+        //}
 
         public IActionResult MySchedule()
         {
@@ -150,19 +150,19 @@ namespace Capstone.Controllers
             return View(myEvents);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AuthorizationFilter("2")]  //user
-        public IActionResult RemoveEvent(int userID, int eventID)
-        {
-            User user = authProvider.GetCurrentUser();
-            Event eventItem = new Event();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[AuthorizationFilter("2")]  //user
+        //public IActionResult RemoveEvent(int userID, int eventID)
+        //{
+        //    User user = authProvider.GetCurrentUser();
+        //    Event eventItem = new Event();
 
-            bool result = userEventSqlDal.RemoveMyEvent(user.UserID, eventItem.EventID);
+        //    bool result = userEventSqlDal.RemoveMyEvent(user.UserID, eventItem.EventID);
 
-            return View();//TODO remove
+        //    return View();//TODO remove
 
-        }
+        //}
     }
 
 

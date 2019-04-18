@@ -1,94 +1,84 @@
-﻿@model Capstone.Models.ViewModel.PodcastViewModel
+﻿
+
+@model Capstone.Models.ViewModel.PodcastViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h2>Edit</h2>
+<h2>Create</h2>
 
 <h4>Podcast</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @Html.HiddenFor(model => model.Podcast.PodcastID)
-
-            
-            <div class="form-group">
+        <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(model => model.Podcast.PodcastID)
+    </div>
+   
+                <div class="form-group">
                 <label asp-for="Podcast.Hosting" class="control-label"></label>
                 <input asp-for="Podcast.Hosting" class="form-control" />
                 <span asp-validation-for="Podcast.Hosting" class="text-danger"></span>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="Podcast.Description" class="control-label"></label>
-                <input asp-for="Podcast.Description" class="form-control" />
-                <span asp-validation-for="Podcast.Description" class="text-danger"></span>
-            </div>
-        
-
             <div class="form-group">
                 <label asp-for="Podcast.URL" class="control-label"></label>
                 <input asp-for="Podcast.URL" class="form-control" />
                 <span asp-validation-for="Podcast.URL" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.Title" class="control-label"></label>
                 <input asp-for="Podcast.Title" class="form-control" />
                 <span asp-validation-for="Podcast.Title" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                @Html.DropDownListFor(model => model.Podcast.GenreID, Model.GenreList, new { @class = "form-control" })
-                <span asp-validation-for="@Model.Podcast.GenreID" class="text-danger"></span>
+                <label asp-for="Podcast.Description" class="control-label"></label>
+                <input asp-for="Podcast.Description" class="form-control" />
+                <span asp-validation-for="Podcast.Description" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group">
+    <div class="form-group">
+        @Html.DropDownListFor(model => model.Podcast.GenreID, Model.GenreList, new { @class = "form-control" })
+        <span asp-validation-for="Podcast.GenreID" class="text-danger"></span>
+    </div>
+    
+    
+                <div class="form-group">
                 <label asp-for="Podcast.OriginalRelease" class="control-label"></label>
                 <input asp-for="Podcast.OriginalRelease" class="form-control" />
                 <span asp-validation-for="Podcast.OriginalRelease" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
+    
+    <div class="form-group">
                 <label asp-for="Podcast.RunTime" class="control-label"></label>
                 <input asp-for="Podcast.RunTime" class="form-control" />
                 <span asp-validation-for="Podcast.RunTime" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.ReleaseFrequency" class="control-label"></label>
                 <input asp-for="Podcast.ReleaseFrequency" class="form-control" />
                 <span asp-validation-for="Podcast.ReleaseFrequency" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.AverageLength" class="control-label"></label>
                 <input asp-for="Podcast.AverageLength" class="form-control" />
                 <span asp-validation-for="Podcast.AverageLength" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <label asp-for="Podcast.EpisodeCount" class="control-label"></label>
+                <label asp-for="Podcast.EpisodeCount" class="c ontrol-label"></label>
                 <input asp-for="Podcast.EpisodeCount" class="form-control" />
                 <span asp-validation-for="Podcast.EpisodeCount" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.DownloadCount" class="control-label"></label>
                 <input asp-for="Podcast.DownloadCount" class="form-control" />
                 <span asp-validation-for="Podcast.DownloadCount" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.MeasurementPlatform" class="control-label"></label>
                 <input asp-for="Podcast.MeasurementPlatform" class="form-control" />
                 <span asp-validation-for="Podcast.MeasurementPlatform" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.Demographic" class="control-label"></label>
                 <input asp-for="Podcast.Demographic" class="form-control" />
@@ -123,14 +113,13 @@
                     </label>
                 </div>
             </div>
-
             <div class="form-group">
                 <label asp-for="Podcast.Sponsor" class="control-label"></label>
                 <input asp-for="Podcast.Sponsor" class="form-control" />
                 <span asp-validation-for="Podcast.Sponsor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
@@ -140,6 +129,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

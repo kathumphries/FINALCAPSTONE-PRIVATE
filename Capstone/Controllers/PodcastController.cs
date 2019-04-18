@@ -19,16 +19,18 @@ namespace Capstone.Controllers
     {
         private readonly IPodcastSqlDal podcastDal;
         private readonly IGenreSqlDal genreSqlDal;
+      
+        const string SessionName = "User_Auth";
 
+        private readonly IAuthProvider authProvider;
 
-        public PodcastController(IPodcastSqlDal podcastSqlDal, IGenreSqlDal genreSqlDal)
+        public PodcastController(IAuthProvider authProvider, IPodcastSqlDal podcastSqlDal, IGenreSqlDal genreSqlDal)
         {
             this.podcastDal = podcastSqlDal;
             this.genreSqlDal = genreSqlDal;
+            this.authProvider = authProvider;
         }
 
-
-    
         // GET: Podcast
         public ActionResult Index()
         {
@@ -37,7 +39,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Podcast/Details/5
-    
+
         public ActionResult Detail(int id)
         {
             PodcastViewModel model = new PodcastViewModel()
@@ -47,26 +49,24 @@ namespace Capstone.Controllers
             };
 
             return View(model);
-            
+
         }
 
         //// GET: Podcast/Create
-      
+
         public ActionResult Create()
         {
-            Podcast podcast = new Podcast();
             PodcastViewModel model = new PodcastViewModel()
             {
-              GenreList = GetGenreList(),
-
-
+                Podcast = new Podcast(),
+                GenreList = GetGenreList()
             };
 
             return View(model);
         }
 
         // POST: Podcast/Create
-  
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PodcastViewModel model)
@@ -74,22 +74,23 @@ namespace Capstone.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.GenreList = GetGenreList();
                 return View(model);
             }
             else
             {
 
                 model.GenreList = GetGenreList();
-                bool result = podcastDal.AddPodcast(model.Podcast);
+                podcastDal.CreatePodcast(model.Podcast);
 
-
-                return RedirectToAction("Detail", new { id = model.Podcast.PodcastID });
+                LogChange(model.Podcast.PodcastID, "CREATE");
+                return RedirectToAction("Index");
 
             }
         }
 
         // GET: Podcast/Edit/5
-       
+
         public ActionResult Edit(int id)
         {
             PodcastViewModel model = new PodcastViewModel
@@ -97,13 +98,12 @@ namespace Capstone.Controllers
                 Podcast = podcastDal.GetPodcast(id.ToString()),
                 GenreList = GetGenreList()
             };
-            
             return View(model);
 
         }
 
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, PodcastViewModel model)
@@ -111,16 +111,17 @@ namespace Capstone.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.GenreList = GetGenreList();
                 return View(model);
             }
             else
             {
                 model.GenreList = GetGenreList();
-
-
                 bool result = podcastDal.UpdatePodacast(model.Podcast);
 
-                return RedirectToAction("Detail", new {id = id});
+            LogChange(id, "EDIT");
+
+            return RedirectToAction("Detail", new { id });
 
 
             }
@@ -139,6 +140,40 @@ namespace Capstone.Controllers
 
             return selectListGenre;
         }
+
+    
+        private void LogChange(int id, string action)
+        {
+            User user = authProvider.GetCurrentUser();
+            DateTime timeChanged = DateTime.Now;
+            Podcast podcast = podcastDal.GetPodcast(id.ToString());
+
+            string eventDetail = user.Email + "," +
+                                 user.Name + "," +
+                                 action + "PODCAST, " +
+                 "PodcastID:  " + podcast.PodcastID + "," +
+                "UserID:  " + podcast.UserID + "," +
+                "Hosting:  " + podcast.Hosting + "," +
+                "URL:  " + podcast.URL + "," +
+                "Title:  " + podcast.Title + "," +
+                "Description:  " + podcast.Description + "," +
+                "GenreID:  " + podcast.GenreID + "," +
+                "OriginalRelease:  " + podcast.OriginalRelease + "," +
+                "RunTime:  " + podcast.RunTime + "," +
+                "ReleaseFrequency:  " + podcast.ReleaseFrequency + "," +
+                "AverageLength:  " + podcast.AverageLength + "," +
+                "MeasurementPlatform:  " + podcast.MeasurementPlatform + "," +
+                "Demographic:  " + podcast.Demographic + "," +
+                "Affiliations:  " + podcast.Affiliations + "," +
+                "BroadcastCity:  " + podcast.BroadcastCity + "," +
+                "BroadcastState:  " + podcast.BroadcastState + "," +
+                "IsSponsored:  " + podcast.IsSponsored + "," +
+                "Sponsor:  " + podcast.Sponsor;
+
+            System.IO.File.AppendAllText(@"c:\pmlog\log.txt", (eventDetail + "\n"));
+
+        }
+
 
     }
 }

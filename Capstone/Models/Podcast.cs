@@ -11,6 +11,7 @@ namespace Capstone.Models
     {
         public int PodcastID { get; set; }
         public int UserID { get; set; }
+
         public string Hosting { get; set; }
         public string URL { get; set; }
 
@@ -21,26 +22,21 @@ namespace Capstone.Models
 
         [Display(Name = "Genre Type")]
         public int GenreID { get; set; }
-        public Genre Genre { get; set; } 
-        // public string SoundByte { get; set; }
-        public DateTime OriginalRelease { get; set; }
+        public Genre Genre { get; set; }
+        public DateTime OriginalRelease { get; set; } = DateTime.Now;
         public string RunTime { get; set; }
-        public string ReleaseFrequency { get; set; }
-        public string AverageLength { get; set; }
-        public int EpisodeCount { get; set; }
-        public int DownloadCount { get; set; }
-        public string MeasurementPlatform { get; set; }
+        public string ReleaseFrequency { get; set; } = "Monthly";
+        public string AverageLength { get; set; } = "30 minutes";
+        public int EpisodeCount { get; set; } = 0;
+        public int DownloadCount { get; set; } = 0;
+        public string MeasurementPlatform { get; set; } 
         public string Demographic { get; set; }
         public string Affiliations { get; set; }
-
-        [Required]
-        public string BroadcastCity { get; set; }
-
-        [Required]
+        public string BroadcastCity { get; set; } 
         public string BroadcastState { get; set; }
-
-       
-        public bool InOhio {
+      
+        public bool InOhio
+        {
             get
             {
                 if (BroadcastState == "OH")
@@ -54,34 +50,7 @@ namespace Capstone.Models
             }
         }
 
-        [Required]
-        public bool IsSponsored { get; set; }
+        [Required] public bool IsSponsored { get; set; } = true;
         public string Sponsor { get; set; }
     }
 }
-
-//using System.ComponentModel.DataAnnotations;
-//[Display(EventName = "Enter Your EventName")]
-//public string Username { get; set; }
-
-//[Required]
-
-//[DataType(DataType.PhoneNumber)]
-
-//[DataType(DataType.EmailAddress)]
-
-//[MinLength(8, ErrorMessage = "Password must be 8 characters or more")]
-
-//[DataType(DataType.Password)]
-
-//[Compare("Password")]
-
-//[MaxLength(160)]
-
-//[MinLength(5)]
-
-//[DisplayName("Artist")]
-
-//[Range(0.01, 100.00,
-//    ErrorMessage = "Price must be between 0.01 and 100.00")]
-
