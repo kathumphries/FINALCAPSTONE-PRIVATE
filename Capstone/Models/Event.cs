@@ -10,8 +10,8 @@ namespace Capstone.Models
     {
         public int EventID { get; set; }
         public int Day { get; set; }
-        public DateTime Beginning { get; set; }
-        public DateTime Ending { get; set; }
+        public DateTime Beginning { get; set; } = DateTime.Now;
+        public DateTime Ending { get; set; } = DateTime.Now;
 
         public DateTime PodfestStartTime { get; set; } = new DateTime(2019, 8, 23);
         //public string PodcastName { get; set; }

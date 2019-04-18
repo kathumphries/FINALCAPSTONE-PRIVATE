@@ -301,20 +301,9 @@ namespace Capstone.Controllers
             Event eventItem = eventSqlDal.GetEvent(id);
 
             string eventDetail = timeChanged + "," + user.Email + "," +
-                                 user.Name + "," +
-                                 action +
-                                 "Event ID: " + eventItem.EventID + "," +
-                                 "VenueID: " + eventItem.VenueID + "," +
-                                 "Beginning: " + eventItem.Beginning + "," +
-                                 "Ending: " + eventItem.Ending.ToString() + "," +
-                                 "DescriptionCopy: " + eventItem.DescriptionCopy + "," +
-                                 "TicketLevel: " + eventItem.TicketLevel + "," +
-                                 "UpsaleCopy: " + eventItem.UpsaleCopy + "," +
-                                 "IsFinalized: " + eventItem.IsFinalized + "," +
-                                 "EventName: " + eventItem.EventName + "," +
-                                 "PodcastID: " + eventItem.PodcastID + "," +
-                                 "CoverPhoto: " + eventItem.CoverPhoto;
-
+                                 user.Name + "," + action +
+                                 "Event ID: " + eventItem.EventID;
+                                
 
             System.IO.File.AppendAllText(@"c:\pmlog\log.txt", (eventDetail + "\n"));
 
