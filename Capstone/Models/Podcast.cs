@@ -13,7 +13,7 @@ namespace Capstone.Models
         public int UserID { get; set; }
 
         public string Hosting { get; set; }
-        public string URL { get; set; } = "~/images/pfmw main logo.JPG";
+        public string URL { get; set; } = "https://podfestmidwest.com/wp-content/uploads/2019/02/PodfestMidwest_Logo-FINAL-10.png";
 
         [Required]
         public string Title { get; set; }

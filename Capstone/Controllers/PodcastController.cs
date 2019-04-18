@@ -83,7 +83,10 @@ namespace Capstone.Controllers
                 model.GenreList = GetGenreList();
                 podcastDal.CreatePodcast(model.Podcast);
 
+
                 LogChange(model.Podcast.PodcastID, "CREATE");
+                                                 
+
                 return RedirectToAction("Index");
 
             }
@@ -150,26 +153,9 @@ namespace Capstone.Controllers
 
             string eventDetail = user.Email + "," +
                                  user.Name + "," +
-                                 action + "PODCAST, " +
-                 "PodcastID:  " + podcast.PodcastID + "," +
-                "UserID:  " + podcast.UserID + "," +
-                "Hosting:  " + podcast.Hosting + "," +
-                "URL:  " + podcast.URL + "," +
-                "Title:  " + podcast.Title + "," +
-                "Description:  " + podcast.Description + "," +
-                "GenreID:  " + podcast.GenreID + "," +
-                "OriginalRelease:  " + podcast.OriginalRelease + "," +
-                "RunTime:  " + podcast.RunTime + "," +
-                "ReleaseFrequency:  " + podcast.ReleaseFrequency + "," +
-                "AverageLength:  " + podcast.AverageLength + "," +
-                "MeasurementPlatform:  " + podcast.MeasurementPlatform + "," +
-                "Demographic:  " + podcast.Demographic + "," +
-                "Affiliations:  " + podcast.Affiliations + "," +
-                "BroadcastCity:  " + podcast.BroadcastCity + "," +
-                "BroadcastState:  " + podcast.BroadcastState + "," +
-                "IsSponsored:  " + podcast.IsSponsored + "," +
-                "Sponsor:  " + podcast.Sponsor;
-
+                                 action + "PODCAST: " +
+                                 "PodcastID:  " + podcast.PodcastID;
+               
             System.IO.File.AppendAllText(@"c:\pmlog\log.txt", (eventDetail + "\n"));
 
         }
