@@ -208,6 +208,49 @@ namespace Capstone.Controllers
             return RedirectToAction("UserCalendar", "Search");
         }
 
+        [HttpGet]
+        public IActionResult AddUserEventDetails(int id)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.AddUserEvent(user, id);
+                }
+
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+            return RedirectToAction("EventDetail", "Event", new { id = id });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveUserEventMyDetails(int id)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.RemoveUserEvent(user, id);
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+            return RedirectToAction("EventDetail", "Event", new { id = id });
+        }
+
         public IActionResult UserCalendar()
         {
             User user = authProvider.GetCurrentUser();
