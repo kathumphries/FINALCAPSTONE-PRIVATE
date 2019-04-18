@@ -14,9 +14,16 @@
         /*.coolLook {
             display: block;
             background-color: #f15263;
-            
+
         }*/
 
+        #heart2{
+            color:orangered;
+        }
+
+        #heart1{
+            color: lawngreen;
+        }
     </style>
 </head>
 <body>
@@ -26,11 +33,11 @@
                 <div class="img-card">
                     @if (Model.EventItem.CoverPhoto != null)
                     {
-                        <img class="center-block img-responsive imgHover" src=@Model.EventItem.CoverPhoto )>
+                        <img class="center-block img-responsive" src="@Model.EventItem.CoverPhoto" >
                     }
                     else
                     {
-                        <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                        <img class="center-block img-responsive" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                     }
 
                     <div class="middle">
@@ -60,13 +67,16 @@
 
                             @* TODO ADD ADMIN AUTH *@
 
-                            @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID })
-                            @Html.ActionLink("Remove", "DeleteEvent", new { id = Model.EventItem.EventID })
+                            @if (Model.User.Role == 1)
+                            {
+                                @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID })
+                            }
+
                             @Html.ActionLink("Create New", "SaveEvent")
                             @Html.ActionLink("iCal", "EncodeICal")
                             @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
                         </div>
-    
+
                     </div>
                 </div>
             </div>
@@ -77,33 +87,60 @@
                         <a href=@Model.EventItem.Podcast.URL> @Model.EventItem.Podcast.Title</a>
                     </p>
                     <p class="badge badge-primary badge-pill genre-tag">
-                        @Model.EventItem.Podcast.GenreID
+                        @Model.EventItem.Podcast.Genre.GenreName
                     </p>
+                    @if (Model.UserFav.ContainsKey(Model.EventItem.EventID))
+                    {
+                        if (Model.UserFav[Model.EventItem.EventID] == true)
+                        {
+                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@Model.EventItem.EventID">
+                                <i id="heart2" class="fas fa-heart"></i>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@Model.EventItem.EventID">
+                            <i id="heart2" class="fas fa-heart"></i>
+                        </a>
+                    }
                 </span>
 
                 <div class="podcast info">
-                    <dl class="dl-horizontal">
-                        <dd>
-                            <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
-                        </dd>
-                        <dd>
-                            <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
-                        </dd>
-                        <dd>
-                            @Html.DisplayFor(model => model.EventItem.Ticket.TicketType)
-                        </dd>
-                        <dd>
-                            @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
-                        </dd>
+                    <br />
+                    <p> Join us at @Html.DisplayFor(model => model.EventItem.EventName) where we will be joined by @Model.EventItem.Podcast.Title an event you will not want to miss. </p>
+                    <br />
+                    <p>
+                        @Html.DisplayFor(model => model.EventItem.DescriptionCopy)
+                    </p>
+                    <br />
+                    <p>
+                        For more information about @Model.EventItem.Podcast.Title please vist them at <a href="@Model.EventItem.Podcast.URL">their website!</a>
+                    </p>
+                    <br />
+                    <p>
+                        @Model.EventItem.EventName will be open to @Model.EventItem.Ticket.TicketType tickets. Get yours today!
+                        @if (@Model.EventItem.UpsaleCopy != null)
+                        {
+                            @Model.EventItem.UpsaleCopy
+                        }
 
-                    </dl>
+                    </p>
+                    <br />
+                    <p>
+                        This event will be held at the @Model.EventItem.Venue.DisplayName located at @(Model.EventItem.Venue.Address1.ToString()) + "." )
+                    </p>
+                    <br />
+                    <p>
+                        @if (Model.EventItem.Venue.AdditionalInfo != null)
+                        {
+                            @Model.EventItem.Venue.AdditionalInfo
+                        }
+                    </p>
                 </div>
-
-
             </div>
         </div>
     </div>
-
 
 </body>
 </html>
@@ -118,36 +155,10 @@
 
 
 
-@*
 
-   
-   
-    <div class="podcast info">
-        <dl class="dl-horizontal">
-            <dd>
-                <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
-            </dd>
-            <dd>
-                <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
-            </dd>
-            <dd>
-                @Html.DisplayFor(model => model.EventItem.TicketLevel)
-            </dd>
-            <dd>
-                @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
-            </dd>
 
-        </dl>
-    </div>
 
-    <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.DescriptionCopy)
-        </dd>
-        <dd>
-            published @Html.DisplayFor(model => model.EventItem.IsFinalized)  only visible to Admin
-        </dd>
-    </dl>*@
+
 
 

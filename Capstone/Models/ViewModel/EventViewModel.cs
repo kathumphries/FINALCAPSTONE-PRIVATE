@@ -11,6 +11,9 @@ namespace Capstone.Models.ViewModel
     {
         public Event EventItem { get; set; }
         public List<SelectListItem> GenreList { get; set; }
+        public User User { get; set; }
+        public Dictionary<int, bool> UserFav { get; set; }
+
 
         [Display(Name = "Venue")]
         public List<SelectListItem> VenueList { get; set; }       

@@ -25,7 +25,7 @@
                                id="runReport"
                                class="button Secondary">
 
-                                <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                <img class="center-block img-responsive imgHover" src=@item.CoverPhoto >
                             </a>
                         }
                         else
@@ -81,6 +81,23 @@
                                     <i class="fa fa-map-marker fa-fw"></i>
                                     Location: @item.Venue.DisplayName
                                 </span>
+                                <div class="heartMobile">
+                                    @if (Model.UserFav.ContainsKey(item.EventID))
+                                    {
+                                        if (Model.UserFav[item.EventID] == true)
+                                        {
+                                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
+                                                <i id="heart2" class="fas fa-heart"></i>
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
+                                            <i id="heart2" class="fas fa-heart"></i>
+                                        </a>
+                                    }
+                                </div>
                             </div>
                         </a>
                     </div>

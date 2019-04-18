@@ -7,20 +7,32 @@
 .date-time-local {
     text-align: center;
     padding: 1em 0 1em 0;
-    color: #d5e5f0;
+    color: #d5e5f0 !important;
 }
 
 .fa-clock {
     padding-bottom: 6px;
 }
 
+.img-card a {
+    color: #d5e5f0;
+}
+
+
+
 .img-card {
+    min-width: 250px;
+    min-height: 250px;
     margin-top: 2em;
     transition: .5s ease;
     display: block;
     background-color: #686275;
     /*border-radius: 8px;
             padding: 2px;*/
+}
+
+.imgHover{
+    max-height: 350px;
 }
 
 .imgHover {
@@ -99,4 +111,14 @@ table th:last-child {
 
 .actionLinks > a {
     color: #d5e5f0;
+}
+
+.heartMobile {
+    display:none;
+}
+
+@media only screen and (max-width: 768px) {
+    .heartMobile {
+        display: normal;
+    }
 }

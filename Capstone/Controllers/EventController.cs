@@ -57,11 +57,21 @@ namespace Capstone.Controllers
         [HttpGet]
         public IActionResult EventDetail(int id = 1)  //do not change variable name id due to routing
         {
+            User user = authProvider.GetCurrentUser();
+
             EventViewModel model = new EventViewModel
             {
                 EventItem = PopulateEventDetails(id),
+                User = user,
+                UserFav = new Dictionary<int, bool>()
+            };
 
-            };                   
+            List<Event> userEvents = eventSqlDal.GetUserEvents(user);
+
+            foreach (Event item in userEvents)
+            {
+                model.UserFav.Add(item.EventID, true);
+            }
 
             return View(model);
         }
