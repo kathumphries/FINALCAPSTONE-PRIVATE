@@ -26,7 +26,6 @@ else
                 <li><a asp-area="" asp-controller="Event" asp-action="Index">Events</a></li>
                 <li><a asp-area="" asp-controller="Podcast" asp-action="Index">Podcasts</a></li>
                 <li><a asp-area="" asp-controller="Admin" asp-action="Index">Accounts</a></li>
-                <li><a asp-area="" asp-controller="Logs" asp-action="Index">Logs</a></li>
                 
             </ul>
         </li>
@@ -36,7 +35,6 @@ else
 
     @if (Model.Role == 1 || Model.Role== 2) //Registered
     {
-        <li><a asp-area="" asp-controller="Account" asp-action="UserEdit">My Account</a></li>
         <li><a asp-area="" asp-controller="Search" asp-action="UserCalendar">My Schedule</a></li>
         <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
     }
