@@ -122,7 +122,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddUserEvent(string eventID)
+        public IActionResult AddUserEvent(int id)
         {
             User user = authProvider.GetCurrentUser();
 
@@ -130,7 +130,7 @@ namespace Capstone.Controllers
             {
                 if (user.Role == 1 || user.Role == 2)
                 {
-                    eventSqlDal.AddUserEvent(user, Convert.ToInt32(eventID));
+                    eventSqlDal.AddUserEvent(user, id);
                 }
                
             }
@@ -144,7 +144,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-        public IActionResult RemoveUserEvent(string eventID)
+        public IActionResult RemoveUserEvent(int id)
         {
             User user = authProvider.GetCurrentUser();
 
@@ -152,7 +152,7 @@ namespace Capstone.Controllers
             {
                 if (user.Role == 1 || user.Role == 2)
                 {
-                    eventSqlDal.RemoveUserEvent(user, Convert.ToInt32(eventID));
+                    eventSqlDal.RemoveUserEvent(user, id);
                 }
             }
             catch (Exception)
