@@ -52,6 +52,7 @@ namespace Capstone.Controllers
             eventItem.Podcast = new Podcast();
             eventItem.Podcast.Genre = new Genre();
 
+
             SearchViewModel model = new SearchViewModel
             {
                 Event = eventItem,

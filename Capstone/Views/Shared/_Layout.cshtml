@@ -40,13 +40,10 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Search" asp-action="Index" class="navbar-brand">Podcast Midwest</a>
-                @*// <img class =".nav" src="~/images/pfmw main logo.JPG" />*@
+                
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Search" asp-action="Index">Search</a></li>
-                </ul>
-                    
+                   
                  <ul class="nav navbar-nav navbar-right">
                        
                     @await Component.InvokeAsync("DynamicNav")

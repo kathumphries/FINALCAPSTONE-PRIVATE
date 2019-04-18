@@ -49,12 +49,9 @@ namespace Capstone.Controllers
         //Roles in db: 
         //("1" - Admin, "2 - RegisterUser", "3 - Podcaster", "4 - Anonymous"
 
-        //[AuthorizationFilter] // actions can be filtered to only those that are logged in
+   
 
-
-
-
-        [AuthorizationFilter("1")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("1")]  
         [HttpGet]
         public IActionResult Index()
         {
@@ -69,8 +66,6 @@ namespace Capstone.Controllers
             });
             
 
-
-            //model.UserRoleID = userSqlDal.GetUserByID(id).Role;
 
             return View(users);
         }
@@ -106,6 +101,7 @@ namespace Capstone.Controllers
 
                 bool result = userSqlDal.UpdateUserRole(model);
 
+                LogChanges("UPDATE ROLE: "+model.User.Email + "to role: "+model.User.Role);
                 return RedirectToAction("Index", "Admin");
 
 
@@ -128,10 +124,11 @@ namespace Capstone.Controllers
         {
             if (ModelState.IsValid)
             {
-            // Redirect the user where you want them to go after registering
+                // Redirect the user where you want them to go after registering
+                LogChanges("CREATED NEW USER: "+ registerViewModel.Email);
                 return RedirectToAction("Register", "Admin");
             }
-
+          
             return View(registerViewModel);
         }
 
@@ -142,11 +139,11 @@ namespace Capstone.Controllers
         }
 
 
-        //create update delete for venue
-        // //create update delete for venue
-        //creat ticketLevel update add visible...?
-        //create tags crud?
-        //genre editor
+        //TODO create update delete for venue
+        //TODO create update delete for venue
+        //TODO creat ticketLevel update add visible...?
+        //TODO create tags crud?
+        //TODO genre editor
 
 
         public List<SelectListItem> GetTicketList()
@@ -163,7 +160,15 @@ namespace Capstone.Controllers
             return selectListTickets;
         }
 
+        private void LogChanges(string action)
+        {
+            
+            User user = authProvider.GetCurrentUser();
+            DateTime timeChanged = DateTime.Now;
+            string eventDetail = timeChanged + "," + user.Email+ ","+ user.Name + "," + action; 
+            System.IO.File.AppendAllText(@"c:\pmlog\log.txt", (eventDetail + "\n"));
 
+        }
 
     }
 
