@@ -41,8 +41,10 @@ namespace Capstone.Controllers
             User user = new User();
             user = authProvider.GetCurrentUser();
 
-            Event eventItem = new Event();
-            eventItem.Podcast = new Podcast();
+            Event eventItem = new Event
+            {
+                Podcast = new Podcast()
+            };
             SearchViewModel model = new SearchViewModel
             {
                 Event = eventItem,

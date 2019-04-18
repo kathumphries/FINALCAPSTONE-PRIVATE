@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
 using Capstone.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Capstone.DAL
 {
@@ -14,7 +15,12 @@ namespace Capstone.DAL
 
         private const string SQL_GetAllPodcasts = "SELECT * FROM Podcast ORDER BY title;";
         private const string SQL_GetPodcast = "SELECT * FROM Podcast WHERE podcastID = @podcastID;";
-        private const string SQL_UpdatePodcast = "UPDATE podcast SET userID=@userID,hosting=@hosting,url=@url,title=@title,description=@description,genreID=@genreID,originalRelease=@originalRelease,datetime=@datetime,runTime=@runTime,releaseFrequency=@releaseFrequency,averageLength=@averageLength,episodeCount=@episodeCount,downloadCount=@downloadCount,measurementPlatform=@measurementPlatform,demographic=@demographic,affiliations=@affiliations,broadcastCity=@broadcastCity,broadcastState=@broadcastState,inOhio=@inOhio,isSponsored=@isSponsored,sponsor=@sponsor WHERE podcastID = @podcastID;";
+        private const string SQL_UpdatePodcast = "UPDATE podcast SET userID=@userID,hosting=@hosting,url=@url,title=@title,description=@description,genreID=@genreID,originalRelease=@originalRelease,runTime=@runTime,releaseFrequency=@releaseFrequency,averageLength=@averageLength,episodeCount=@episodeCount,downloadCount=@downloadCount,measurementPlatform=@measurementPlatform,demographic=@demographic,affiliations=@affiliations,broadcastCity=@broadcastCity,broadcastState=@broadcastState,inOhio=@inOhio,isSponsored=@isSponsored,sponsor=@sponsor WHERE podcastID = @podcastID;";
+        private const string SQL_CreatePodcast = "INSERT INTO[PodfestMidwestDB].[dbo].[Podcast](userID,hosting,url,title,description,genreID,originalRelease,runTime,releaseFrequency,averageLength,episodeCount,downloadCount,measurementPlatform,demographic,affiliations,broadcastCity,broadcastState,inOhio,isSponsored,sponsor) VALUES(@userID, @hosting, @url, @title, @description, @genreID, @originalRelease, @runTime, @releaseFrequency, @averageLength, @episodeCount, @downloadCount, @measurementPlatform, @demographic, @affiliations, @broadcastCity, @broadcastState, @inOhio, @isSponsored, @sponsor);SELECT SCOPE_IDENTITY();"; 
+
+
+
+
 
         public PodcastSqlDal(string connectionString)
         {
@@ -22,8 +28,81 @@ namespace Capstone.DAL
         }
 
 
+        public bool CreatePodcast(Podcast model)
+        {
 
-        public bool UpdatePodacast(Podcast model)
+            bool updateSuccesful = false;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(SQL_CreatePodcast, connection);
+                    command.Parameters.AddWithValue("@userID", 0);
+                    command.Parameters.AddWithValue("@hosting", String.IsNullOrEmpty(model.Hosting)? "NULL" : model.Hosting);
+                    command.Parameters.AddWithValue("@url", String.IsNullOrEmpty(model.URL) ? "NULL" : model.URL);
+                    command.Parameters.AddWithValue("@title", String.IsNullOrEmpty(model.Title) ? "NULL" : model.Title);
+                    command.Parameters.AddWithValue("@description", String.IsNullOrEmpty(model.Description) ? "NULL": model.Description);
+                    command.Parameters.AddWithValue("@genreID", model.GenreID);
+                    command.Parameters.AddWithValue("@originalRelease", model.OriginalRelease);
+                    command.Parameters.AddWithValue("@runTime", String.IsNullOrEmpty(model.RunTime) ? "NULL" : model.RunTime);
+                    command.Parameters.AddWithValue("@releaseFrequency", String.IsNullOrEmpty(model.ReleaseFrequency) ? "NULL" : model.ReleaseFrequency);
+                    command.Parameters.AddWithValue("@averageLength",
+                        String.IsNullOrEmpty(model.AverageLength) ? "NULL" : model.AverageLength);
+                    command.Parameters.AddWithValue("@episodeCount", model.EpisodeCount);
+                    command.Parameters.AddWithValue("@downloadCount", model.DownloadCount);
+                    command.Parameters.AddWithValue("@measurementPlatform",
+                        String.IsNullOrEmpty(model.MeasurementPlatform) ? "NULL" : model.MeasurementPlatform);
+                    command.Parameters.AddWithValue("@demographic",
+                        String.IsNullOrEmpty(model.Demographic) ? "NULL" : model.Demographic);
+                    command.Parameters.AddWithValue("@affiliations",
+                        String.IsNullOrEmpty(model.Affiliations) ? "NULL" : model.Affiliations);
+                    command.Parameters.AddWithValue("@broadcastCity",
+                        String.IsNullOrEmpty(model.BroadcastCity) ? "NULL" : model.BroadcastCity);
+                    command.Parameters.AddWithValue("@broadcastState",
+                        String.IsNullOrEmpty(model.BroadcastState) ? "NULL" : model.BroadcastState);
+                    command.Parameters.AddWithValue("@inOhio", model.InOhio);
+                    command.Parameters.AddWithValue("@isSponsored", model.IsSponsored);
+                    command.Parameters.AddWithValue("@sponsor", String.IsNullOrEmpty(model.Sponsor) ? "NULL" : model.Sponsor);
+
+                    updateSuccesful = (command.ExecuteNonQuery() > 0) ? true : false;
+
+
+                }
+            }
+
+            catch (SqlException ex)
+            {
+                string exception = ex.ToString();
+                updateSuccesful = false;
+            }
+
+            return updateSuccesful;
+        }
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public bool UpdatePodacast(Podcast model)
         {
             bool updateSuccesful = false;
             try
@@ -54,8 +133,7 @@ namespace Capstone.DAL
                     command.Parameters.AddWithValue("@inOhio",model.InOhio);
                     command.Parameters.AddWithValue("@isSponsored",model.IsSponsored);
                     command.Parameters.AddWithValue("@sponsor",model.Sponsor);
-
-
+                    
                     updateSuccesful = (command.ExecuteNonQuery() > 0) ? true : false;
 
 
@@ -115,10 +193,7 @@ public Podcast GetPodcast(string podcastID)
 }
 
 
-public bool AddPodcast(Podcast podcast)
-{
-    return true;
-}
+
 
 
 private Podcast MapToRowPodcast(SqlDataReader reader)

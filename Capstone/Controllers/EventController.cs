@@ -1,37 +1,40 @@
 ﻿
+using Capstone.DAL.Interfaces;
+using Capstone.Models;
+using Capstone.Models.ViewModel;
+using Capstone.Providers.Auth;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Capstone.Models;
-using Capstone.DAL.Interfaces;
-using Capstone.Models.ViewModel;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
-using Capstone.Providers.Auth;
+using System.Net.Mail;
 using System.Text;
 
 namespace Capstone.Controllers
 {
     public class EventController : Controller
     {
-
-        private readonly IPodcastSqlDal podcastDal;
+        private readonly SmtpClient smtpClient;
+        private readonly IPodcastSqlDal podcastDal; 
         private readonly IEventSqlDal eventSqlDal;
         private readonly IGenreSqlDal genreSqlDal;
         private readonly IVenueSqlDal venueSqlDal;
         private readonly ITicketSqlDal ticketSqlDal;
+        const string SessionName = "User_Auth";
 
-        public EventController(IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
+        private readonly IAuthProvider authProvider;
+
+        public EventController(IAuthProvider authProvider, SmtpClient smtpClient, IPodcastSqlDal podcastSqlDal, IEventSqlDal eventSqlDal, IGenreSqlDal genreSqlDal, IVenueSqlDal venueSqlDal, ITicketSqlDal ticketSqlDal)
         {
+            this.smtpClient = smtpClient;
             this.podcastDal = podcastSqlDal;
             this.eventSqlDal = eventSqlDal;
             this.genreSqlDal = genreSqlDal;
             this.venueSqlDal = venueSqlDal;
             this.ticketSqlDal = ticketSqlDal;
+            this.authProvider = authProvider;
+
         }
 
         [AuthorizationFilter("1")]
@@ -91,7 +94,7 @@ namespace Capstone.Controllers
         [AuthorizationFilter("1")]  //admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditEvent(int id, EventViewModel model)
+        public async System.Threading.Tasks.Task<IActionResult> EditEvent(int id, EventViewModel model)
         {
             
             if (!ModelState.IsValid)
@@ -109,8 +112,13 @@ namespace Capstone.Controllers
 
                 bool result = eventSqlDal.UpdateEventDetails(model.EventItem);
 
-                return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
+                //MailController mailController = new MailController(smtpClient);
+                // await mailController.Post();
 
+
+                PopulateEventDetails(id, "Edit");
+
+               return RedirectToAction("EventDetail", new { id = model.EventItem.EventID });
 
             }
 
@@ -150,42 +158,11 @@ namespace Capstone.Controllers
                 bool result = eventSqlDal.SaveEvent(model.EventItem);
 
 
+                PopulateEventDetails(model.EventItem.EventID, "Created");
                 return RedirectToAction("Index");
 
             }
         }
-
-        //[HttpGet]
-        //[AuthorizationFilter("1")]  //admin only
-        //public IActionResult DeleteEvent(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    else
-        //    {
-        //        Event eventItem = eventSqlDal.GetEvent((int)id);
-              
-        //        return View(eventItem);
-
-        //    }
-        //}
-
-        //[HttpPost]
-        //[AuthorizationFilter("1")]  //admin only
-        //[ValidateAntiForgeryToken]
-        //public IActionResult DeleteEvent(int id)
-        //{
-        //    Event eventItem = eventSqlDal.GetEvent(id);
-           
-        //    eventSqlDal.RemoveEvent(eventItem.EventID);
-
-        //    return RedirectToAction("Index");
-        //}
-
-
-
 
         public List<SelectListItem> GetGenreList()
         {
@@ -312,8 +289,34 @@ namespace Capstone.Controllers
             return this.File(bytes, "text/calendar", downloadFileName);
         }
 
+        private void PopulateEventDetails(int id, string action)
+        {
 
-        private Event PopulateEventDetails(int id)
+            User user = authProvider.GetCurrentUser();
+            DateTime timeChanged = DateTime.Now;
+            Event eventItem = eventSqlDal.GetEvent(id);
+
+            string eventDetail = timeChanged +","+user.Email +"," + 
+                                 user.Name + "," +
+                                 action + 
+                                 "Event ID: " + eventItem.EventID + "," +
+                                 "VenueID: " + eventItem.VenueID + "," +
+                                 "Beginning: " + eventItem.Beginning + "," +
+                                 "Ending: " + eventItem.Ending.ToString() + "," +
+                                 "DescriptionCopy: " + eventItem.DescriptionCopy + "," +
+                                 "TicketLevel: " + eventItem.TicketLevel + "," +
+                                 "UpsaleCopy: " + eventItem.UpsaleCopy + "," +
+                                 "IsFinalized: " + eventItem.IsFinalized + "," +
+                                 "EventName: " + eventItem.EventName + "," +
+                                 "PodcastID: " + eventItem.PodcastID + "," +
+                                 "CoverPhoto: " + eventItem.CoverPhoto;
+
+
+           System.IO.File.AppendAllText(@"c:\pmlog\log.txt", (eventDetail + "\n"));
+
+        }
+
+         Event PopulateEventDetails(int id)
         {
             Event eventItem = eventSqlDal.GetEvent(id);
 
@@ -338,7 +341,21 @@ namespace Capstone.Controllers
             return eventItem;
         }
 
+     
+        //public void SendEmail()  //(string receiver)
+        //{
+        //    string receiver = "katcandcode@gmail.com"; //list of admin emails
+        //    string subject = "Event Change Notice";
+        //    string message= "Testing";
 
-}
+                    
+        //            MailController mailController = new MailController();
+
+        //            mailController.Post();
+                  
+                  
+        //}
+            
+    }
 
 }

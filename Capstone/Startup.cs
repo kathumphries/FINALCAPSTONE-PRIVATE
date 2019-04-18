@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Mail;
 
 namespace Capstone
 {
@@ -27,7 +28,30 @@ namespace Capstone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Session must be configured for our authentication
+            {
+                services.AddScoped<SmtpClient>((serviceProvider) =>
+                {
+                    var config = serviceProvider.GetRequiredService<IConfiguration>();
+                    return new SmtpClient()
+                    {
+                        Host = config.GetValue<String>("Email:Smtp:Host"),
+                        Port = config.GetValue<int>("Email:Smtp:Port"),
+                        Credentials = new System.Net.NetworkCredential(
+                            config.GetValue<String>("Email:Smtp:Username"),
+                            config.GetValue<String>("Email:Smtp:Password")
+                        )
+                    };
+                });
+                services.AddMvc();
+            }
+        
+        
+
+
+
+
+
+        // Session must be configured for our authentication
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This determines whether user consent for non-essential cookies
@@ -48,7 +72,6 @@ namespace Capstone
             string connectionString = Configuration.GetConnectionString("MidwestPodcast");
             services.AddScoped<IEventSqlDal>(j => new EventSqlDal(connectionString));
             services.AddScoped<IGenreSqlDal>(j => new GenreSqlDal(connectionString));
-            services.AddScoped<IPodcasterAvailabilitySqlDal>(j => new PodcasterAvailabilitySqlDal(connectionString));
             services.AddScoped<IPodcastSqlDal>(j => new PodcastSqlDal(connectionString));
             services.AddScoped<IUserSqlDal>(j => new UserSqlDal(connectionString));
             services.AddScoped<IVenueSqlDal>(j => new VenueSqlDal(connectionString));
@@ -93,5 +116,9 @@ namespace Capstone
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+
+
+
     }
 }

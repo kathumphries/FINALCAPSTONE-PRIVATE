@@ -27,13 +27,19 @@ namespace Capstone.DAL
         private const string SQL_SaveEvent = "INSERT INTO Event (beginning, ending, podcastID, venueID, coverPhoto, descriptionCopy, ticketID, upsaleCopy, isFinalized, eventName) " +
                                              " VALUES (@beginning, @ending, @podcastID, @venueID, @coverPhoto, @descriptionCopy,  @ticketID, @upsaleCopy, @isFinalized, @eventName);";
 
-        private string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
+        private const string SQL_GetEventsByTimeOfDay = "SELECT * FROM Event WHERE DATEPART(hh, [beginning]) >= 3 AND DATEPART(hh, [beginning]) <= 10 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 10 AND DATEPART(hh, [beginning]) <= 15 " +
             "Union SELECT * FROM Event WHERE DATEPART(hh, [beginning]) > 15 AND DATEPART(hh, [beginning]) <= 24 ORDER BY beginning ASC;";
 
-        private const string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID ORDER BY beginning ASC;";
-        private const string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
-        private const string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
+#pragma warning disable IDE0044 // Add readonly modifier
+        private string SQL_GetEventsByGenre = "SELECT * FROM Event JOIN Podcast ON Event.podcastID = Podcast.podcastID JOIN Genre ON Podcast.genreID = Genre.genreID  WHERE Podcast.genreID = @genreID ORDER BY beginning ASC;";
+#pragma warning restore IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // Add readonly modifier
+        private string SQL_GetEventsByTicket = "SELECT * FROM Event WHERE ticketID = @ticketID ORDER BY beginning ASC;";
+#pragma warning restore IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // Add readonly modifier
+        private string SQL_GetEventsByLocation = "SELECT * FROM Event WHERE venueID = @locationID ORDER BY beginning ASC;";
+#pragma warning restore IDE0044 // Add readonly modifier
         private string SQL_GetFutureEventsByDay = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, @date + @day) <= CAST(beginning AS DATE) AND CONVERT (date, @date + @day + 1) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
         private string SQL_GetFutureEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) <= CAST(beginning AS DATE) ORDER BY beginning ASC;";
         private string SQL_GetPastEvents = "SELECT * FROM Event WHERE Event.isFinalized = 1 AND CONVERT (date, GETDATE()) > CAST(beginning AS DATE) ORDER BY beginning ASC;";
@@ -339,7 +345,7 @@ namespace Capstone.DAL
                 command.Parameters.AddWithValue("@upsaleCopy", eventItem.UpsaleCopy);
                 command.Parameters.AddWithValue("@isFinalized", eventItem.IsFinalized);
                 command.Parameters.AddWithValue("@eventName", eventItem.EventName);
-                command.Parameters.AddWithValue("@podcastID", Convert.ToInt32(eventItem.PodcastID));
+                command.Parameters.AddWithValue("@podcastID", eventItem.PodcastID);
                 command.Parameters.AddWithValue("@venueID", Convert.ToInt32(eventItem.VenueID));
 
                 rowsAffected = command.ExecuteNonQuery();
