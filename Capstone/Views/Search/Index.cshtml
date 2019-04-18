@@ -19,37 +19,75 @@
             padding-right: 5em;
         }
 
-        .date-time-local{
+        .date-time-local {
             text-align: center;
             padding: 1em 0 1em 0;
             color: #d5e5f0;
         }
 
-        .fa-clock{
+        .fa-clock {
             padding-bottom: 6px;
         }
 
         .img-card {
+            transition: .5s ease;
             display: block;
             background-color: #686275;
-            border-radius: 8px;
-            padding: 2px;
+            /*border-radius: 8px;
+            padding: 2px;*/
         }
+
+        .imgHover {
+            opacity: 1;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .img-card:hover .imgHover {
+            opacity: 0.3;
+        }
+
+        .img-card:hover .middle {
+            opacity: 1;
+        }
+
+        .imgIcons {
+            position: relative;
+            bottom: 25px;
+            width: 90%;
+            filter: invert(100%);
+            transition: .5s ease;
+        }
+
+            .imgIcons:hover {
+                filter: invert(0%);
+            }
+
 
         .img-card {
             transition: all .2s ease-in-out;
         }
 
-        .img-card:hover {
-            transform: scale(1.1);
-        }
+            .img-card:hover {
+                transform: scale(1.1);
+            }
 
-        .img-responsive{
-            position:relative;
+        .img-responsive {
+            position: relative;
             top: 5px;
-            width: 95%;    
+            width: 95%;
         }
-
     </style>
 </head>
 <body>
@@ -115,14 +153,21 @@
                                     @if (item.CoverPhoto != null)
                                     {
                                         <a href=@item.Podcast.URL>
-                                            <img class="center-block img-responsive" src=@item.CoverPhoto )>
+                                            <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
                                         </a>
                                     }
                                     else
                                     {
-                                        <img src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                        <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                                     }
-                                    <div class="date-time-local">                                    
+
+                                    <div class="middle">
+
+                                        <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+
+                                    </div>
+
+                                    <div class="date-time-local">
                                         <span class="hours">
                                             <i class="fa fa-clock fa-fw"></i>
                                             @item.Beginning.ToString("hh:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("hh:mm")  @item.Ending.ToString("tt").ToUpper()
@@ -146,7 +191,38 @@
 
                 @foreach (Event item in Model.ArchivedEventList)
                 {
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="img-card">
+                            @if (item.CoverPhoto != null)
+                            {
+                                <a href=@item.Podcast.URL>
+                                    <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                </a>
+                            }
+                            else
+                            {
+                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                            }
 
+                            <div class="middle">
+
+                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+
+                            </div>
+
+                            <div class="date-time-local">
+                                <span class="hours">
+                                    <i class="fa fa-clock fa-fw"></i>
+                                    @item.Beginning.ToString("hh:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("hh:mm")  @item.Ending.ToString("tt").ToUpper()
+                                </span>
+                                <br />
+                                <span class="location">
+                                    <i class="fa fa-map-marker fa-fw"></i>
+                                    Location: @item.Venue.DisplayName
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 }
 
             </div>
@@ -155,15 +231,46 @@
             {
                 @foreach (var day in Model.EventListByDay)
                 {
-                    <div id="@("menu" + z)" class="tab-pane fade">
-                        <h3></h3>
+            <div id="@("menu" + z)" class="tab-pane fade">
+                <h3></h3>
 
-                        @foreach (var item in day)
-                        {
+                @foreach (var item in day)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="img-card">
+                            @if (item.CoverPhoto != null)
+                            {
+                                <a href=@item.Podcast.URL>
+                                    <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                </a>
+                            }
+                            else
+                            {
+                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                            }
 
-                        }
+                            <div class="middle">
 
+                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+
+                            </div>
+
+                            <div class="date-time-local">
+                                <span class="hours">
+                                    <i class="fa fa-clock fa-fw"></i>
+                                    @item.Beginning.ToString("hh:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("hh:mm")  @item.Ending.ToString("tt").ToUpper()
+                                </span>
+                                <br />
+                                <span class="location">
+                                    <i class="fa fa-map-marker fa-fw"></i>
+                                    Location: @item.Venue.DisplayName
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                }
+
+            </div>
                     z++;
                 }
             }
