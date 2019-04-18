@@ -115,6 +115,7 @@ namespace Capstone.Controllers
                 item.Podcast = podcastSqlDal.GetPodcast(item.PodcastID);
                 item.Podcast.Genre = genreSqlDal.GetGenre(item.Podcast.GenreID);
                 item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
+
             }
 
             return View(model);
@@ -163,6 +164,49 @@ namespace Capstone.Controllers
             return RedirectToAction("Index", "Search");
         }
 
+        [HttpGet]
+        public IActionResult AddUserEventMyCal(int id)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.AddUserEvent(user, id);
+                }
+
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+            return RedirectToAction("UserCalendar", "Search");
+        }
+
+        [HttpGet]
+        public IActionResult RemoveUserEventMyCal(int id)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.RemoveUserEvent(user, id);
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+            return RedirectToAction("UserCalendar", "Search");
+        }
+
         public IActionResult UserCalendar()
         {
             User user = authProvider.GetCurrentUser();
@@ -171,13 +215,20 @@ namespace Capstone.Controllers
             eventItem.Podcast = new Podcast();
             eventItem.Podcast.Genre = new Genre();
 
+
             SearchViewModel model = new SearchViewModel
             {
                 Event = eventItem,
-                User = user,              
+                User = user,
+                UserFav = new Dictionary<int, bool>()
             };
 
             model.EventList = eventSqlDal.GetUserEvents(user);
+
+            foreach (Event item in model.EventList)
+            {
+                model.UserFav.Add(item.EventID, true);
+            }
 
             foreach (Event item in model.EventList)
             {
@@ -190,6 +241,7 @@ namespace Capstone.Controllers
 
             return View(model);
         }
+
 
         public List<SelectListItem> GetGenreList()
         {
