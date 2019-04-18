@@ -13,12 +13,9 @@ namespace Capstone.Models.ViewModel
         public List<SelectListItem> GenreList { get; set; }
 
         [Display(Name = "Venue")]
-        public List<SelectListItem> VenueList { get; set; }
+        public List<SelectListItem> VenueList { get; set; }       
 
-       
-
-        public List<SelectListItem> TicketList { get; set; }
-       
+        public List<SelectListItem> TicketList { get; set; }      
 
         [Display(Name = "Podcast")]
         public List<SelectListItem> PodcastList { get; set; }

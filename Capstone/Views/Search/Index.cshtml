@@ -14,82 +14,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .selectList {
-            float: left;
-            padding-right: 5em;
-        }
-
-        .date-time-local {
-            text-align: center;
-            padding: 1em 0 1em 0;
-            color: #d5e5f0;
-        }
-
-        .fa-clock {
-            padding-bottom: 6px;
-        }
-
-        .img-card {
-            margin-top: 2em;
-            transition: .5s ease;
-            display: block;
-            background-color: #686275;
-            /*border-radius: 8px;
-            padding: 2px;*/
-        }
-
-        .imgHover {
-            opacity: 1;
-            transition: .5s ease;
-            backface-visibility: hidden;
-        }
-
-        .middle {
-            transition: .5s ease;
-            opacity: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .img-card:hover .imgHover {
-            opacity: 0.3;
-        }
-
-        .img-card:hover .middle {
-            opacity: 1;
-        }
-
-        .imgIcons {
-            position: relative;
-            bottom: 25px;
-            width: 90%;
-            filter: invert(100%);
-            transition: .5s ease;
-        }
-
-            .imgIcons:hover {
-                filter: invert(0%);
-            }
-
-
-        .img-card {
-            transition: all .2s ease-in-out;
-        }
-
-            .img-card:hover {
-                transform: scale(1.1);
-            }
-
-        .img-responsive {
-            position: relative;
-            top: 5px;
-            width: 95%;
-        }
     </style>
+    <script>
+
+    </script>
 </head>
 <body>
 
@@ -153,32 +81,63 @@
                                 <div class="img-card">
                                     @if (item.CoverPhoto != null)
                                     {
-                                        <a href=@item.Podcast.URL>
+                                        <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                           type="submit"
+                                           id="runReport"
+                                           class="button Secondary">
+
                                             <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
                                         </a>
                                     }
                                     else
                                     {
-                                        <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                        <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                           type="submit"
+                                           id="runReport"
+                                           class="button Secondary">
+
+                                            <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                        </a>
                                     }
 
-                                    <div class="middle">
+                                        <div class="middle">
 
-                                        <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
 
-                                    </div>
+                                            @if (Model.UserFav.ContainsKey(item.EventID))
+                                            {
+                                                if (Model.UserFav[item.EventID] == true)
+                                                {
+                                                    <form asp-controller="Search" asp-action="RemoveUserEvent" method="get">
+                                                        <input id="icon1" class="imgIcons" type="image" name="submit_heart" value="@item.EventID.ToString()" style="filter: invert(100%)" alt="fav icon" src="~/images/36704-5-dark-red-heart-transparent-background.png">
+                                                    </form>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <form asp-controller="Search" asp-action="AddUserEvent" method="get">
+                                                    <input id="icon1" class="imgIcons" type="image" name="submit_heart" value="@item.EventID" style="filter: invert(0%)" alt="fav icon" src="~/images/36704-5-dark-red-heart-transparent-background.png">
+                                                </form>
+                                            }
 
-                                    <div class="date-time-local">
-                                        <span class="hours">
-                                            <i class="fa fa-clock fa-fw"></i>
-                                            @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
-                                        </span>
-                                        <br />
-                                        <span class="location">
-                                            <i class="fa fa-map-marker fa-fw"></i>
-                                            Location: @item.Venue.DisplayName
-                                        </span>
-                                    </div>
+
+                                        </div>
+                                    <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                       type="submit"
+                                       id="runReport"
+                                       class="button Secondary">
+
+                                        <div class="date-time-local">
+                                            <span class="hours">
+                                                <i class="fa fa-clock fa-fw"></i>
+                                                @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                            </span>
+                                            <br />
+                                            <span class="location">
+                                                <i class="fa fa-map-marker fa-fw"></i>
+                                                Location: @item.Venue.DisplayName
+                                            </span>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         }
@@ -196,13 +155,23 @@
                         <div class="img-card">
                             @if (item.CoverPhoto != null)
                             {
-                                <a href=@item.Podcast.URL>
+                                <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                   type="submit"
+                                   id="runReport"
+                                   class="button Secondary">
+
                                     <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
                                 </a>
                             }
                             else
                             {
-                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                   type="submit"
+                                   id="runReport"
+                                   class="button Secondary">
+
+                                    <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                </a>
                             }
 
                             <div class="middle">
@@ -211,17 +180,23 @@
 
                             </div>
 
-                            <div class="date-time-local">
-                                <span class="hours">
-                                    <i class="fa fa-clock fa-fw"></i>
-                                    @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
-                                </span>
-                                <br />
-                                <span class="location">
-                                    <i class="fa fa-map-marker fa-fw"></i>
-                                    Location: @item.Venue.DisplayName
-                                </span>
-                            </div>
+                            <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                               type="submit"
+                               id="runReport"
+                               class="button Secondary">
+
+                                <div class="date-time-local">
+                                    <span class="hours">
+                                        <i class="fa fa-clock fa-fw"></i>
+                                        @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                    </span>
+                                    <br />
+                                    <span class="location">
+                                        <i class="fa fa-map-marker fa-fw"></i>
+                                        Location: @item.Venue.DisplayName
+                                    </span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 }
@@ -232,46 +207,62 @@
             {
                 @foreach (var day in Model.EventListByDay)
                 {
-            <div id="@("menu" + z)" class="tab-pane fade">
-                <h3></h3>
+                    <div id="@("menu" + z)" class="tab-pane fade">
+                        <h3></h3>
 
-                @foreach (var item in day)
-                {
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="img-card">
-                            @if (item.CoverPhoto != null)
-                            {
-                                <a href=@item.Podcast.URL>
-                                    <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
-                                </a>
-                            }
-                            else
-                            {
-                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
-                            }
+                        @foreach (var item in day)
+                        {
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="img-card">
+                                    @if (item.CoverPhoto != null)
+                                    {
+                                        <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                           type="submit"
+                                           id="runReport"
+                                           class="button Secondary">
 
-                            <div class="middle">
+                                            <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                           type="submit"
+                                           id="runReport"
+                                           class="button Secondary">
 
-                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                            <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                        </a>
+                                    }
 
+                                    <div class="middle">
+
+                                        <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+
+                                    </div>
+
+                                    <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
+                                       type="submit"
+                                       id="runReport"
+                                       class="button Secondary">
+
+                                        <div class="date-time-local">
+                                            <span class="hours">
+                                                <i class="fa fa-clock fa-fw"></i>
+                                                @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                            </span>
+                                            <br />
+                                            <span class="location">
+                                                <i class="fa fa-map-marker fa-fw"></i>
+                                                Location: @item.Venue.DisplayName
+                                            </span>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
+                        }
 
-                            <div class="date-time-local">
-                                <span class="hours">
-                                    <i class="fa fa-clock fa-fw"></i>
-                                    @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
-                                </span>
-                                <br />
-                                <span class="location">
-                                    <i class="fa fa-map-marker fa-fw"></i>
-                                    Location: @item.Venue.DisplayName
-                                </span>
-                            </div>
-                        </div>
                     </div>
-                }
-
-            </div>
                     z++;
                 }
             }

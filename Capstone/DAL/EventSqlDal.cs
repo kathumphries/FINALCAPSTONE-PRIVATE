@@ -40,7 +40,7 @@ namespace Capstone.DAL
         private string SQL_Search = "";
 
         private const string SQL_UpdateEventDetails = "UPDATE event SET beginning=@beginning,ending=@ending,coverPhoto=@logo,descriptionCopy=@copy,ticketID=@ticketID,upsaleCopy=@upsaleCopy,isFinalized=@isFinalized,eventName=@eventName,podcastID=@podcastID,venueID=@venueID WHERE eventID = @eventID";
-
+        private const string SQL_AddUserEvent = "INSERT INTO User_Event (userID, eventID) VALUES (@userID, @eventID);";
         private const string SQL_RemoveEvent = "  Delete from event where eventID = @eventID";
         private const string SQL_GetEventsByDay = "SELECT * FROM Event WHERE DATEPART(dd, [beginning]) = @day ORDER BY beginning ASC;";
 
@@ -376,6 +376,66 @@ namespace Capstone.DAL
                 }
                 
                 return eventList;
+            }
+        }
+
+        public bool AddUserEvent(User user, int eventID)
+        {
+            int rowsAffected = 0;
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_AddUserEvent, connection);
+
+                command.Parameters.AddWithValue("@eventID", eventID);
+                command.Parameters.AddWithValue("@userID", user.UserID);
+
+                rowsAffected = command.ExecuteNonQuery();
+
+            }
+
+            if (rowsAffected == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveUserEvent(User user, int eventID)
+        {
+            int rowsAffected = 0;
+
+
+            try
+            {
+                using (var sc = new SqlConnection(connectionString))
+                using (var cmd = sc.CreateCommand())
+                {
+                    sc.Open();
+                    cmd.CommandText = "DELETE FROM User_Event WHERE userID = @userID AND eventID = @eventID";
+                    cmd.Parameters.AddWithValue("@eventID", eventID);
+                    cmd.Parameters.AddWithValue("@userID", user.UserID);
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+              
+            }
+
+            if (rowsAffected == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
