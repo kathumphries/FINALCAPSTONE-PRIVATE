@@ -19,5 +19,6 @@ namespace Capstone.DAL.Interfaces
         List<User> GetAllUsersByRole();
         bool UpdateUserRole(UserRoleAdminViewModel model);
         User GetUserByID(int id);
+        
     }
 }

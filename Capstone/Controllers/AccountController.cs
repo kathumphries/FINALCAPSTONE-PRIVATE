@@ -5,6 +5,10 @@ using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using Capstone.Providers.Auth;
+using System.Text;
+using System;
+using Capstone.Models.ViewModel;
 
 namespace Capstone.Controllers
 {
@@ -15,11 +19,12 @@ namespace Capstone.Controllers
         
         private readonly IAuthProvider authProvider;
         private readonly IUserSqlDal userSqlDal;
-        //private readonly IPodcastSqlDal podcastDal;
+        private readonly IPodcastSqlDal podcastSqlDal;
         private readonly IEventSqlDal eventSqlDal;
-        //private readonly IGenreSqlDal genreSqlDal;
-        //private readonly IVenueSqlDal venueSqlDal;
+        private readonly IGenreSqlDal genreSqlDal;
+        private readonly IVenueSqlDal venueSqlDal;
         private readonly ITicketSqlDal ticketSqlDal;
+        private readonly IUserEventSqlDal userEventSqlDal;
 
 
 
@@ -28,8 +33,8 @@ namespace Capstone.Controllers
         {
             this.authProvider = authProvider;
             this.userSqlDal = userSqlDal;
-            //this.podcastDal = podcastSqlDal;
-            //this.eventSqlDal = eventSqlDal;
+            //this.podcastSqlDal = podcastSqlDal;
+            this.eventSqlDal = eventSqlDal;
             //this.genreSqlDal = genreSqlDal;
             //this.venueSqlDal = venueSqlDal;
             this.ticketSqlDal = ticketSqlDal;
@@ -39,13 +44,7 @@ namespace Capstone.Controllers
         //("1" - Admin, "2 - RegisterUser", "3 - Podcaster", "4 - Anonymous"
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-
-
-
-
-
-      
-     
+   
         [HttpGet]
         public IActionResult Login()
         {
@@ -64,7 +63,7 @@ namespace Capstone.Controllers
                 if (validLogin)
                 {
                     // Redirect the user where you want them to go after successful login
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Search");
                 }
             }
 
@@ -95,8 +94,6 @@ namespace Capstone.Controllers
             if (ModelState.IsValid)
             {
 
-
-
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
                 // just give them "User".
@@ -112,32 +109,63 @@ namespace Capstone.Controllers
             return View(registerViewModel);
         }
 
-
         [AuthorizationFilter]
         [HttpGet]
         public IActionResult Registered()
         {
             return View();
         }
+        
+        //[HttpGet]
+        //[AuthorizationFilter("2")]  //user
+        //public IActionResult AddMyEvent(int id)
+        //{
+        //    User user = authProvider.GetCurrentUser();
+        //    List<Event> allMyEvents = eventSqlDal.GetUserEvents(user);
+
+        //    foreach (Event eventItem in allMyEvents)
+        //    {
+        //        if (7 == eventItem.EventID)  //TODO remove
+        //        {
+        //            return View("EventDetail");
+        //        }
+        //        else
+        //        {
+        //            bool result = userEventSqlDal.AddMyEvent(user.UserID, eventItem);
 
 
+        //        }
 
-        public List<SelectListItem> GetTicketList()
+        //    }
+
+           
+        //    return View();//TODO remove this
+
+        //}
+
+        public IActionResult MySchedule()
         {
-            List<Ticket> ticketList = ticketSqlDal.GetAllTickets();
-
-            List<SelectListItem> selectListTickets = new List<SelectListItem>();
-
-            foreach (Ticket level in ticketList)
-            {
-                selectListTickets.Add(new SelectListItem(level.TicketType, level.TicketID.ToString()));
-            }
-
-            return selectListTickets;
+            User user = authProvider.GetCurrentUser();
+            List<Event> myEvents = eventSqlDal.GetUserEvents(user);
+            return View(myEvents);
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[AuthorizationFilter("2")]  //user
+        //public IActionResult RemoveEvent(int userID, int eventID)
+        //{
+        //    User user = authProvider.GetCurrentUser();
+        //    Event eventItem = new Event();
 
-    }//class
+        //    bool result = userEventSqlDal.RemoveMyEvent(user.UserID, eventItem.EventID);
+
+        //    return View();//TODO remove
+
+        //}
+    }
+
+
 }//namespace   
         
 

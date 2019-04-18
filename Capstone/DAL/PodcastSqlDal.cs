@@ -254,7 +254,18 @@ namespace Capstone.DAL
             podcast.DownloadCount = Convert.ToInt32(reader["downloadCount"]);
         }
 
-        return podcast;
+        colIndex = reader.GetOrdinal("sponsor");
+
+        if (reader.IsDBNull(colIndex))
+        {
+            podcast.Sponsor = "";
+        }
+        else
+        {
+            podcast.Sponsor = Convert.ToString(reader["sponsor"]);
+        }
+
+            return podcast;
 
         }
     }

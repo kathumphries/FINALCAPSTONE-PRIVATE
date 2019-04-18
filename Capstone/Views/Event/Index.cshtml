@@ -4,122 +4,108 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Create New Event</h2>
 
 <p>
 
-    
-    <p>
-        @{
-            string url = Url.Action("SaveEvent", "Event");
-        }
-        <input type="button" class="btn btn-outline-secondary" value="+Event" onclick="window.location.href = '@url'" />
 
-   
-    </p>
-   
+<p>
+    @{
+        string url = Url.Action("SaveEvent", "Event");
+    }
+    <input type="button" class="btn btn-outline-secondary" value="+Event" onclick="window.location.href = '@url'" />
+
+
+</p>
+
 </p>
 <table class="table">
     <thead>
-    <tr>
-        
-        
-        
-        
-        
-        
+        <tr>
 
-        <th>
-            @*Html.DisplayNameFor(model => model.CoverPhoto)*@
-                </th>
-                <th>
-                   Event
-                </th>
-                <th>
-                    @*@Html.DisplayNameFor(model => model.Podcast.Title)*@
-                </th>
-                <th>
-                    Scheduled for
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Beginning)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ending)
-                </th>
-                <th>
-                   
-                </th>
-                <th>
-                    Published
-                </th>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Ticket.TicketType)
-                </th>
-             
-            </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model) {
-                <tr>
-        <div class="date-box" style="width:36px;height:64px">
-        
-            <div class="day-display" style="font-size:24px;margin:-2px 0 0 0;line-height:24px">18</div>
-            <div class="month-display" style="font-size:11px;line-height:16px">Apr</div> 
-        </div>
-            
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+
+
+
+
+
+            <th>
+                @*Html.DisplayNameFor(model => model.CoverPhoto)*@
+            </th>
+            <th>
+                Event
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Podcast.Title)*@
+            </th>
+            <th>
+                Scheduled for
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Beginning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ending)
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Published
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.TicketType)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <div class="date-box" style="width:36px;height:64px">
+
+                    <div class="day-display" style="font-size:24px;margin:-2px 0 0 0;line-height:24px">18</div>
+                    <div class="month-display" style="font-size:11px;line-height:16px">Apr</div>
+                </div>
+
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
                         <a img src=@Html.DisplayFor(modelItem => item.CoverPhoto)></a>
                         @Html.DisplayFor(modelItem => item.CoverPhoto)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                            @Html.DisplayFor(modelItem => item.EventName)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Podcast" , new { id=item.PodcastID})>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                        @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Podcast" , new { id=item.PodcastID})>
                         @Html.DisplayFor(modelItem => item.Podcast.Title)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
                         @Html.DisplayFor(modelItem => item.Beginning)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
                         @Html.DisplayFor(modelItem => item.Ending)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
                         @Html.DisplayFor(modelItem => item.Venue.DisplayName)
-                    </td>
-                    <td>
-                        <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
                         @Html.DisplayFor(modelItem => item.IsFinalized)
-                    </td>
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ticket.TicketType)
-                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+                </td>
 
-                    <td>
-
-
-
-                       @*@using (Html.BeginForm("EncodeICal", "Event", new { eventId = item.EventID }))
-            {
-            <input type="submit" value="iCal" class="ical-button" id="button" /><br />
-            }
-
-           @using (Html.BeginForm("EncodeGoogleCal", "Event", new { eventId = item.EventID }))
-        {
-            <input type="submit" value="Google" class="ical-button" id="button" /><br />
-            }
-            <a href=@Html.DisplayFor(modelItem => item.GoogleURL)>Google</a>*@
-
-            </td>
-</tr>
-}
+                <td></td>
+            </tr>
+        }
     </tbody>
 </table>
