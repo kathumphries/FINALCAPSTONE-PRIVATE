@@ -18,7 +18,7 @@ namespace Capstone.Models.ViewModel
         public List<Event> ArchivedEventList { get; set; }
   
         public List<List<Event>> EventListByDay { get; set; }
-
+        public Dictionary<int, bool> UserFav { get; set; }
 
        [Display(Name = "Genre List")]
         public List<SelectListItem> GenreList { get; set; }
