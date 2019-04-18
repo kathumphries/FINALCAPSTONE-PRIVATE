@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Capstone.DAL.Interfaces;
+using Capstone.Models;
 
 namespace Capstone.DAL
 {
@@ -10,12 +12,48 @@ namespace Capstone.DAL
     {
         private string connectionString;
 
+        private const string SQL_AddMyEvent = "INSERT INTO User_Event (userID, eventID)" + "VALUES (@userID, @eventID)";
+        private const string SQL_RemoveMyEvent = "Delete from event where eventID = @eventID";
+
         public UserEventSqlDal(string connectionString)
         {
             this.connectionString = connectionString;
         }
+
+        public bool AddMyEvent(int userID, Event eventItem)
+        {
+            int rowsAffected = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(SQL_AddMyEvent, connection);
+
+                command.Parameters.AddWithValue("@userID", userID);
+                command.Parameters.AddWithValue("@eventID", eventItem.EventID);
+
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            if (rowsAffected == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool RemoveMyEvent(int userID, int eventID)
+        {
+            return true;// TODO Add this
+        }
+
     }
 }
+
+
+    
+
 
 
 

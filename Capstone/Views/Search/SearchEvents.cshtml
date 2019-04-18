@@ -5,7 +5,7 @@
 }
 
 <h2>Search</h2>
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title></title>
 </head>
@@ -92,10 +92,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EventName)
                 </td>
+                <td>
+                    @Html.ActionLink("Tell me more!", "EventDetail", "Event", new { id = item.EventID }, null)})
+                </td>
             </tr>
 }
         </tbody>
     </table>
 </body>
-</html>
+
 

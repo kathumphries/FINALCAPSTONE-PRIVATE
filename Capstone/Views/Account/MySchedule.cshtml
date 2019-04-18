@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Capstone.Models.Event>
+
+@{
+    ViewData["Title"] = "MySchedule";
+}
+
+<h2>My Schedule</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Beginning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ending)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PodfestStartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PodcastID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VenueID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoverPhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescriptionCopy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpsaleCopy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinalized)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfDayString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoogleURL)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Day)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beginning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ending)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PodfestStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PodcastID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VenueID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoverPhoto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescriptionCopy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpsaleCopy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFinalized)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOfDayString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoogleURL)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

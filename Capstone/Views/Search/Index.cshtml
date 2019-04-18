@@ -7,7 +7,7 @@
 
 <h2>Search</h2>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>Search Index</title>
     <link href="~/css/SearchStyle.css" rel="stylesheet" />
@@ -98,10 +98,7 @@
 
 
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                            </th>
+                            
                             <th>
                                 Event
                             </th>
@@ -109,9 +106,7 @@
                                 Genre
 
                             </th>
-                            <th>
-
-                            </th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -155,7 +150,7 @@
                                     @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                 </td>
-                                <td></td>
+                                
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsFinalized)
@@ -169,11 +164,7 @@
                                     @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
 
                                 </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                </td>
+                               
                             </tr>
                         }
                     </tbody>
@@ -184,9 +175,7 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead>
                         <tr>
-                            <th>
-
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(model => model.Event.Beginning)
 
@@ -214,9 +203,7 @@
                                 Ticket
 
                             </th>
-                            <th>
-
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(model => model.Event.IsFinalized)
 
@@ -228,9 +215,7 @@
                                 Genre
 
                             </th>
-                            <th>
-
-                            </th>
+                         
                         </tr>
                     </thead>
                     <tbody>
@@ -274,10 +259,7 @@
                                     @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                 </td>
-                                <td>
-
-                                </td>
-
+                             
                                 <td>
                                     @Html.DisplayFor(modelItem => item.IsFinalized)
 
@@ -291,12 +273,7 @@
 
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                    @Html.ActionLink("iCal", "EncodeICal")
-                                    @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
-
+                                    @Html.ActionLink("Tell me more!", "EventDetail", "Event", new { id = item.EventID }, null)})
                                 </td>
                             </tr>
                         }
@@ -314,9 +291,7 @@
                         <table class="table table-hover table-responsive-sm">
                             <thead>
                                 <tr>
-                                    <th>
-
-                                    </th>
+                                   
                                     <th>
                                         @Html.DisplayNameFor(model => model.Event.Beginning)
 
@@ -344,10 +319,7 @@
                                         Ticket
 
                                     </th>
-                                    <th>
-
-
-                                    </th>
+                                   
                                     <th>
                                         @Html.DisplayNameFor(model => model.Event.IsFinalized)
 
@@ -359,9 +331,7 @@
                                         Genre
 
                                     </th>
-                                    <th>
-
-                                    </th>
+                                   
                                 </tr>
                             </thead>
 
@@ -409,8 +379,7 @@
                                             @Html.DisplayFor(modelItem => item.Ticket.TicketType)
 
                                         </td>
-                                        <td></td>
-
+                                     
                                         <td>
                                             @Html.DisplayFor(modelItem => item.IsFinalized)
 
@@ -423,13 +392,10 @@
                                             @Html.DisplayFor(modelItem => item.Podcast.Genre.GenreName)
 
                                         </td>
+                                       
                                         <td>
-                                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("iCal", "EncodeICal") |
-                                            @Html.ActionLink("Google", "EncodeGoogleCal") |
-                                            @Html.ActionLink("Yahoo", "EncodeYahooCal")
+                                            @Html.ActionLink("Tell me more!", "EventDetail", "Event", new { id = item.EventID }, null)
+                                            @Html.ActionLink("Add to Schedule!", "AddMyEvent", "Account", new { id = item.EventID }, null)
 
                                         </td>
                                     </tr>
@@ -444,5 +410,5 @@
         </div>
     </div>
 </body>
-</html>
+
 

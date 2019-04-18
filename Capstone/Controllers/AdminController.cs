@@ -123,7 +123,7 @@ namespace Capstone.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-       [AuthorizationFilter("1")]
+        [AuthorizationFilter("1")]
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)

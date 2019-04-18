@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Create New Event</h2>
 
 <p>
     <a asp-action="SaveEvent">Create New</a>
@@ -55,7 +55,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Podcast.Title)
             </td>
-           <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Beginning)
             </td>
             <td>
@@ -67,9 +67,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsFinalized)
             </td>
-            
+
             <td>
-                <a img src = @Html.DisplayFor(modelItem => item.CoverPhoto)></a>
+                <a img src=@Html.DisplayFor(modelItem => item.CoverPhoto)></a>
                 @Html.DisplayFor(modelItem => item.CoverPhoto)
             </td>
             <td>
@@ -83,25 +83,17 @@
             </td>
             <td>
 
-                @Html.ActionLink("Event - Edit", "EditEvent", "Event", new { id = item.EventID }, null)
-                @Html.ActionLink("Event - Details", "EventDetail", "Event", new { id = item.EventID }, null)
+            <td>
+                @Html.ActionLink("Tell me more!", "EventDetail", "Event", new { id = item.EventID }, null)})
+            </td>
 
+           
 
-                @Html.ActionLink("Podcast - Edit", "Edit", "Podcast", new { id = item.PodcastID }, null)
-                @Html.ActionLink("Podcast - Details", "Detail", "Podcast", new { id = item.PodcastID }, null)
-
-                @Html.ActionLink("DELETE Event", "DeleteEvent", "Event", new { id = item.PodcastID }, null)
-
-                @using (Html.BeginForm("EncodeICal", "Event", new { eventId = item.EventID }))
-                {
-                    <input type="submit" value="iCal" class="ical-button" id="button" /><br />
-                }
-
-                @*@using (Html.BeginForm("EncodeGoogleCal", "Event", new { eventId = item.EventID }))
-                {
-                    <input type="submit" value="Google" class="ical-button" id="button" /><br />
-                }*@
-              <a href=@Html.DisplayFor(modelItem => item.GoogleURL)>Google</a>
+            @*@using (Html.BeginForm("EncodeGoogleCal", "Event", new { eventId = item.EventID }))
+        {
+            <input type="submit" value="Google" class="ical-button" id="button" /><br />
+        }*@
+            <a href=@Html.DisplayFor(modelItem => item.GoogleURL)>Google</a>
 
             </td>
         </tr>

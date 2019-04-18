@@ -57,9 +57,7 @@ namespace Capstone.Controllers
             Podcast podcast = new Podcast();
             PodcastViewModel model = new PodcastViewModel()
             {
-
-
-                GenreList = GetGenreList(),
+              GenreList = GetGenreList(),
 
 
             };
