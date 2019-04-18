@@ -70,11 +70,8 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                <h3></h3>
-
                 <div class="container-fluid">
                     <div class="row">
-
                         @foreach (Event item in Model.EventList)
                         {
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
@@ -99,9 +96,7 @@
                                             <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                                         </a>
                                     }
-
                                     <div class="middle">
-
 
                                         @if (Model.UserFav.ContainsKey(item.EventID))
                                         {
@@ -121,7 +116,6 @@
                                                 <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                             </a>
                                         }
-
 
                                     </div>
                                     <a href=@Url.Action("EventDetail", "Event", new {id = item.EventID})
@@ -166,9 +160,7 @@
                     </div>
                 </div>
             </div>
-
             <div id="past" class="tab-pane fade">
-                <h3></h3>
                 @foreach (Event item in Model.ArchivedEventList)
                 {
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
@@ -192,8 +184,6 @@
                                     <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                                 </a>
                             }
-
-
                             <div class="middle">
 
                                 @if (Model.UserFav.ContainsKey(item.EventID))
@@ -251,7 +241,6 @@
                         </div>
                     </div>
                 }
-
             </div>
 
             @if (z <= 7)

@@ -22,7 +22,15 @@ body {
     color: #d5e5f0;
 }
 
+.badge-primary {
+    background-color: #f15263;
+    color: #d5e5f0;
+}
 
+.badge-primary > a {
+    background-color: #f15263;
+    color: #d5e5f0;
+}
 
 .img-card {
     min-width: 250px;

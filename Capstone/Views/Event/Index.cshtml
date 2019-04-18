@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Create New Event</h2>
+<h2>Event Administration</h2>
+
 
 <p>
 
@@ -26,36 +27,24 @@
 
 
 
-
-
-
             <th>
                 @*Html.DisplayNameFor(model => model.CoverPhoto)*@
             </th>
             <th>
                 Event
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Podcast.Title)*@
-            </th>
+            <th></th>
+            <th></th>
             <th>
                 Scheduled for
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Beginning)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ending)
-            </th>
-            <th>
-
-            </th>
+            <th></th>
             <th>
                 Published
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Ticket.TicketType)
+                Access Level
             </th>
 
         </tr>
@@ -64,48 +53,59 @@
         @foreach (var item in Model)
         {
             <tr>
-                <div class="date-box" style="width:36px;height:64px">
-
-                    <div class="day-display" style="font-size:24px;margin:-2px 0 0 0;line-height:24px">18</div>
-                    <div class="month-display" style="font-size:11px;line-height:16px">Apr</div>
-                </div>
-
                 <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                        <a img src=@Html.DisplayFor(modelItem => item.CoverPhoto)></a>
-                        @Html.DisplayFor(modelItem => item.CoverPhoto)
+                    <div class="date-box" style="width:36px;height:64px">
+                        <a href=@Url.Action("Detail", "Event", new {id = item.EventID})>
+
+                            <div class="day-display" style="font-size:24px;margin:-2px 0 0 0;line-height:24px">@item.Beginning.Day.ToString()</div>
+                            <div class="month-display" style="font-size:11px;line-height:16px">@item.Beginning.ToString("MMM")</div>
+                        </a>
+                    </div>
                 </td>
+
                 <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
+                    
+                    <img class="img-thumbnail" href=@Url.Action("Edit", "Event", new {id = item.EventID}) src=@Html.DisplayFor(modelItem => item.CoverPhoto)></img>
+                    
+                </td>
+
+                <td>
+                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
                         @Html.DisplayFor(modelItem => item.EventName)
-                </td>
-                <td>
-                    <a href=@Url.Action("Edit", "Podcast" , new { id=item.PodcastID})>
-                        @Html.DisplayFor(modelItem => item.Podcast.Title)
-                </td>
-                <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                        @Html.DisplayFor(modelItem => item.Beginning)
-                </td>
-                <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                        @Html.DisplayFor(modelItem => item.Ending)
-                </td>
-                <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                        @Html.DisplayFor(modelItem => item.Venue.DisplayName)
-                </td>
-                <td>
-                    <a href=@Url.Action("Edit", "Event" , new { id=item.EventID})>
-                        @Html.DisplayFor(modelItem => item.IsFinalized)
+                    </a>
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+                    <a href=@Url.Action("Edit", "Podcast", new {id = item.PodcastID})>
+                        @Html.DisplayFor(modelItem => item.Podcast.Title)
+                    </a>
+                </td>
+
+                <td>
+                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                        @item.Beginning.ToString("h:mm") @item.Beginning.ToString("tt").ToUpper() - @item.Ending.ToString("h:mm") @item.Ending.ToString("tt").ToUpper()
+                    </a>
+                </td>
+
+                <td>
+                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                        @Html.DisplayFor(modelItem => item.Venue.DisplayName)
+                    </a>
+                </td>
+
+                <td>
+                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                        @Html.DisplayFor(modelItem => item.IsFinalized)
+                    </a>
+                </td>
+                <td>
+                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                        @Html.DisplayFor(modelItem => item.Ticket.TicketType)
+                    </a>
                 </td>
 
                 <td></td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
