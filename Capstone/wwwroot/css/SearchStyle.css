@@ -106,8 +106,12 @@ body {
 
 th {
     background-color: #f15263;
-    color: white;
-    
+    color: white;  
+}
+
+.fa-heart{
+    font-size: 7em;
+    color: red;
 }
 
 table th:first-child {

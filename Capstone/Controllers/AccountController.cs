@@ -78,7 +78,7 @@ namespace Capstone.Controllers
             authProvider.LogOff();
 
             // Redirect the user where you want them to go after logoff
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Search");
         }
 
         [HttpGet]

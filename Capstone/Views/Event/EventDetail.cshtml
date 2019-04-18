@@ -17,14 +17,13 @@
 
         }*/
 
-        .space{
+        .space {
             padding-right: 16px;
         }
 
-        .heartDetail{
+        .heartDetail {
             font-size: 5em;
         }
-
     </style>
 </head>
 <body>
@@ -34,7 +33,7 @@
                 <div class="img-card">
                     @if (Model.EventItem.CoverPhoto != null)
                     {
-                        <img class="center-block img-responsive" src="@Model.EventItem.CoverPhoto" >
+                        <img class="center-block img-responsive" src="@Model.EventItem.CoverPhoto">
                     }
                     else
                     {
@@ -48,14 +47,14 @@
                                 if (Model.UserFav[Model.EventItem.EventID] == true)
                                 {
                                     <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@Model.EventItem.EventID">
-                                        <i id="heart2" class="fas fa-heart heartDetail"></i>
+                                        <img id="icon1" class="imgIcons heartRed" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                     </a>
                                 }
                             }
                             else
                             {
                                 <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@Model.EventItem.EventID">
-                                    <i id="heart2" class="fas fa-heart heartDetail"></i>
+                                    <img id="icon1" class="imgIcons heartBlue" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                 </a>
                             }
 
@@ -86,13 +85,29 @@
 
                             @if (Model.User.Role == 1)
                             {
-                                @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) <Span class="space"></Span>      
+                                @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) <Span class="space"></Span>
                             }
-                           
-                            @Html.ActionLink("iCal", "EncodeICal")
-                           
-                        </div>
 
+                            @Html.ActionLink("iCal", "EncodeICal")
+
+                        </div>
+                        <div class="heartMobile">
+                            @if (Model.UserFav.ContainsKey(Model.EventItem.EventID))
+                            {
+                                if (Model.UserFav[Model.EventItem.EventID] == true)
+                                {
+                                    <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@Model.EventItem.EventID">
+                                        <i id="heart2" class="fas fa-heart heartRed"></i>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@Model.EventItem.EventID">
+                                    <i id="heart2" class="fas fa-heart heartBlue"></i>
+                                </a>
+                            }
+                        </div>                          
                     </div>
                 </div>
             </div>
@@ -104,7 +119,7 @@
                     </p>
                     <p class="badge badge-primary badge-pill genre-tag">
                         @Model.EventItem.Podcast.Genre.GenreName
-                    </p>                  
+                    </p>
                 </span>
 
                 <div class="podcast info">
@@ -129,15 +144,22 @@
                     </p>
                     <br />
                     <p>
-                        This event will be held at the @Model.EventItem.Venue.DisplayName located at @(Model.EventItem.Venue.Address1.ToString()) + "." )
+                        This event will be held at the @Model.EventItem.Venue.DisplayName located at @(Model.EventItem.Venue.Address1.ToString() + ".")
                     </p>
                     <br />
                     <p>
                         @if (Model.EventItem.Venue.AdditionalInfo != null)
                         {
                             @Model.EventItem.Venue.AdditionalInfo
-                        }                    
+                        }
                     </p>
+                    <br />
+                    @if (Model.User.Role == 1)
+                    {
+                    <span>Event ready to publish -   @Html.DisplayFor(modelItem => Model.EventItem.IsFinalized) </span>
+                    }
+
+
                 </div>
             </div>
         </div>

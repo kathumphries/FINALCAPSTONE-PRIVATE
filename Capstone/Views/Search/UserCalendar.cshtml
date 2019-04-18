@@ -82,22 +82,26 @@
                                     Location: @item.Venue.DisplayName
                                 </span>
                                 <span>
-                                    @item.EventName
+                                    @(item.EventName + "    ")
+                                    @if (Model.User.Role == 1)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.IsFinalized)
+                                    }
                                 </span>
                                 <div class="heartMobile">
                                     @if (Model.UserFav.ContainsKey(item.EventID))
                                     {
                                         if (Model.UserFav[item.EventID] == true)
                                         {
-                                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
-                                                <i id="heart2" class="fas fa-heart"></i>
+                                            <a asp-controller="Search" asp-action="RemoveUserEventMyCal" asp-route-id="@item.EventID">
+                                                <i id="heart2" class="fas fa-heart heartRed"></i>
                                             </a>
                                         }
                                     }
                                     else
                                     {
-                                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
-                                            <i id="heart2" class="fas fa-heart"></i>
+                                        <a asp-controller="Search" asp-action="AddUserEventMyCal" asp-route-id="@item.EventID">
+                                            <i id="heart2" class="fas fa-heart heartBlue"></i>
                                         </a>
                                     }
                                 </div>

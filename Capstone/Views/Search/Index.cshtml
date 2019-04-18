@@ -138,29 +138,32 @@
                                             <br />
                                             <span class="location">
                                                 <i class="fa fa-map-marker fa-fw"></i>
-                                                Location: @item.Venue.DisplayName
+                                                Location: @item.Venue.DisplayName                                             
                                             </span>
                                             <span>
-                                                @item.EventName
-
-                                                <div class="heartMobile">
-                                                    @if (Model.UserFav.ContainsKey(item.EventID))
+                                                @(item.EventName + "    ")                                              
+                                                @if (Model.User.Role == 1)
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.IsFinalized)
+                                                }
+                                            </span>
+                                            <div class="heartMobile">
+                                                @if (Model.UserFav.ContainsKey(item.EventID))
+                                                {
+                                                    if (Model.UserFav[item.EventID] == true)
                                                     {
-                                                        if (Model.UserFav[item.EventID] == true)
-                                                        {
-                                                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
-                                                                <i id="heart2" class="fas fa-heart heartRed"></i>
-                                                            </a>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
-                                                            <i id="heart2" class="fas fa-heart heartBlue"></i>
+                                                        <a asp-controller="Search" asp-action="RemoveUserEvent" asp-route-id="@item.EventID">
+                                                            <i id="heart2" class="fas fa-heart heartRed"></i>
                                                         </a>
                                                     }
-                                                </div>
-                                            </span>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-controller="Search" asp-action="AddUserEvent" asp-route-id="@item.EventID">
+                                                        <i id="heart2" class="fas fa-heart heartBlue"></i>
+                                                    </a>
+                                                }
+                                            </div>
                                         </div>
                                     </a>
                                 </div>
@@ -221,6 +224,13 @@
                                class="button Secondary">
 
                                 <div class="date-time-local">
+                                    <span class="date">
+                                        <i class="fa fa-calendar fa-fw"></i>
+                                        @item.Beginning.DayOfWeek,
+                                        @item.Beginning.ToString("MMMM")
+                                        @item.Beginning.Day
+                                    </span>
+                                    <br />
                                     <span class="hours">
                                         <i class="fa fa-clock fa-fw"></i>
                                         @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
@@ -231,21 +241,25 @@
                                         Location: @item.Venue.DisplayName
                                     </span>
                                     <span>
-                                        @item.EventName
+                                        @(item.EventName + "    ")
+                                        @if (Model.User.Role == 1)
+                                        {
+                                            @Html.DisplayFor(modelItem => item.IsFinalized)
+                                        }
                                     </span>
                                     <div class="heartMobile">
                                         @if (Model.UserFav.ContainsKey(item.EventID))
                                         {
                                             if (Model.UserFav[item.EventID] == true)
                                             {
-                                                <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
+                                                <a asp-controller="Search" asp-action="RemoveUserEvent" asp-route-id="@item.EventID">
                                                     <i id="heart2" class="fas fa-heart heartRed"></i>
                                                 </a>
                                             }
                                         }
                                         else
                                         {
-                                            <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
+                                            <a asp-controller="Search" asp-action="AddUserEvent" asp-route-id="@item.EventID">
                                                 <i id="heart2" class="fas fa-heart heartBlue"></i>
                                             </a>
                                         }
@@ -325,7 +339,11 @@
                                                 Location: @item.Venue.DisplayName
                                             </span>
                                             <span>
-                                                @item.EventName
+                                                @(item.EventName + "    ")
+                                                @if (Model.User.Role == 1)
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.IsFinalized)
+                                                }
                                             </span>
                                             <div class="heartMobile">
                                                 @if (Model.UserFav.ContainsKey(item.EventID))
