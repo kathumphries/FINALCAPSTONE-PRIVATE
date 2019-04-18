@@ -4,16 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
+
+
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @{
+        string url = Url.Action("Create", "Podcast");
+    }
+    <input type="button" class="btn btn-outline-secondary" value="+Podcast" onclick="window.location.href = '@url'" />
+
+   
 </p>
-<table class="table">
+
+
+<table class='table table-striped table-hover'>
     <thead>
         <tr>
-           <th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -21,41 +31,61 @@
             <th>
                 @Html.DisplayNameFor(model => model.GenreID)
             </th>
-            
-                @Html.DisplayNameFor(model => model.Hosting)
+            <th>
+            @Html.DisplayNameFor(model => model.Hosting)
             </th>
+         
             <th>
                 @Html.DisplayNameFor(model => model.URL)
             </th>
-           
+
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            
+        @foreach (var item in Model)
+        {
+            <tr>
+
+
+                <td>     <a href=@Url.Action("Detail", "Podcast" , new { id=item.PodcastID })>
+                        @Html.DisplayFor(modelItem => item.Title)</a>
+</td>
                 
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GenreID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hosting)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.URL)
-            </td>
-       
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PodcastID })
-                @Html.ActionLink("Details", "Detail", new {id = item.PodcastID}) 
-            </td>
-        </tr>
-}
+                <td>
+                    <a href=@Url.Action("Detail", "Podcast" , new { id=item.PodcastID })>
+                        @Html.DisplayFor(modelItem => item.Description) </a>
+</td>
+                <td>
+                    <a href=@Url.Action("Detail", "Podcast" , new { id=item.PodcastID })>
+                        @Html.DisplayFor(modelItem => item.GenreID)
+                    </a>
+</td>
+                <td>
+                    <a href=@Url.Action("Detail", "Podcast" , new { id=item.PodcastID })>
+                        @Html.DisplayFor(modelItem => item.Hosting)
+                    </a>
+                </td>
+                <td>
+                    <a href=@Url.Action("Detail", "Podcast" , new { id=item.PodcastID })>
+                        @Html.DisplayFor(modelItem => item.URL)
+                    </a>
+                </td>
+
+                <td>
+                   <a href=@Url.Action("Edit", "Podcast", new {id = item.UserID}) 
+                           type="submit"
+                           id="runReport"
+                           target="_blank"
+                           class="button Secondary">
+
+                            <i class="fa fa-edit"></i>
+
+                        </a>
+
+
+                        
+</td>
+            </tr>
+        }
     </tbody>
 </table>

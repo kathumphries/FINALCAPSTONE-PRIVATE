@@ -112,7 +112,6 @@ namespace Capstone.DAL
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(SQL_UpdatePodcast, connection);
-                    command.Parameters.AddWithValue("@podcastID", model.PodcastID);
                     command.Parameters.AddWithValue("@userID",model.UserID);
                     command.Parameters.AddWithValue("@hosting",model.Hosting);
                     command.Parameters.AddWithValue("@url",model.URL);
@@ -133,10 +132,9 @@ namespace Capstone.DAL
                     command.Parameters.AddWithValue("@inOhio",model.InOhio);
                     command.Parameters.AddWithValue("@isSponsored",model.IsSponsored);
                     command.Parameters.AddWithValue("@sponsor",model.Sponsor);
+                 
+                   updateSuccesful = (command.ExecuteNonQuery() > 0) ? true : false;
                     
-                    updateSuccesful = (command.ExecuteNonQuery() > 0) ? true : false;
-
-
                 }
             }
 
@@ -150,104 +148,115 @@ namespace Capstone.DAL
         }
 
 
-    public List<Podcast> GetAllPodcasts()
-{
-    List<Podcast> podcastList = new List<Podcast>();
-
-    using (SqlConnection connection = new SqlConnection(connectionString))
-    {
-        connection.Open();
-
-        SqlCommand command = new SqlCommand(SQL_GetAllPodcasts, connection);
-        SqlDataReader reader = command.ExecuteReader();
-
-        while (reader.Read())
+        public List<Podcast> GetAllPodcasts()
         {
-            podcastList.Add(MapToRowPodcast(reader));
+            List<Podcast> podcastList = new List<Podcast>();
 
-        }
-    }
-    return podcastList;
-}
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
-public Podcast GetPodcast(string podcastID)
-{
-    Podcast podcast = new Podcast();
+                SqlCommand command = new SqlCommand(SQL_GetAllPodcasts, connection);
+                SqlDataReader reader = command.ExecuteReader();
 
-    using (SqlConnection connection = new SqlConnection(connectionString))
-    {
-        connection.Open();
+                while (reader.Read())
+                {
+                    podcastList.Add(MapToRowPodcast(reader));
 
-        SqlCommand command = new SqlCommand(SQL_GetPodcast, connection);
-        command.Parameters.AddWithValue("@podcastID", podcastID);
-
-        SqlDataReader reader = command.ExecuteReader();
-
-        while (reader.Read())
-        {
-            podcast = MapToRowPodcast(reader);
+                }
+            }
+            return podcastList;
         }
 
-    }
-    return podcast;
-}
+        public Podcast GetPodcast(string podcastID)
+        {
+            Podcast podcast = new Podcast();
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
+                SqlCommand command = new SqlCommand(SQL_GetPodcast, connection);
+                command.Parameters.AddWithValue("@podcastID", podcastID);
 
+                SqlDataReader reader = command.ExecuteReader();
 
+                while (reader.Read())
+                {
+                    podcast = MapToRowPodcast(reader);
+                }
 
-private Podcast MapToRowPodcast(SqlDataReader reader)
-{
-    Podcast podcast = new Podcast();
+            }
+            return podcast;
+        }
 
-    podcast = new Podcast()
-    {
-        PodcastID = Convert.ToInt32(reader["podcastID"]),
-        UserID = Convert.ToInt32(reader["userID"]),
-        Hosting = Convert.ToString(reader["hosting"]),
-        URL = Convert.ToString(reader["url"]),
-        Title = Convert.ToString(reader["title"]),
-        Description = Convert.ToString(reader["description"]),
-        GenreID = Convert.ToInt32(reader["genreID"]),
-        OriginalRelease = Convert.ToDateTime(reader["originalRelease"]),
-        RunTime = Convert.ToString(reader["runTime"]),
-        ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]),
-        AverageLength = Convert.ToString(reader["averageLength"]),
-        MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
-        Demographic = Convert.ToString(reader["demographic"]),
-        Affiliations = Convert.ToString(reader["affiliations"]),
-        BroadcastCity = Convert.ToString(reader["broadcastCity"]),
-        BroadcastState = Convert.ToString(reader["broadcastState"]),
-        IsSponsored = Convert.ToBoolean(reader["isSponsored"]),
-        Sponsor = Convert.ToString(reader["sponsor"])
+        public bool AddPodcast(Podcast podcast)
+        {
+            return true;
+        }
 
+        private Podcast MapToRowPodcast(SqlDataReader reader)
+        {
+            Podcast podcast = new Podcast();
+
+            podcast = new Podcast()
+            {
+                PodcastID = Convert.ToInt32(reader["podcastID"]),
+                UserID = Convert.ToInt32(reader["userID"]),
+                Hosting = Convert.ToString(reader["hosting"]),
+                URL = Convert.ToString(reader["url"]),
+                Title = Convert.ToString(reader["title"]),
+                Description = Convert.ToString(reader["description"]),
+                GenreID = Convert.ToInt32(reader["genreID"]),
+                OriginalRelease = Convert.ToDateTime(reader["originalRelease"]),
+                RunTime = Convert.ToString(reader["runTime"]),
+                ReleaseFrequency = Convert.ToString(reader["releaseFrequency"]),
+                AverageLength = Convert.ToString(reader["averageLength"]),
+                MeasurementPlatform = Convert.ToString(reader["measurementPlatform"]),
+                Demographic = Convert.ToString(reader["demographic"]),
+                Affiliations = Convert.ToString(reader["affiliations"]),
+                BroadcastCity = Convert.ToString(reader["broadcastCity"]),
+                BroadcastState = Convert.ToString(reader["broadcastState"]),
+                IsSponsored = Convert.ToBoolean(reader["isSponsored"]),
+                Sponsor = Convert.ToString(reader["sponsor"])
             };
 
-    int colIndex = reader.GetOrdinal("episodeCount");
+        int colIndex = reader.GetOrdinal("url");
 
-    if (reader.IsDBNull(colIndex))
-    {
-        podcast.EpisodeCount = 0;
-    }
-    else
-    {
-        podcast.EpisodeCount = Convert.ToInt32(reader["episodeCount"]);
-    }
+        if (reader.IsDBNull(colIndex))
+        {
+            podcast.URL = "";
+        }
+        else
+        {
+            podcast.URL = Convert.ToString(reader["url"]);
+        }
+    
+        colIndex = reader.GetOrdinal("episodeCount");
 
-    colIndex = reader.GetOrdinal("downloadCount");
+        if (reader.IsDBNull(colIndex))
+        {
+            podcast.EpisodeCount = 0;
+        }
+        else
+        {
+            podcast.EpisodeCount = Convert.ToInt32(reader["episodeCount"]);
+        }
+    
+        colIndex = reader.GetOrdinal("downloadCount");
 
-    if (reader.IsDBNull(colIndex))
-    {
-        podcast.DownloadCount = 0;
-    }
-    else
-    {
-        podcast.DownloadCount = Convert.ToInt32(reader["downloadCount"]);
-    }
+        if (reader.IsDBNull(colIndex))
+        {
+            podcast.DownloadCount = 0;
+        }
+        else
+        {
+            podcast.DownloadCount = Convert.ToInt32(reader["downloadCount"]);
+        }
 
-    return podcast;
+        return podcast;
 
-}
+        }
     }
 }
 

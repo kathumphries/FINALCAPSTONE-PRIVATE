@@ -10,40 +10,122 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Search Index</title>
+    <link href="~/css/SearchStyle.css" rel="stylesheet" />
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .selectList {
+            float: left;
+            padding-right: 5em;
+        }
+
+        .date-time-local {
+            text-align: center;
+            padding: 1em 0 1em 0;
+            color: #d5e5f0;
+        }
+
+        .fa-clock {
+            padding-bottom: 6px;
+        }
+
+        .img-card {
+            margin-top: 2em;
+            transition: .5s ease;
+            display: block;
+            background-color: #686275;
+            /*border-radius: 8px;
+            padding: 2px;*/
+        }
+
+        .imgHover {
+            opacity: 1;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .img-card:hover .imgHover {
+            opacity: 0.3;
+        }
+
+        .img-card:hover .middle {
+            opacity: 1;
+        }
+
+        .imgIcons {
+            position: relative;
+            bottom: 25px;
+            width: 90%;
+            filter: invert(100%);
+            transition: .5s ease;
+        }
+
+            .imgIcons:hover {
+                filter: invert(0%);
+            }
+
+
+        .img-card {
+            transition: all .2s ease-in-out;
+        }
+
+            .img-card:hover {
+                transform: scale(1.1);
+            }
+
+        .img-responsive {
+            position: relative;
+            top: 5px;
+            width: 95%;
+        }
+    </style>
 </head>
 <body>
+
+
     <form asp-action="SearchEvents">
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.Podcast.GenreID" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.Podcast.GenreID, Model.GenreList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.Podcast.GenreID" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.VenueID" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.VenueID, Model.VenueList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.VenueID" class="text-danger"></span>
         </div>
-        <div class="form-group">
+
+        <div class="form-group selectList">
             <label asp-for="Event.TicketLevel" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.TicketLevel, Model.TicketList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.TicketLevel" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectList">
             <label asp-for="Event.TimeOfDayString" class="control-label"></label>
             @Html.DropDownListFor(model => model.Event.TimeOfDayString, Model.TimeOfDayList, "", new { @class = "form-control" })
             <span asp-validation-for="Event.TimeOfDayString" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group selectButton">
             <input type="submit" value="Submit" class="btn btn-default" />
         </div>
     </form>
 
     <div class="container">
-        <h2>Dynamic Tabs</h2>
-        <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+        <h2>Event Schedule</h2>
+        <p></p>
 
         <ul class="nav nav-tabs">
             <li><a data-toggle="tab" href="#past">Archived Events</a></li>
@@ -52,7 +134,7 @@
             {
                 if (i <= 7)
                 {
-                    <li><a data-toggle="tab" href="@("#menu"+ i)">@(Model.EventListByDay[i][0].Beginning.Day + ", " + Model.EventListByDay[i][0].Beginning.ToString("MMMM"))</a></li>
+                    <li><a data-toggle="tab" href="@("#menu" + i)">@(Model.EventListByDay[i][0].Beginning.Day + ", " + Model.EventListByDay[i][0].Beginning.ToString("MMMM"))</a></li>
                 }
             }
         </ul>
@@ -60,382 +142,143 @@
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
                 <h3></h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.EventID)
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Beginning)
+                <div class="container-fluid">
+                    <div class="row">
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Ending)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.PodcastID)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.VenueID)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.TicketLevel)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.EventName)
-
-                            </th>
-                            <th>
-                                Genre
-
-                            </th>
-                            <th>
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
                         @foreach (Event item in Model.EventList)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventID)
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Beginning)
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="img-card">
+                                    @if (item.CoverPhoto != null)
+                                    {
+                                        <a href=@item.Podcast.URL>
+                                            <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                                    }
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ending)
+                                    <div class="middle">
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PodcastID)
+                                        <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.VenueID)
+                                    </div>
 
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CoverPhoto)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketLevel)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
-
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.GenreID)
-
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                </td>
-                            </tr>
+                                    <div class="date-time-local">
+                                        <span class="hours">
+                                            <i class="fa fa-clock fa-fw"></i>
+                                            @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                        </span>
+                                        <br />
+                                        <span class="location">
+                                            <i class="fa fa-map-marker fa-fw"></i>
+                                            Location: @item.Venue.DisplayName
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </tbody>
-                </table>
+
+                    </div>
+                </div>
             </div>
+
             <div id="past" class="tab-pane fade">
                 <h3></h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.EventID)
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Beginning)
+                @foreach (Event item in Model.ArchivedEventList)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="img-card">
+                            @if (item.CoverPhoto != null)
+                            {
+                                <a href=@item.Podcast.URL>
+                                    <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                </a>
+                            }
+                            else
+                            {
+                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                            }
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.Ending)
+                            <div class="middle">
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.PodcastID)
+                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.VenueID)
+                            </div>
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.CoverPhoto)
+                            <div class="date-time-local">
+                                <span class="hours">
+                                    <i class="fa fa-clock fa-fw"></i>
+                                    @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                </span>
+                                <br />
+                                <span class="location">
+                                    <i class="fa fa-map-marker fa-fw"></i>
+                                    Location: @item.Venue.DisplayName
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.TicketLevel)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Event.EventName)
-
-                            </th>
-                            <th>
-                                Genre
-
-                            </th>
-                            <th>
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Event item in Model.ArchivedEventList)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventID)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Beginning)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ending)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PodcastID)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.VenueID)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CoverPhoto)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DescriptionCopy)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketLevel)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpsaleCopy)
-
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EventName)
-
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Podcast.GenreID)
-
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
-
 
             @if (z <= 7)
             {
                 @foreach (var day in Model.EventListByDay)
                 {
-                    <div id="@("menu"+z)" class="tab-pane fade">
-                        <h3></h3>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.EventID)
+            <div id="@("menu" + z)" class="tab-pane fade">
+                <h3></h3>
 
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.Beginning)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.Ending)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.PodcastID)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.VenueID)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.CoverPhoto)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.DescriptionCopy)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.TicketLevel)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.UpsaleCopy)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.IsFinalized)
-
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Event.EventName)
-
-                                    </th>
-                                    <th>
-                                        Genre
-
-                                    </th>
-                                    <th>
-
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            @foreach (var item in day)
+                @foreach (var item in day)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="img-card">
+                            @if (item.CoverPhoto != null)
                             {
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.EventID)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Beginning)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Ending)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.PodcastID)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.VenueID)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.CoverPhoto)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.DescriptionCopy)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TicketLevel)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.UpsaleCopy)
-
-                                        </td>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IsFinalized)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.EventName)
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Podcast.GenreID)
-
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-
-                                        </td>
-                                    </tr>
-                                </thead>
+                                <a href=@item.Podcast.URL>
+                                    <img class="center-block img-responsive imgHover" src=@item.CoverPhoto )>
+                                </a>
                             }
-                        </table>
+                            else
+                            {
+                                <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                            }
+
+                            <div class="middle">
+
+                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+
+                            </div>
+
+                            <div class="date-time-local">
+                                <span class="hours">
+                                    <i class="fa fa-clock fa-fw"></i>
+                                    @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
+                                </span>
+                                <br />
+                                <span class="location">
+                                    <i class="fa fa-map-marker fa-fw"></i>
+                                    Location: @item.Venue.DisplayName
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                }
+
+            </div>
                     z++;
                 }
             }
-
         </div>
     </div>
+
+
 </body>
 </html>
 

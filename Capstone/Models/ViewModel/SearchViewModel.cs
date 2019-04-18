@@ -11,6 +11,7 @@ namespace Capstone.Models.ViewModel
     {
         [Display(Name = "Time of Day")]
         public string TimeOfDayString {get; set;}
+        public User User { get; set; }
 
         public Event Event { get; set; }
         public List<Event> EventList { get; set; }

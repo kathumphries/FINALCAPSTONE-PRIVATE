@@ -14,7 +14,7 @@ namespace Capstone.Models
         public DateTime Ending { get; set; }
 
         public DateTime PodfestStartTime { get; set; } = new DateTime(2019, 8, 23);
-        // public string PodcastName { get; set; }
+        //public string PodcastName { get; set; }
 
         public string PodcastID { get; set; }
         public Podcast Podcast { get; set; } //will pull details from db but wont store. 
@@ -27,9 +27,11 @@ namespace Capstone.Models
 
         [Display(Name = "Description")] public string DescriptionCopy { get; set; }
 
-        // public string PodcastURL { get; set; }
+        //public string PodcastURL { get; set; }
+
 
         [Display(Name = "Ticket Level")] public string TicketLevel { get; set; } //TODO: change to int rename TicketID
+
         public Ticket Ticket { get; set; }
 
         [Display(Name = "Upsale Copy")] public string UpsaleCopy { get; set; }
@@ -38,12 +40,16 @@ namespace Capstone.Models
 
         [Display(Name = "Event Title")] public string EventName { get; set; }
 
-        public iCalendar ICalendar { get; set; }
+        public ICalendar ICalendar { get; set; }
 
-        public string TimeOfDayString { get; set; }
+        [Display(Name = "Time of Day")] public string TimeOfDayString { get; set; }
+
+
+        public string GoogleURL { get; set; }
+
+
+
+
 
     }
-
-
-
 }
