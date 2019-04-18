@@ -1,4 +1,8 @@
 ﻿
+body {
+    font-family: 'Telex', sans-serif;
+}    
+
 .selectList {
     float: left;
     padding-right: 5em;
@@ -31,7 +35,7 @@
             padding: 2px;*/
 }
 
-.imgHover{
+.imgHover {
     max-height: 350px;
 }
 
