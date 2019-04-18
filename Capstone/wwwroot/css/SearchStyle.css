@@ -96,3 +96,7 @@ table th:last-child {
 .searchReturn{
     margin-top: 3em;
 }
+
+.actionLinks > a {
+    color: #d5e5f0;
+}
