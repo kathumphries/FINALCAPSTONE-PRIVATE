@@ -11,13 +11,14 @@ namespace Capstone.Models.ViewModel
     {
         [Display(Name = "Time of Day")]
         public string TimeOfDayString {get; set;}
+        public User User { get; set; }
 
         public Event Event { get; set; }
         public List<Event> EventList { get; set; }
         public List<Event> ArchivedEventList { get; set; }
   
         public List<List<Event>> EventListByDay { get; set; }
-
+        public Dictionary<int, bool> UserFav { get; set; }
 
        [Display(Name = "Genre List")]
         public List<SelectListItem> GenreList { get; set; }

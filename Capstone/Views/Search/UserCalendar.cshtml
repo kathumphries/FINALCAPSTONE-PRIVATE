@@ -1,11 +1,11 @@
 ﻿@model Capstone.Models.ViewModel.SearchViewModel
 
 @{
-    ViewData["Title"] = "SearchEvents";
+    ViewData["Title"] = "UserCalendar";
 }
 
-<h2>Search</h2>
-
+<h2>My Calendar</h2>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
     <link href="~/css/SearchStyle.css" rel="stylesheet" />
@@ -69,7 +69,6 @@
                             </div>
                         </a>
                     </div>
-
                 </div>
             }
 
@@ -78,7 +77,5 @@
     <div class="form-group-home searchReturn">
         <a id="home-link" asp-controller="Search" asp-action="Index">Back to Search page</a>
     </div>
-    >>>>>>> 4ccd10499ed81c847215f160b02f628f85ddbe96
 </body>
-
-
+</html>

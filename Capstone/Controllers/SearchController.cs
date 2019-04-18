@@ -8,6 +8,8 @@ using Capstone.Models.ViewModel;
 using Capstone.Providers.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Web;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,6 +36,11 @@ namespace Capstone.Controllers
             this.authProvider = authProvider;
         }
 
+        public IActionResult Copy()
+        {
+            return View();
+        }
+
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Index()
@@ -52,10 +59,10 @@ namespace Capstone.Controllers
                 GenreList = GetGenreList(),
                 TicketList = GetTicketList(),
                 PodcastList = GetPodcastList(),
-                TimeOfDayList = GetTimeOfDay()
-            };
-
-            
+                TimeOfDayList = GetTimeOfDay(),
+                User = user,
+                UserFav = new Dictionary<int, bool>()
+            };          
 
             model.EventList = eventSqlDal.GetFutureEvents(eventItem, user);
             
@@ -84,15 +91,22 @@ namespace Capstone.Controllers
             .Select(g => g.ToList())
             .ToList();
 
+            List<Event> userEvents = eventSqlDal.GetUserEvents(user);
+
+            foreach (Event item in userEvents)
+            {
+                model.UserFav.Add(item.EventID, true);
+            }
+
             return View(model);
-        }
+        }               
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SearchEvents(SearchViewModel model)
         {
             User user = authProvider.GetCurrentUser();
-
+            model.User = user;
             model.EventList = eventSqlDal.Search(model.Event, user);
 
             foreach (Event item in model.EventList)
@@ -102,6 +116,77 @@ namespace Capstone.Controllers
                 item.Podcast.Genre = genreSqlDal.GetGenre(item.Podcast.GenreID);
                 item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
             }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AddUserEvent(string eventID)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.AddUserEvent(user, Convert.ToInt32(eventID));
+                }
+               
+            }
+            catch (Exception)
+            {
+
+                
+            }          
+
+            return RedirectToAction("Index", "Search");
+        }
+
+        [HttpGet]
+        public IActionResult RemoveUserEvent(string eventID)
+        {
+            User user = authProvider.GetCurrentUser();
+
+            try
+            {
+                if (user.Role == 1 || user.Role == 2)
+                {
+                    eventSqlDal.RemoveUserEvent(user, Convert.ToInt32(eventID));
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+            return RedirectToAction("Index", "Search");
+        }
+
+        public IActionResult UserCalendar()
+        {
+            User user = authProvider.GetCurrentUser();
+
+            Event eventItem = new Event();
+            eventItem.Podcast = new Podcast();
+            eventItem.Podcast.Genre = new Genre();
+
+            SearchViewModel model = new SearchViewModel
+            {
+                Event = eventItem,
+                User = user,              
+            };
+
+            model.EventList = eventSqlDal.GetUserEvents(user);
+
+            foreach (Event item in model.EventList)
+            {
+                item.Venue = venueSqlDal.GetVenue(item.VenueID);
+                item.Podcast = podcastSqlDal.GetPodcast(item.PodcastID);
+                item.Podcast.Genre = genreSqlDal.GetGenreEventID(item.EventID);
+                item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
+
+            } 
 
             return View(model);
         }

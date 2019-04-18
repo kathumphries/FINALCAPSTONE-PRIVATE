@@ -18,5 +18,7 @@ namespace Capstone.DAL.Interfaces
         List<Event> GetFutureEventsByDay(Event eventItem, User user);
         List<Event> GetPastEvents(Event eventItem, User user);
         List<Event> GetFutureEvents(Event eventItem, User user);
+        bool AddUserEvent(User user, int eventID);
+        bool RemoveUserEvent(User user, int eventID);
     }
 }
