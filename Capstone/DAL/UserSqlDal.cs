@@ -90,11 +90,9 @@ namespace Capstone.DAL
         public User GetUser(string email)
         {
             User user = null;
-
-
+            
             try
-            {
-                
+            {                
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -195,8 +193,8 @@ namespace Capstone.DAL
                 Password = Convert.ToString(reader["password"]), //password
                 Role = Convert.ToInt32(reader["role"]), //role
                 Salt  = Convert.ToString(reader["salt"]), //salt
-            //Name = (String.IsNullOrEmpty(Convert.ToString(reader["name"])))? "No Name Provided" :
-            Name = Convert.ToString(reader["name"])//name
+                //Name = (String.IsNullOrEmpty(Convert.ToString(reader["name"])))? "No Name Provided" :
+                Name = Convert.ToString(reader["name"])//name
             };
 
 

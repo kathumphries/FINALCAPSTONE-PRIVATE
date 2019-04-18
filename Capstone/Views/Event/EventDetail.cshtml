@@ -4,76 +4,150 @@
     ViewData["Title"] = "EventDetail";
 }
 
-<h2>@Model.EventItem.EventName</h2>
-<p class="badge badge-primary badge-pill genre-tag">
-    <a href=@Model.EventItem.Podcast.URL> @Model.EventItem.Podcast</a>
-</p>
-<p class="badge badge-primary badge-pill genre-tag">
-    @Model.EventItem.Podcast.GenreID
-</p>
 
 
-<div class="date-time-local">
-    <i class="fa fa-calendar fa-fw"></i>
-    <span class="date">
-        @Model.EventItem.Beginning.DayOfWeek,
-        @Model.EventItem.Beginning.ToString("MMMM")
-        @Model.EventItem.Beginning.Day
-    </span>
-    <span class="hours">
-        <i class="fa fa-clock fa-fw"></i>
-        @Model.EventItem.Beginning.ToString("hh:mm")  @Model.EventItem.Beginning.ToString("tt").ToUpper() -  @Model.EventItem.Ending.ToString("hh:mm")  @Model.EventItem.Ending.ToString("tt").ToUpper()
-    </span>
-    <span class="location">
-        <i class="fa fa-map-marker fa-fw"></i>
-        Location: @Model.EventItem.VenueID
-    </span>
-</div>
-<div class="podcast-logo">
-    @if (Model.EventItem.CoverPhoto != null)
-    {
-        <a href=@Model.EventItem.Podcast.URL>
-            <img src=@Model.EventItem.CoverPhoto )>
-        </a>
-    }
-</div>
-<div class="podcast info">
-    <dl class="dl-horizontal">
-        <dd>
-            <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
-        </dd>
-        <dd>
-            <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
-</dd>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.TicketLevel)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
-        </dd>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/css/SearchStyle.css" rel="stylesheet" />
+    <style>
+        /*.coolLook {
+            display: block;
+            background-color: #f15263;
+            
+        }*/
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <div class="img-card">
+                    @if (Model.EventItem.CoverPhoto != null)
+                    {
+                        <img class="center-block img-responsive imgHover" src=@Model.EventItem.CoverPhoto )>
+                    }
+                    else
+                    {
+                        <img class="center-block img-responsive imgHover" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
+                    }
+
+                    <div class="middle">
+
+                    </div>
+
+                    <div class="date-time-local">
+                        <span class="date">
+                            <i class="fa fa-calendar fa-fw"></i>
+                            @Model.EventItem.Beginning.DayOfWeek,
+                            @Model.EventItem.Beginning.ToString("MMMM")
+                            @Model.EventItem.Beginning.Day
+                        </span>
+                        <br />
+                        <span class="hours">
+                            <i class="fa fa-clock fa-fw"></i>
+                            @Model.EventItem.Beginning.ToString("h:mm")  @Model.EventItem.Beginning.ToString("tt").ToUpper() -  @Model.EventItem.Ending.ToString("h:mm")  @Model.EventItem.Ending.ToString("tt").ToUpper()
+                        </span>
+                        <br />
+                        <span class="location">
+                            <i class="fa fa-map-marker fa-fw"></i>
+                            Location: @Model.EventItem.Venue.DisplayName
+                        </span>
+
+                        <div class="actionLinks">
+                            @*only visible to Admin*@
+
+                            @* TODO ADD ADMIN AUTH *@
+
+                            @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID })
+                            @Html.ActionLink("Remove", "DeleteEvent", new { id = Model.EventItem.EventID })
+                            @Html.ActionLink("Create New", "SaveEvent")
+                            @Html.ActionLink("iCal", "EncodeICal")
+                            @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
+                        </div>
     
-    </dl>
-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                <h2 class="coolLook text-center">@Model.EventItem.EventName</h2>
+                <span class="text-center">
+                    <p class="badge badge-primary badge-pill genre-tag">
+                        <a href=@Model.EventItem.Podcast.URL> @Model.EventItem.Podcast.Title</a>
+                    </p>
+                    <p class="badge badge-primary badge-pill genre-tag">
+                        @Model.EventItem.Podcast.GenreID
+                    </p>
+                </span>
 
-<dl class="dl-horizontal">
+                <div class="podcast info">
+                    <dl class="dl-horizontal">
+                        <dd>
+                            <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
+                        </dd>
+                        <dd>
+                            <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
+                        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.EventItem.Ticket.TicketType)
+                        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
+                        </dd>
 
-    <dd>
-        @Html.DisplayFor(model => model.EventItem.DescriptionCopy)
-    </dd>
-    <dd>
-        published @Html.DisplayFor(model => model.EventItem.IsFinalized)  only visible to Admin
-    </dd>
-</dl>
+                    </dl>
+                </div>
 
 
-<div>
-    @*only visible to Admin*@
+            </div>
+        </div>
+    </div>
 
-    @* TODO ADD ADMIN AUTH *@
- 
-                    @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) 
-                    @Html.ActionLink("Remove", "DeleteEvent", new { id = Model.EventItem.EventID })
-                    @Html.ActionLink("Create New", "SaveEvent")
-                    @Html.ActionLink("iCal", "EncodeICal")
-                    @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
-</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+@*
+
+   
+   
+    <div class="podcast info">
+        <dl class="dl-horizontal">
+            <dd>
+                <a href=@Model.EventItem.Podcast.URL>@Html.DisplayFor(model => model.EventItem.Podcast.Title)</a>
+            </dd>
+            <dd>
+                <a href=@Model.EventItem.Podcast.URL> @Html.DisplayFor(model => model.EventItem.Podcast.URL)</a>
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.EventItem.TicketLevel)
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.EventItem.UpsaleCopy)
+            </dd>
+
+        </dl>
+    </div>
+
+    <dl class="dl-horizontal">
+
+        <dd>
+            @Html.DisplayFor(model => model.EventItem.DescriptionCopy)
+        </dd>
+        <dd>
+            published @Html.DisplayFor(model => model.EventItem.IsFinalized)  only visible to Admin
+        </dd>
+    </dl>*@
+
+

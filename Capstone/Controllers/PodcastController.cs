@@ -56,11 +56,8 @@ namespace Capstone.Controllers
 
         public ActionResult Create()
         {
-
-
             PodcastViewModel model = new PodcastViewModel()
             {
-
                 Podcast = new Podcast(),
                 GenreList = GetGenreList()
             };
