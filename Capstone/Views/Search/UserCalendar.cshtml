@@ -81,6 +81,9 @@
                                     <i class="fa fa-map-marker fa-fw"></i>
                                     Location: @item.Venue.DisplayName
                                 </span>
+                                <span>
+                                    @item.EventName
+                                </span>
                                 <div class="heartMobile">
                                     @if (Model.UserFav.ContainsKey(item.EventID))
                                     {

@@ -72,17 +72,22 @@ body {
     opacity: 1;
 }
 
+
+.heartBlue {
+    filter: invert(100%);
+}
+
 .imgIcons {
     position: relative;
     bottom: 25px;
     width: 90%;
-    filter: invert(100%);
+    /*filter: invert(100%);*/
     transition: .5s ease;
 }
 
-    .imgIcons:hover {
+    /*.imgIcons:hover {
         filter: invert(0%);
-    }
+    }*/
 
 
 .img-card {
@@ -109,6 +114,11 @@ table th:first-child {
     border-radius: 10px 0 0 10px;
 }
 
+.fa-fw{
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
 table th:last-child {
     border-radius: 0 10px 10px 0;
 }
@@ -131,6 +141,6 @@ table th:last-child {
 
 @media only screen and (max-width: 768px) {
     .heartMobile {
-        display: normal;
+        display: unset;
     }
 }

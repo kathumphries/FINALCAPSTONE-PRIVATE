@@ -17,13 +17,14 @@
 
         }*/
 
-        #heart2{
-            color:orangered;
+        .space{
+            padding-right: 16px;
         }
 
-        #heart1{
-            color: lawngreen;
+        .heartDetail{
+            font-size: 5em;
         }
+
     </style>
 </head>
 <body>
@@ -40,9 +41,25 @@
                         <img class="center-block img-responsive" src="https://rachelcorbett.com.au/wp-content/uploads/2018/07/PodSchool-Feature-Image-2-1-1.jpg" alt="default img" />
                     }
 
-                    <div class="middle">
+                        <div class="middle">
 
-                    </div>
+                            @if (Model.UserFav.ContainsKey(Model.EventItem.EventID))
+                            {
+                                if (Model.UserFav[Model.EventItem.EventID] == true)
+                                {
+                                    <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@Model.EventItem.EventID">
+                                        <i id="heart2" class="fas fa-heart heartDetail"></i>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@Model.EventItem.EventID">
+                                    <i id="heart2" class="fas fa-heart heartDetail"></i>
+                                </a>
+                            }
+
+                        </div>
 
                     <div class="date-time-local">
                         <span class="date">
@@ -69,12 +86,11 @@
 
                             @if (Model.User.Role == 1)
                             {
-                                @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID })
+                                @Html.ActionLink("Edit", "EditEvent", new { id = Model.EventItem.EventID }) <Span class="space"></Span>      
                             }
-
-                            @Html.ActionLink("Create New", "SaveEvent")
+                           
                             @Html.ActionLink("iCal", "EncodeICal")
-                            @Html.ActionLink("Google Calendar", "EncodeGoogleCal")
+                           
                         </div>
 
                     </div>
@@ -88,22 +104,7 @@
                     </p>
                     <p class="badge badge-primary badge-pill genre-tag">
                         @Model.EventItem.Podcast.Genre.GenreName
-                    </p>
-                    @if (Model.UserFav.ContainsKey(Model.EventItem.EventID))
-                    {
-                        if (Model.UserFav[Model.EventItem.EventID] == true)
-                        {
-                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@Model.EventItem.EventID">
-                                <i id="heart2" class="fas fa-heart"></i>
-                            </a>
-                        }
-                    }
-                    else
-                    {
-                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@Model.EventItem.EventID">
-                            <i id="heart2" class="fas fa-heart"></i>
-                        </a>
-                    }
+                    </p>                  
                 </span>
 
                 <div class="podcast info">
@@ -135,7 +136,7 @@
                         @if (Model.EventItem.Venue.AdditionalInfo != null)
                         {
                             @Model.EventItem.Venue.AdditionalInfo
-                        }
+                        }                    
                     </p>
                 </div>
             </div>

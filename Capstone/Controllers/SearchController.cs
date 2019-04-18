@@ -109,6 +109,7 @@ namespace Capstone.Controllers
             User user = authProvider.GetCurrentUser();
             model.User = user;
             model.EventList = eventSqlDal.Search(model.Event, user);
+            model.UserFav = new Dictionary<int, bool>();
 
             foreach (Event item in model.EventList)
             {
@@ -117,6 +118,13 @@ namespace Capstone.Controllers
                 item.Podcast.Genre = genreSqlDal.GetGenre(item.Podcast.GenreID);
                 item.Ticket = ticketSqlDal.GetTicket(item.TicketLevel);
 
+            }
+
+            List<Event> userEvents = eventSqlDal.GetUserEvents(user);
+
+            foreach (Event item in userEvents)
+            {
+                model.UserFav.Add(item.EventID, true);
             }
 
             return View(model);

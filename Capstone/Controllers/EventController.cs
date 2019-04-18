@@ -102,7 +102,7 @@ namespace Capstone.Controllers
         [AuthorizationFilter("1")]  //admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<IActionResult> EditEvent(int id, EventViewModel model)
+        public IActionResult EditEvent(int id, EventViewModel model)
         {
             
             if (!ModelState.IsValid)
@@ -111,7 +111,7 @@ namespace Capstone.Controllers
             }
             else
             {
-                model.EventItem = PopulateEventDetails(id);
+                //model.EventItem = PopulateEventDetails(id);
                 model.PodcastList = GetPodcastList();
                 model.GenreList = GetGenreList();
                 model.VenueList = GetVenueList();

@@ -83,7 +83,7 @@
                                            id="runReport"
                                            class="button Secondary">
 
-                                            <img class="center-block img-responsive imgHover" src="@item.CoverPhoto" >
+                                            <img class="center-block img-responsive imgHover" src="@item.CoverPhoto">
                                         </a>
                                     }
                                     else
@@ -105,7 +105,7 @@
 
 
                                                 <a asp-controller="Search" asp-action="RemoveUserEvent" asp-route-id="@item.EventID">
-                                                    <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                                    <img id="icon1" class="imgIcons heartRed" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                                 </a>
 
                                             }
@@ -113,7 +113,7 @@
                                         else
                                         {
                                             <a asp-controller="Search" asp-action="AddUserEvent" asp-route-id="@item.EventID">
-                                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                                <img id="icon1" class="imgIcons heartBlue" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                             </a>
                                         }
 
@@ -124,6 +124,13 @@
                                        class="button Secondary">
 
                                         <div class="date-time-local">
+                                            <span class="date">
+                                                <i class="fa fa-calendar fa-fw"></i>
+                                                @item.Beginning.DayOfWeek,
+                                                @item.Beginning.ToString("MMMM")
+                                                @item.Beginning.Day
+                                            </span>
+                                            <br />
                                             <span class="hours">
                                                 <i class="fa fa-clock fa-fw"></i>
                                                 @item.Beginning.ToString("h:mm")  @item.Beginning.ToString("tt").ToUpper() -  @item.Ending.ToString("h:mm")  @item.Ending.ToString("tt").ToUpper()
@@ -133,23 +140,27 @@
                                                 <i class="fa fa-map-marker fa-fw"></i>
                                                 Location: @item.Venue.DisplayName
                                             </span>
-                                            <div class="heartMobile">
-                                                @if (Model.UserFav.ContainsKey(item.EventID))
-                                                {
-                                                    if (Model.UserFav[item.EventID] == true)
+                                            <span>
+                                                @item.EventName
+
+                                                <div class="heartMobile">
+                                                    @if (Model.UserFav.ContainsKey(item.EventID))
                                                     {
-                                                        <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
-                                                            <i id="heart2" class="fas fa-heart"></i>
+                                                        if (Model.UserFav[item.EventID] == true)
+                                                        {
+                                                            <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
+                                                                <i id="heart2" class="fas fa-heart heartRed"></i>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
+                                                            <i id="heart2" class="fas fa-heart heartBlue"></i>
                                                         </a>
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
-                                                        <i id="heart2" class="fas fa-heart"></i>
-                                                    </a>
-                                                }
-                                            </div>
+                                                </div>
+                                            </span>
                                         </div>
                                     </a>
                                 </div>
@@ -171,7 +182,7 @@
                                    type="submit"
                                    id="runReport"
                                    class="button Secondary">
-                                    <img class="center-block img-responsive imgHover" src="@item.CoverPhoto" >
+                                    <img class="center-block img-responsive imgHover" src="@item.CoverPhoto">
                                 </a>
                             }
                             else
@@ -191,14 +202,14 @@
                                     if (Model.UserFav[item.EventID] == true)
                                     {
                                         <a asp-controller="Search" asp-action="RemoveUserEvent" asp-route-id="@item.EventID">
-                                            <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                            <img id="icon1" class="imgIcons heartRed" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                         </a>
                                     }
                                 }
                                 else
                                 {
                                     <a asp-controller="Search" asp-action="AddUserEvent" asp-route-id="@item.EventID">
-                                        <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                        <img id="icon1" class="imgIcons heartBlue" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                     </a>
                                 }
 
@@ -219,20 +230,23 @@
                                         <i class="fa fa-map-marker fa-fw"></i>
                                         Location: @item.Venue.DisplayName
                                     </span>
+                                    <span>
+                                        @item.EventName
+                                    </span>
                                     <div class="heartMobile">
                                         @if (Model.UserFav.ContainsKey(item.EventID))
                                         {
                                             if (Model.UserFav[item.EventID] == true)
                                             {
                                                 <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
-                                                    <i id="heart2" class="fas fa-heart"></i>
+                                                    <i id="heart2" class="fas fa-heart heartRed"></i>
                                                 </a>
                                             }
                                         }
                                         else
                                         {
                                             <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
-                                                <i id="heart2" class="fas fa-heart"></i>
+                                                <i id="heart2" class="fas fa-heart heartBlue"></i>
                                             </a>
                                         }
                                     </div>
@@ -261,7 +275,7 @@
                                            id="runReport"
                                            class="button Secondary">
 
-                                            <img class="center-block img-responsive imgHover" src="@item.CoverPhoto" >
+                                            <img class="center-block img-responsive imgHover" src="@item.CoverPhoto">
                                         </a>
                                     }
                                     else
@@ -282,14 +296,14 @@
                                             if (Model.UserFav[item.EventID] == true)
                                             {
                                                 <a asp-controller="Search" asp-action="RemoveUserEvent" asp-route-id="@item.EventID">
-                                                    <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                                    <img id="icon1" class="imgIcons heartRed" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                                 </a>
                                             }
                                         }
                                         else
                                         {
                                             <a asp-controller="Search" asp-action="AddUserEvent" asp-route-id="@item.EventID">
-                                                <img id="icon1" class="imgIcons" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
+                                                <img id="icon1" class="imgIcons heartBlue" src="~/images/36704-5-dark-red-heart-transparent-background.png" />
                                             </a>
                                         }
 
@@ -310,20 +324,23 @@
                                                 <i class="fa fa-map-marker fa-fw"></i>
                                                 Location: @item.Venue.DisplayName
                                             </span>
+                                            <span>
+                                                @item.EventName
+                                            </span>
                                             <div class="heartMobile">
                                                 @if (Model.UserFav.ContainsKey(item.EventID))
                                                 {
                                                     if (Model.UserFav[item.EventID] == true)
                                                     {
                                                         <a asp-controller="Search" asp-action="RemoveUserEventMyDetails" asp-route-id="@item.EventID">
-                                                            <i id="heart2" class="fas fa-heart"></i>
+                                                            <i id="heart2" class="fas fa-heart heartRed"></i>
                                                         </a>
                                                     }
                                                 }
                                                 else
                                                 {
                                                     <a asp-controller="Search" asp-action="AddUserEventDetails" asp-route-id="@item.EventID">
-                                                        <i id="heart2" class="fas fa-heart"></i>
+                                                        <i id="heart2" class="fas fa-heart heartBlue"></i>
                                                     </a>
                                                 }
                                             </div>
@@ -339,8 +356,6 @@
             }
         </div>
     </div>
-
-
 </body>
 </html>
 
