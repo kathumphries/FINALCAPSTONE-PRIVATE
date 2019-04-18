@@ -101,7 +101,10 @@ namespace Capstone.Controllers
 
                 bool result = userSqlDal.UpdateUserRole(model);
 
-                LogChanges("UPDATE ROLE: "+model.User.Email + "to role: "+model.User.Role);
+                LogChanges("UPDATE ROLE: " + 
+                           (String.IsNullOrEmpty(model.User.Email)?"":model.UserEmail) +
+                              "to role: " +
+                           (String.IsNullOrEmpty(model.User.RoleDescription) ? "" : model.User.RoleDescription));
                 return RedirectToAction("Index", "Admin");
 
 

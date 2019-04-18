@@ -65,41 +65,41 @@
 
                 <td>
                     
-                    <img class="img-thumbnail" href=@Url.Action("Edit", "Event", new {id = item.EventID}) src=@Html.DisplayFor(modelItem => item.CoverPhoto)></img>
+                    <img class="img-thumbnail" href=@Url.Action("EditEvent", "Event", new {id = item.EventID}) src=@Html.DisplayFor(modelItem => item.CoverPhoto)></img>
                     
                 </td>
 
                 <td>
-                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                    <a href=@Url.Action("EditEvent", "Event", new {id = item.EventID})>
                         @Html.DisplayFor(modelItem => item.EventName)
                     </a>
                 </td>
 
                 <td>
-                    <a href=@Url.Action("Edit", "Podcast", new {id = item.PodcastID})>
+                    <a href=@Url.Action("EditEvent", "Podcast", new {id = item.PodcastID})>
                         @Html.DisplayFor(modelItem => item.Podcast.Title)
                     </a>
                 </td>
 
                 <td>
-                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                    <a href=@Url.Action("EditEvent", "Event", new {id = item.EventID})>
                         @item.Beginning.ToString("h:mm") @item.Beginning.ToString("tt").ToUpper() - @item.Ending.ToString("h:mm") @item.Ending.ToString("tt").ToUpper()
                     </a>
                 </td>
 
                 <td>
-                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                    <a href=@Url.Action("EditEvent", "Event", new {id = item.EventID})>
                         @Html.DisplayFor(modelItem => item.Venue.DisplayName)
                     </a>
                 </td>
 
                 <td>
-                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                    <a href=@Url.Action("EditEvent", "Event", new {id = item.EventID})>
                         @Html.DisplayFor(modelItem => item.IsFinalized)
                     </a>
                 </td>
                 <td>
-                    <a href=@Url.Action("Edit", "Event", new {id = item.EventID})>
+                    <a href=@Url.Action("EditEvent", "Event", new {id = item.EventID})>
                         @Html.DisplayFor(modelItem => item.Ticket.TicketType)
                     </a>
                 </td>
