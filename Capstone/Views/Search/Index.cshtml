@@ -138,10 +138,10 @@
                                             <br />
                                             <span class="location">
                                                 <i class="fa fa-map-marker fa-fw"></i>
-                                                Location: @item.Venue.DisplayName                                             
+                                                Location: @item.Venue.DisplayName
                                             </span>
                                             <span>
-                                                @(item.EventName + "    ")                                              
+                                                @(item.EventName + "    ")
                                                 @if (Model.User.Role == 1)
                                                 {
                                                     @Html.DisplayFor(modelItem => item.IsFinalized)
@@ -168,7 +168,6 @@
                                     </a>
                                 </div>
                             </div>
-
                         }
 
                     </div>
